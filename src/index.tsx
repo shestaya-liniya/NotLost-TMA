@@ -1,28 +1,42 @@
-import ReactDOM from 'react-dom/client';
-import { StrictMode } from 'react';
-import { retrieveLaunchParams } from '@telegram-apps/sdk-react';
+import ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
 
-import { Root } from '@/components/Root.tsx';
-import { EnvUnsupported } from '@/components/EnvUnsupported.tsx';
-import { init } from '@/init.ts';
+import "./index.css";
 
-import '@telegram-apps/telegram-ui/dist/styles.css';
-import './index.css';
+// --- Telegram env ---
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { EnvUnsupported } from "@/lib/telegram/env/env-unsupported.tsx";
+import { init } from "@/lib/telegram/env/init.ts";
+import "@telegram-apps/telegram-ui/dist/styles.css";
+import "./lib/telegram/env/mock-env.ts";
+// ------
 
-// Mock the environment in case, we are outside Telegram.
-import './mockEnv.ts';
+// --- Tanstack Router ---
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+const router = createRouter({ routeTree });
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
-  // Configure all application dependencies.
-  init(retrieveLaunchParams().startParam === 'debug' || import.meta.env.DEV);
+  init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV);
 
   root.render(
     <StrictMode>
-      <Root/>
-    </StrictMode>,
+      <TelegramProvider>
+        <RouterProvider router={router} />
+      </TelegramProvider>
+    </StrictMode>
   );
 } catch (e) {
-  root.render(<EnvUnsupported/>);
+  root.render(<EnvUnsupported />);
 }
