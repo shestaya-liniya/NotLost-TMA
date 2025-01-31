@@ -28,4 +28,10 @@ export default defineConfig({
     // Exposes your dev server and makes it accessible for the devices in the same network.
     host: true,
   },
+  esbuild: {
+    target: "esnext", // Allows top-level await
+  },
+  build: {
+    target: "esnext", // Targets the latest JavaScript features
+  },
 });

@@ -1,3 +1,4 @@
+import { DialogData } from "@/actions/telegram";
 import {
   JazzDialog,
   JazzFolder,
@@ -40,7 +41,7 @@ export const jazzDeleteFolder = (
 export const jazzAddDialogToFolder = (
   jazzProfile: RootUserProfile | null | undefined,
   folder: JazzFolder,
-  dialog: JazzDialog
+  dialog: JazzDialog | DialogData
 ) => {
   if (jazzProfile) {
     folder.dialogs?.push(

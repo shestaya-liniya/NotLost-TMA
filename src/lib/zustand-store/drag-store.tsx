@@ -1,13 +1,13 @@
-import { create } from "zustand"
-import { DialogData } from "~/actions/telegram"
+import { create } from "zustand";
+import { DialogData } from "@/actions/telegram";
 
 interface DragState {
-  draggableItemType: "folder" | "contact" | null
-  draggableItem: null | DialogData
+  draggableItemType: "folder" | "contact" | null;
+  draggableItem: null | DialogData;
   setDragState: (newState: {
-    draggableItemType: "folder" | "contact" | null
-    draggableItem?: DialogData | null
-  }) => void
+    draggableItemType: "folder" | "contact" | null;
+    draggableItem?: DialogData | null;
+  }) => void;
 }
 
 export const useDragStore = create<DragState>((set) => ({
@@ -18,4 +18,4 @@ export const useDragStore = create<DragState>((set) => ({
       draggableItemType: newState.draggableItemType,
       draggableItem: newState.draggableItem,
     })),
-}))
+}));

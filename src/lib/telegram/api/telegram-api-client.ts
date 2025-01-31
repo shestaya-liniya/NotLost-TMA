@@ -1,5 +1,5 @@
 import { Api, TelegramClient } from "telegram";
-import { StringSession } from "telegram/sessions";
+//import { StringSession } from "telegram/sessions";
 import bigInt from "big-integer";
 import Photo = Api.Photo;
 

@@ -5,8 +5,6 @@ import FolderIcon from "@/assets/icons/folder.svg?react";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { Avatar } from "@telegram-apps/telegram-ui";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
-import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 
 interface ManageDialogsModal {
   isOpen: boolean;
