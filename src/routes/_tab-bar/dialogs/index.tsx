@@ -1,28 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Accordion } from "@telegram-apps/telegram-ui";
-import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent";
-import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionSummary/AccordionSummary";
-import { useState } from "react";
+import { FilterBySearch } from "./-filters";
+import ContactsList from "./-list";
 
-export const Route = createFileRoute("/_tab-bar/dialogs/")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
-  const [expanded, setExpanded] = useState(false);
+const ContactsPage = () => {
   return (
-    <div className="pt-10 pr-4 pl-4">
-      <Accordion
-        expanded={expanded}
-        onChange={() => {
-          setExpanded((prev) => !prev);
-        }}
-      >
-        <AccordionSummary className="rounded-xl bg-primary">
-          Hey
-        </AccordionSummary>
-        <AccordionContent>Yo</AccordionContent>
-      </Accordion>
+    <div className="h-full flex flex-col overflow-hidden">
+      <div className="w-full  -mt-4 pl-4 pr-4">
+        <div className="relative">
+          <FilterBySearch value={""} onChange={() => {}} />
+          <div className="text-accent font-semibold text-center w-full animate-pulse absolute z-10 -top-4">
+            NotLost Beta
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto items-center text-white ">
+        <ContactsList />
+      </div>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute("/_tab-bar/dialogs/")({
+  component: ContactsPage,
+});

@@ -4,14 +4,16 @@ import {
   useLocation,
   useRouter,
 } from "@tanstack/react-router";
-import SearchIcon from "@/assets/icons/search-icon.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
+import FolderIcon from "@/assets/icons/folder.svg?react";
+
 import React from "react";
 import { Route as ContactsRoute } from "@/routes/_tab-bar/dialogs";
 import { Route as TryRoute } from "@/routes/_tab-bar/try";
 import tgWallpaper from "@/assets/tg-wallpaper-paris.svg";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import { getTopTgInset } from "@/helpers/css/get-top-tg-inset";
 
 export default function TabBar() {
   return (
@@ -21,10 +23,10 @@ export default function TabBar() {
           <BottomBarLink to={TryRoute.to} title="Try" Icon={<GraphIcon />} />
           <BottomBarLink
             to={ContactsRoute.to}
-            title="Search"
+            title="Folders"
             Icon={
               <div className="p-[2px]">
-                <SearchIcon />
+                <FolderIcon />
               </div>
             }
           />
@@ -66,7 +68,7 @@ const BottomBarLink: React.FC<BottomBarLinkProps> = ({ to, title, Icon }) => {
               : "white",
             padding: isActive ? 6 : 4,
           }}
-          className="flex items-center justify-center transition-all duration-300 ease-in-out"
+          className="flex items-center justify-center transition-all duration-150 ease-in-out"
         >
           <div className={`h-6 w-6 ${isActive ? "text-link" : "text-white"}`}>
             {Icon}
@@ -95,7 +97,13 @@ function LayoutComponent() {
             backgroundColor: `${hexToRgba(getCssVariable("--tg-theme-link-color"), 0.05)}`,
           }}
         ></div>
-        <Outlet />
+        <div
+          style={{
+            paddingTop: getTopTgInset(),
+          }}
+        >
+          <Outlet />
+        </div>
       </div>
       <TabBar />
     </div>

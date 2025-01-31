@@ -24,3 +24,12 @@ dist-ssr
 *.sw?
 
 *.pem
+
+# core
+.DS_Store
+.env
+.env*.local
+output
+dist
+target
+.idea

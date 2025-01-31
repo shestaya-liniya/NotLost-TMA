@@ -1,21 +1,23 @@
-import { useDemoAuth } from "jazz-react";
-import { JazzProvider } from "jazz-react";
+import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react";
 import { JazzAccount } from "./schema";
-import { AutoSignIn } from "./auto-sign-in-jazz";
+
+const Jazz = createJazzReactApp({
+  AccountSchema: JazzAccount,
+});
+
+export const { useAccount, useCoState } = Jazz;
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   const [auth, state] = useDemoAuth();
 
   return (
     <>
-      <JazzProvider
-        auth={auth}
-        peer={import.meta.env.VITE_JAZZ_PEER_URL}
-        AccountSchema={JazzAccount}
-      >
+      <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
         {children}
-      </JazzProvider>
-      {state.state !== "signedIn" && <AutoSignIn state={state} />}
+      </Jazz.Provider>
+      {state.state !== "signedIn" && (
+        <DemoAuthBasicUI appName="NotLost" state={state} />
+      )}
     </>
   );
 }
