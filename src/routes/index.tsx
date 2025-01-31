@@ -1,9 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { Route as DialogsRoute } from "@/routes/_tab-bar/dialogs";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/"!</div>
+  const router = useRouter();
+  router.navigate({ to: DialogsRoute.to });
 }

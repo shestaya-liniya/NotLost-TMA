@@ -11,14 +11,34 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TabBarImport } from './routes/_tab-bar'
 import { Route as IndexImport } from './routes/index'
+import { Route as TabBarTryIndexImport } from './routes/_tab-bar/try/index'
+import { Route as TabBarDialogsIndexImport } from './routes/_tab-bar/dialogs/index'
 
 // Create/Update Routes
+
+const TabBarRoute = TabBarImport.update({
+  id: '/_tab-bar',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const TabBarTryIndexRoute = TabBarTryIndexImport.update({
+  id: '/try/',
+  path: '/try/',
+  getParentRoute: () => TabBarRoute,
+} as any)
+
+const TabBarDialogsIndexRoute = TabBarDialogsIndexImport.update({
+  id: '/dialogs/',
+  path: '/dialogs/',
+  getParentRoute: () => TabBarRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -32,39 +52,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_tab-bar': {
+      id: '/_tab-bar'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof TabBarImport
+      parentRoute: typeof rootRoute
+    }
+    '/_tab-bar/dialogs/': {
+      id: '/_tab-bar/dialogs/'
+      path: '/dialogs'
+      fullPath: '/dialogs'
+      preLoaderRoute: typeof TabBarDialogsIndexImport
+      parentRoute: typeof TabBarImport
+    }
+    '/_tab-bar/try/': {
+      id: '/_tab-bar/try/'
+      path: '/try'
+      fullPath: '/try'
+      preLoaderRoute: typeof TabBarTryIndexImport
+      parentRoute: typeof TabBarImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface TabBarRouteChildren {
+  TabBarDialogsIndexRoute: typeof TabBarDialogsIndexRoute
+  TabBarTryIndexRoute: typeof TabBarTryIndexRoute
+}
+
+const TabBarRouteChildren: TabBarRouteChildren = {
+  TabBarDialogsIndexRoute: TabBarDialogsIndexRoute,
+  TabBarTryIndexRoute: TabBarTryIndexRoute,
+}
+
+const TabBarRouteWithChildren =
+  TabBarRoute._addFileChildren(TabBarRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof TabBarRouteWithChildren
+  '/dialogs': typeof TabBarDialogsIndexRoute
+  '/try': typeof TabBarTryIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof TabBarRouteWithChildren
+  '/dialogs': typeof TabBarDialogsIndexRoute
+  '/try': typeof TabBarTryIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_tab-bar': typeof TabBarRouteWithChildren
+  '/_tab-bar/dialogs/': typeof TabBarDialogsIndexRoute
+  '/_tab-bar/try/': typeof TabBarTryIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '' | '/dialogs' | '/try'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '' | '/dialogs' | '/try'
+  id: '__root__' | '/' | '/_tab-bar' | '/_tab-bar/dialogs/' | '/_tab-bar/try/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TabBarRoute: typeof TabBarRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TabBarRoute: TabBarRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +142,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/_tab-bar"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_tab-bar": {
+      "filePath": "_tab-bar.tsx",
+      "children": [
+        "/_tab-bar/dialogs/",
+        "/_tab-bar/try/"
+      ]
+    },
+    "/_tab-bar/dialogs/": {
+      "filePath": "_tab-bar/dialogs/index.tsx",
+      "parent": "/_tab-bar"
+    },
+    "/_tab-bar/try/": {
+      "filePath": "_tab-bar/try/index.tsx",
+      "parent": "/_tab-bar"
     }
   }
 }

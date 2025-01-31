@@ -15,6 +15,9 @@ import "./lib/telegram/env/mock-env.ts";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
+// ------
+
+import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -33,7 +36,9 @@ try {
   root.render(
     <StrictMode>
       <TelegramProvider>
-        <RouterProvider router={router} />
+        <JazzAndAuth>
+          <RouterProvider router={router} />
+        </JazzAndAuth>
       </TelegramProvider>
     </StrictMode>
   );

@@ -3,11 +3,12 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react-swc";
 import mkcert from "vite-plugin-mkcert";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import svgr from "vite-plugin-svgr";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({ autoCodeSplitting: true }),
     // Allows using React dev server along with building a React application with Vite.
     // https://npmjs.com/package/@vitejs/plugin-react-swc
     react(),
@@ -18,6 +19,9 @@ export default defineConfig({
     // Using this plugin requires admin rights on the first dev-mode launch.
     // https://www.npmjs.com/package/vite-plugin-mkcert
     process.env.HTTPS && mkcert(),
+    TanStackRouterVite({ autoCodeSplitting: true }),
+    svgr(),
+    tailwindcss(),
   ],
   publicDir: "./public",
   server: {
