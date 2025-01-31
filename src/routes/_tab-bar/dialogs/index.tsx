@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Accordion, Button } from "@telegram-apps/telegram-ui";
+import { Accordion } from "@telegram-apps/telegram-ui";
 import { AccordionContent } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionContent/AccordionContent";
 import { AccordionSummary } from "@telegram-apps/telegram-ui/dist/components/Blocks/Accordion/components/AccordionSummary/AccordionSummary";
 import { useState } from "react";
