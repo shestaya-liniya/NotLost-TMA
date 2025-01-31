@@ -1,9 +1,9 @@
 import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
 // import { validate } from "@telegram-apps/init-data-node";
 
-const API_ID = 0;
-const API_HASH = "";
-const STRING_SESSION = "";
+const API_ID = 1;
+const API_HASH = "1";
+const STRING_SESSION = "1";
 
 const client = TelegramApiClient.getInstance(
   API_ID,
