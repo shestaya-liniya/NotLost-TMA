@@ -11,22 +11,8 @@ import "@telegram-apps/telegram-ui/dist/styles.css";
 import "./lib/telegram/env/mock-env.ts";
 // ------
 
-// --- Tanstack Router ---
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
 import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
-// ------
-
-import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
-
-// Register the router instance for type safety
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
-const router = createRouter({ routeTree });
+import App from "./components/App.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -36,9 +22,7 @@ try {
   root.render(
     <StrictMode>
       <TelegramProvider>
-        <JazzAndAuth>
-          <RouterProvider router={router} />
-        </JazzAndAuth>
+        <App />
       </TelegramProvider>
     </StrictMode>
   );
