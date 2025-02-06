@@ -1,6 +1,5 @@
-import { useRouter } from "@tanstack/react-router";
+//import { useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Route as DialogsRoute } from "@/routes/_tab-bar/dialogs";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 
 type DemoAuthState = (
@@ -27,7 +26,7 @@ type DemoAuthState = (
 export function AutoSignIn({ state }: { state: DemoAuthState }) {
   if (!state) return;
 
-  const router = useRouter();
+  //const router = useRouter();
   const lp = useLaunchParams();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export function AutoSignIn({ state }: { state: DemoAuthState }) {
 
     if (state.state === "ready") {
       state.signUp(lp.initData.user.username || lp.initData.user.id.toString());
-      router.navigate({ to: DialogsRoute.to });
+      //router.navigate({ to: DialogsRoute.to });
     }
   }, [state]);
 
