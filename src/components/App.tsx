@@ -40,11 +40,14 @@ export default function App() {
                     <Folders openDialogsModal={openModal} />
                   </TabTransition>
                 </div>
-                <button onClick={() => setIsModalOpen(!isModalOpen)}>
+                {/* <button onClick={() => setIsModalOpen(!isModalOpen)}>
                   Modal
-                </button>
+                </button> */}
               </TabBarLayout>
-              <ManageDialogsModal isOpen={isModalOpen} close={closeModal} />
+              <ManageDialogsModal
+                isOpen={isModalOpen}
+                close={() => setIsModalOpen(false)}
+              />
             </div>
           }
         />
