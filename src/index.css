@@ -18,6 +18,7 @@ body {
   color: var(--tg-theme-text-color, black);
   height: 100dvh;
   overflow: hidden;
+  overscroll-behavior: none;
 }
 
 /* Accordion transparent bg for content and overflow for dailog tooltip visibility*/
