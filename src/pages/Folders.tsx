@@ -2,8 +2,11 @@ import Accordion from "@/ui/Accordion";
 import Input from "@/ui/Input";
 import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
+import { useModalStore } from "@/lib/zustand-store/modal-store";
 
-export default function Folders(props: { openDialogsModal: () => void }) {
+export default function Folders() {
+  const { setManageDialogsModalOpen } = useModalStore();
+
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
@@ -20,7 +23,7 @@ export default function Folders(props: { openDialogsModal: () => void }) {
 
       <Tappable
         className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
-        onClick={props.openDialogsModal}
+        onClick={() => setManageDialogsModalOpen(true)}
       >
         <PencilIcon className="w-7 h-7" />
       </Tappable>

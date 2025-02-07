@@ -11,15 +11,6 @@ import ManageDialogsModal from "./ManageDialogsModal.jsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const isFoldersTabActive = activeTab === "folders";
-  const isTryTabActive = activeTab === "try";
-
-  //const closeModal = () => setIsModalOpen(false);
-  const openModal = () => setIsModalOpen(true);
-
-  console.log(isModalOpen);
 
   return (
     <Router>
@@ -32,19 +23,19 @@ export default function App() {
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
                     direction="toRight"
-                    isActive={isFoldersTabActive}
+                    isActive={activeTab === "folders"}
                   >
-                    <Folders openDialogsModal={openModal} />
+                    <Folders />
                   </TabTransition>
-                  <TabTransition direction="toLeft" isActive={isTryTabActive}>
-                    <Folders openDialogsModal={openModal} />
+                  <TabTransition
+                    direction="toLeft"
+                    isActive={activeTab === "try"}
+                  >
+                    <Folders />
                   </TabTransition>
                 </div>
               </TabBarLayout>
-              <ManageDialogsModal
-                isOpen={isModalOpen}
-                close={() => setIsModalOpen(false)}
-              />
+              <ManageDialogsModal />
             </div>
           }
         />
