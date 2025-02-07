@@ -1,34 +1,35 @@
-import { useState } from "react";
+import { memo, useRef } from "react";
 
-
-export default function Tappable(props: {
+function Tappable(props: {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
 }) {
-  const [active, setActive] = useState(false);
+  const activeRef = useRef(false);
 
   const handleClick = () => {
-    setActive(true);
-    setTimeout(() => {
-      setActive(false);
-      props.onClick?.();
-    }, 100);
+    if (props.onClick) {
+      requestAnimationFrame(props.onClick);
+    }
   };
 
   return (
     <div
-      className={`transition duration-150 ${
-        active ? "opacity-85 scale-98" : "opacity-100 scale-100"
-      } ${props.className}`}
+      className={`transition duration-150 active:opacity-85 active:scale-98 ${props.className}`}
       onPointerDown={() => {
-        setActive(true);
+        activeRef.current = true;
       }}
-      onPointerUp={() => setActive(false)}
-      onPointerLeave={() => setActive(false)}
+      onPointerUp={() => {
+        activeRef.current = false;
+      }}
+      onPointerLeave={() => {
+        activeRef.current = false;
+      }}
       onClick={handleClick}
     >
       {props.children}
     </div>
   );
 }
+
+export default memo(Tappable);

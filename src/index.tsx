@@ -7,7 +7,6 @@ import "./index.css";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { EnvUnsupported } from "@/lib/telegram/env/env-unsupported.tsx";
 import { init } from "@/lib/telegram/env/init.ts";
-import "@telegram-apps/telegram-ui/dist/styles.css";
 import "./lib/telegram/env/mock-env.ts";
 // ------
 

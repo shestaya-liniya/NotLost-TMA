@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders";
-//import ManageDialogsModal from "./ManageDialogsModal.jsx";
+import ManageDialogsModal from "./ManageDialogsModal.jsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -42,10 +42,10 @@ export default function App() {
                 </div>
                 {/* <div>Hello</div> */}
               </TabBarLayout>
-              {/* <ManageDialogsModal
+              <ManageDialogsModal
                 isOpen={isModalOpen}
                 close={() => setIsModalOpen(false)}
-              /> */}
+              />
             </div>
           }
         />

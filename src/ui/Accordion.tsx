@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
 
-export default function Accordion({
+function Accordion({
   children,
   title,
 }: {
@@ -54,3 +54,5 @@ function AccordionContent({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+export default memo(Accordion);
