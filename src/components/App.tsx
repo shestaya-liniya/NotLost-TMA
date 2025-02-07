@@ -16,7 +16,7 @@ export default function App() {
   const isFoldersTabActive = activeTab === "folders";
   const isTryTabActive = activeTab === "try";
 
-  const closeModal = () => setIsModalOpen(false);
+  //const closeModal = () => setIsModalOpen(false);
   const openModal = () => setIsModalOpen(true);
 
   console.log(isModalOpen);
