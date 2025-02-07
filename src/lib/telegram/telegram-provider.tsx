@@ -1,6 +1,4 @@
-import * as TelegramUI from "@telegram-apps/telegram-ui";
 import { PropsWithChildren, useEffect } from "react";
-const { AppRoot } = TelegramUI;
 
 import {
   initData,
@@ -14,7 +12,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
       if (initData) {
         if (!["macos", "tdesktop"].includes(retrieveLaunchParams().platform)) {
           postEvent("web_app_expand");
-          /* postEvent("web_app_request_fullscreen"); */
+          postEvent("web_app_request_fullscreen");
           postEvent("web_app_setup_swipe_behavior", {
             allow_vertical_swipe: false,
           });
@@ -25,11 +23,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
       console.log("The app runs outside of the telegram");
     }
   }, []);
-  return (
-    <AppRoot appearance={"dark"} platform={"ios"}>
-      {children}
-    </AppRoot>
-  );
+  return <>{children}</>;
 }
 
 export default TelegramProvider;
