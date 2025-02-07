@@ -15,6 +15,8 @@ export default function Folders() {
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
       <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen">
+        <DropFolder />
+        <Folder />
         <Folder />
         <Folder />
         <Folder />
@@ -30,6 +32,21 @@ export default function Folders() {
         <PencilIcon className="w-7 h-7" />
       </Tappable>
     </div>
+  );
+}
+
+function DropFolder() {
+  const { draggableItemType } = useDragStore();
+  return (
+    <>
+      {draggableItemType === "folder" && (
+        <DragSensible additionalCondition={draggableItemType === "folder"}>
+          <div className="px-6 py-4 bg-link/10 text-link text-center font-medium">
+            Drop here to create a new folder
+          </div>
+        </DragSensible>
+      )}
+    </>
   );
 }
 
