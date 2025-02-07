@@ -40,7 +40,6 @@ export default function App() {
                     <Folders openDialogsModal={openModal} />
                   </TabTransition>
                 </div>
-                {/* <div>Hello</div> */}
               </TabBarLayout>
               <ManageDialogsModal
                 isOpen={isModalOpen}
