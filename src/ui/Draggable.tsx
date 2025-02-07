@@ -1,14 +1,23 @@
+import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { memo, useRef } from "react";
 
-function Draggable({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement | null>(null);
+function Draggable(props: {
+  children: React.ReactNode;
+  draggableItemType: "folder" | "contact" | null;
+}) {
+  const { setDragState } = useDragStore();
 
+  const ref = useRef<HTMLDivElement | null>(null);
   const handleTouchStart = (e: React.TouchEvent) => {
     let touch = e.touches[0];
 
     if (!ref.current) {
       return;
     }
+
+    setDragState({
+      draggableItemType: props.draggableItemType,
+    });
 
     const startPos = {
       x: touch.clientX,
@@ -26,8 +35,13 @@ function Draggable({ children }: { children: React.ReactNode }) {
     };
 
     const handleTouchEnd = () => {
+      setDragState({
+        draggableItemType: null,
+      });
+
       ref.current!.style.transition = `transform 0.3s ease`;
       ref.current!.style.transform = `translate(0px, 0px)`;
+
       document.removeEventListener(
         "touchmove",
         handleTouchMove as unknown as EventListener
@@ -47,7 +61,7 @@ function Draggable({ children }: { children: React.ReactNode }) {
       className="relative touch-none"
       onTouchStart={handleTouchStart}
     >
-      {children}
+      {props.children}
     </div>
   );
 }
