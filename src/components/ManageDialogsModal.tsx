@@ -71,13 +71,16 @@ const DraggableBlock = ({ children }: { children: React.ReactNode }) => {
     const handleTouchEnd = () => {
       ref.current!.style.transition = `transform 0.3s ease`;
       ref.current!.style.transform = `translate(0px, 0px)`;
-
-      //@ts-ignore
-      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener(
+        "touchmove",
+        handleTouchMove as unknown as EventListener
+      );
       document.removeEventListener("touchend", handleTouchEnd);
     };
-    //@ts-ignore
-    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener(
+      "touchmove",
+      handleTouchMove as unknown as EventListener
+    );
     document.addEventListener("touchend", handleTouchEnd);
   };
 
