@@ -7,7 +7,7 @@ import {
 import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders";
-import ManageDialogsModal from "./ManageDialogsModal";
+import ManageDialogsModal from "./ManageDialogsModal.jsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -18,6 +18,8 @@ export default function App() {
 
   const closeModal = () => setIsModalOpen(false);
   const openModal = () => setIsModalOpen(true);
+
+  console.log(isModalOpen);
 
   return (
     <Router>
@@ -38,8 +40,10 @@ export default function App() {
                     <Folders openDialogsModal={openModal} />
                   </TabTransition>
                 </div>
+                <button onClick={() => setIsModalOpen(!isModalOpen)}>
+                  Modal
+                </button>
               </TabBarLayout>
-
               <ManageDialogsModal isOpen={isModalOpen} close={closeModal} />
             </div>
           }
