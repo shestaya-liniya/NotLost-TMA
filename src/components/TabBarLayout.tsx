@@ -26,7 +26,7 @@ export default function TabBarLayout({
           className="h-full"
         >
           {children}
-          <div>Hello</div>
+          {/* <div>Hello</div> */}
         </div>
       </div>
       <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
