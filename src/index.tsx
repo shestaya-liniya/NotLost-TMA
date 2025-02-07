@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import "./index.css";
 
@@ -12,6 +13,7 @@ import "./lib/telegram/env/mock-env.ts";
 
 import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
 import App from "./components/App.tsx";
+import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -21,7 +23,11 @@ try {
   root.render(
     <StrictMode>
       <TelegramProvider>
-        <App />
+        <Router>
+          <JazzAndAuth>
+            <App />
+          </JazzAndAuth>
+        </Router>
       </TelegramProvider>
     </StrictMode>
   );

@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders";
@@ -13,35 +8,33 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/tab"
-          element={
-            <div>
-              <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
-                <div className="relative w-screen h-full overflow-x-hidden">
-                  <TabTransition
-                    direction="toRight"
-                    isActive={activeTab === "folders"}
-                  >
-                    <Folders />
-                  </TabTransition>
-                  <TabTransition
-                    direction="toLeft"
-                    isActive={activeTab === "try"}
-                  >
-                    <Folders />
-                  </TabTransition>
-                </div>
-              </TabBarLayout>
-              <ManageDialogsModal />
-            </div>
-          }
-        />
-        <Route path="*" element={<Navigate to="/tab" />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route
+        path="/tab-bar"
+        element={
+          <div>
+            <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
+              <div className="relative w-screen h-full overflow-x-hidden">
+                <TabTransition
+                  direction="toRight"
+                  isActive={activeTab === "folders"}
+                >
+                  <Folders />
+                </TabTransition>
+                <TabTransition
+                  direction="toLeft"
+                  isActive={activeTab === "try"}
+                >
+                  <Folders />
+                </TabTransition>
+              </div>
+            </TabBarLayout>
+            <ManageDialogsModal />
+          </div>
+        }
+      />
+      <Route path="*" element={<Navigate to="/tab-bar" />} />
+    </Routes>
   );
 }
 
