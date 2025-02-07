@@ -38,15 +38,17 @@ export default function Folders() {
 function DropFolder() {
   const { draggableItemType } = useDragStore();
   return (
-    <>
-      {draggableItemType === "folder" && (
-        <DragSensible additionalCondition={draggableItemType === "folder"}>
-          <div className="px-6 py-4 bg-link/10 text-link text-center font-medium">
-            Drop here to create a new folder
-          </div>
-        </DragSensible>
-      )}
-    </>
+    <DragSensible additionalCondition={draggableItemType === "folder"}>
+      <div
+        className={`transition-all duration-150 ease-in-out bg-link/10 text-link text-center font-medium ${
+          draggableItemType === "folder"
+            ? "opacity-100 h-14 px-6 py-4"
+            : "h-0 opacity-0"
+        }`}
+      >
+        Drop here to create a new folder
+      </div>
+    </DragSensible>
   );
 }
 
