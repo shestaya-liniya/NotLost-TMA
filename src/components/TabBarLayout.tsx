@@ -1,4 +1,4 @@
-import tgWallpaper from "@/assets/tg-wallpaper-paris.svg";
+//import tgWallpaper from "@/assets/tg-wallpaper-paris.svg";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 
