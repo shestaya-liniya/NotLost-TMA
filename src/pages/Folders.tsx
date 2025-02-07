@@ -3,7 +3,8 @@ import Input from "@/ui/Input";
 import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
-import { useEffect, useRef, useState } from "react";
+import DragSensible from "@/ui/DragSensible";
+import { useDragStore } from "@/lib/zustand-store/drag-store";
 
 export default function Folders() {
   const { setManageDialogsModalOpen } = useModalStore();
@@ -13,35 +14,13 @@ export default function Folders() {
       <div className="p-2">
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
-      <div className="space-y-4 mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen">
-        <DragSensibleElement>
-          <div className="p-4">
-            <Accordion title="Folder 13">
-              <div>Hello</div>
-            </Accordion>
-          </div>
-        </DragSensibleElement>
-        <DragSensibleElement>
-          <div className="p-4">
-            <Accordion title="Folder 13">
-              <div>Hello</div>
-            </Accordion>
-          </div>
-        </DragSensibleElement>
-        <DragSensibleElement>
-          <div className="p-4">
-            <Accordion title="Folder 13">
-              <div>Hello</div>
-            </Accordion>
-          </div>
-        </DragSensibleElement>
-        <DragSensibleElement>
-          <div className="p-4">
-            <Accordion title="Folder 13">
-              <div>Hello</div>
-            </Accordion>
-          </div>
-        </DragSensibleElement>
+      <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen">
+        <Folder />
+        <Folder />
+        <Folder />
+        <Folder />
+        <Folder />
+        <Folder />
       </div>
 
       <Tappable
@@ -54,57 +33,15 @@ export default function Folders() {
   );
 }
 
-const DragSensibleElement = ({ children }: { children: React.ReactNode }) => {
-  const [touchInside, setTouchInside] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  const isTouchInside = (touch: Touch) => {
-    if (!elementRef.current) return false;
-    const elementBounds = elementRef.current.getBoundingClientRect();
-    return (
-      touch.clientX >= elementBounds.left &&
-      touch.clientX <= elementBounds.right &&
-      touch.clientY >= elementBounds.top &&
-      touch.clientY <= elementBounds.bottom
-    );
-  };
-
-  const onTouchStart = (e: TouchEvent) => {
-    const touch = e.touches[0];
-    setTouchInside(isTouchInside(touch));
-  };
-
-  const onTouchMove = (e: TouchEvent) => {
-    const touch = e.touches[0];
-    setTouchInside(isTouchInside(touch));
-  };
-
-  const onTouchEnd = () => {
-    setTouchInside(false);
-  };
-
-  useEffect(() => {
-    document.addEventListener("touchstart", onTouchStart);
-    document.addEventListener("touchmove", onTouchMove);
-    document.addEventListener("touchend", onTouchEnd);
-
-    return () => {
-      document.removeEventListener("touchstart", onTouchStart);
-      document.removeEventListener("touchmove", onTouchMove);
-      document.removeEventListener("touchend", onTouchEnd);
-    };
-  }, []);
-
+function Folder() {
+  const { draggableItemType } = useDragStore();
   return (
-    <div
-      ref={elementRef}
-      className={`${touchInside ? "bg-link/10" : ""}`}
-      style={{
-        touchAction: "none",
-        position: "relative",
-      }}
-    >
-      {children}
-    </div>
+    <DragSensible additionalCondition={draggableItemType === "contact"}>
+      <div className="px-4 py-2">
+        <Accordion title="Folder 13">
+          <div>Hello</div>
+        </Accordion>
+      </div>
+    </DragSensible>
   );
-};
+}

@@ -1,6 +1,7 @@
 import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { memo, useRef } from "react";
 
+// Dump implementation, every element will create a new listener, need to find a way to share a single listener
 function Draggable(props: {
   children: React.ReactNode;
   draggableItemType: "folder" | "contact" | null;
