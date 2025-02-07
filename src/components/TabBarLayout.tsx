@@ -14,10 +14,10 @@ export default function TabBarLayout({
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto text-white relative">
-        <div
+        {/* <div
           className="h-full w-full -z-10 absolute bg-link/5"
           style={{ mask: `url(${tgWallpaper}) center / contain` }}
-        />
+        /> */}
         <div
           style={{
             paddingTop:
