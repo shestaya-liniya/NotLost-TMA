@@ -13,7 +13,7 @@ import "./lib/telegram/env/mock-env.ts";
 
 import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
 import App from "./components/App.tsx";
-import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
+//import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -24,9 +24,9 @@ try {
     <StrictMode>
       <TelegramProvider>
         <Router>
-          <JazzAndAuth>
-            <App />
-          </JazzAndAuth>
+          {/* <JazzAndAuth> */}
+          <App />
+          {/* </JazzAndAuth> */}
         </Router>
       </TelegramProvider>
     </StrictMode>

@@ -19,13 +19,3 @@ body {
   height: 100dvh;
   overflow: hidden;
 }
-
-/* Accordion transparent bg for content and overflow for dailog tooltip visibility*/
-.tgui-f23c0e195677169c {
-  background: transparent !important;
-  overflow: visible !important;
-}
-
-.tgui-0f5050defacbf813 {
-  border-radius: 24px !important;
-}
