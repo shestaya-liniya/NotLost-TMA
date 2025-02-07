@@ -5,6 +5,8 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
+import { useEffect, useState } from "react";
+import AnimateHeight from "react-animate-height";
 
 export default function Folders() {
   const { setManageDialogsModalOpen } = useModalStore();
@@ -37,18 +39,30 @@ export default function Folders() {
 
 function DropFolder() {
   const { draggableItemType } = useDragStore();
+  const [height, setHeight] = useState<number | "auto">(0);
+
+  useEffect(() => {
+    if (draggableItemType === "folder") {
+      setHeight("auto");
+    } else {
+      setHeight(0);
+    }
+  }, [draggableItemType]);
+
   return (
-    <DragSensible additionalCondition={draggableItemType === "folder"}>
-      <div
-        className={`transition-all duration-150 ease-in-out bg-link/10 text-link text-center font-medium ${
-          draggableItemType === "folder"
-            ? "opacity-100 h-14 px-6 py-4"
-            : "h-0 opacity-0"
-        }`}
-      >
-        Drop here to create a new folder
-      </div>
-    </DragSensible>
+    <AnimateHeight id="example-panel" duration={300} height={height}>
+      <DragSensible additionalCondition={draggableItemType === "folder"}>
+        <div
+          className={`transition-all duration-150 ease-in-out bg-link/10 text-link text-center font-medium ${
+            draggableItemType === "folder"
+              ? "opacity-100 px-6 py-4"
+              : "opacity-0"
+          }`}
+        >
+          Drop here to create a new folder
+        </div>
+      </DragSensible>
+    </AnimateHeight>
   );
 }
 
