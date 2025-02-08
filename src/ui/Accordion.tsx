@@ -42,7 +42,7 @@ function AccordionHeader({
       className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all ${
         expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
       }`}
-      onTouchStart={toggleExpanded}
+      onClick={toggleExpanded}
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
