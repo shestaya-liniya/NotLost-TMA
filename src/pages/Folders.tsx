@@ -6,6 +6,11 @@ import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { useEffect, useRef, useState } from "react";
+import { JazzFolder, RootUserProfile } from "@/lib/jazz/schema";
+import { ID } from "jazz-tools";
+import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { CoMarker } from "jazz-tools/src/internal.js";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -13,46 +18,35 @@ import { useEffect, useRef, useState } from "react";
 // every folder is positioned in absolute and have a dynamic inset top that is updated on every folder height change
 // Such overhead provide best performance for low end devices
 
-const mockFolders = [
-  {
-    id: 1,
-    name: "Folder 1",
-    height: 0,
-  },
-  {
-    id: 2,
-    name: "Folder 2",
-    height: 0,
-  },
-  {
-    id: 3,
-    name: "Folder 3",
-    height: 0,
-  },
-  {
-    id: 4,
-    name: "Folder 4",
-    height: 0,
-  },
-];
-
 export default function Folders() {
+  const { jazzProfile } = useJazzProfileContext();
+
   const { setManageDialogsModalOpen } = useModalStore();
   const { draggableItemType } = useDragStore();
 
   const dropFolderAppear = draggableItemType === "folder";
 
-  const [foldersHeight, setFoldersHeight] = useState(mockFolders);
+  const [foldersHeight, setFoldersHeight] = useState<
+    {
+      id: ID<JazzFolder> | ID<JazzFolder & CoMarker> | undefined;
+      height: number;
+    }[]
+  >([]);
 
-  const setFolderHeight = (id: number, height: number) => {
-    setFoldersHeight((prev) =>
-      prev.map((folder) => (folder.id === id ? { ...folder, height } : folder))
-    );
+  const setFolderHeight = (id: ID<JazzFolder>, height: number) => {
+    setFoldersHeight((prev) => {
+      if (prev.find((folder) => folder.id === id)) {
+        return prev.map((folder) =>
+          folder.id === id ? { id, height } : folder
+        );
+      }
+      return [...prev, { id, height }];
+    });
   };
 
-  const getFolderTopInset = (id: number) => {
+  const getFolderTopInset = (index: number) => {
     return foldersHeight
-      .slice(0, id)
+      .slice(0, index)
       .reduce((acc, folder) => acc + folder.height, 0);
   };
 
@@ -63,32 +57,36 @@ export default function Folders() {
       </div>
       <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
         <div className="absolute w-screen">
-          <DropFolder />
+          <DropFolder jazzProfile={jazzProfile} />
         </div>
         <div
           className={`h-full transition-all duration-300 ease-in-out relative ${
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
-          {mockFolders.map((folder) => (
-            <div key={folder.id}>
-              <div
-                className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out"
-                style={{
-                  transform:
-                    folder.id !== 1
-                      ? `translateY(${getFolderTopInset(folder.id - 1)}px)`
-                      : "translateY(0)",
-                }}
-              >
-                <Folder
-                  setFolderHeight={(height: number) =>
-                    setFolderHeight(folder.id, height)
-                  }
-                />
+          <div></div>
+          {jazzProfile.folders?.map((folder, index) => {
+            if (!folder) return null;
+            return (
+              <div key={folder.id}>
+                <div
+                  className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out"
+                  style={{
+                    transform:
+                      index !== 0
+                        ? `translateY(${getFolderTopInset(index)}px)`
+                        : "translateY(0)",
+                  }}
+                >
+                  <Folder
+                    setFolderHeight={(height: number) =>
+                      setFolderHeight(folder.id, height)
+                    }
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -102,11 +100,15 @@ export default function Folders() {
   );
 }
 
-function DropFolder() {
+function DropFolder({ jazzProfile }: { jazzProfile: RootUserProfile }) {
   const { draggableItemType } = useDragStore();
-
   return (
-    <DragSensible additionalCondition={draggableItemType === "folder"}>
+    <DragSensible
+      additionalCondition={draggableItemType === "folder"}
+      onDragEnd={() => {
+        jazzCreateNewFolder(jazzProfile, "New Folder");
+      }}
+    >
       <div
         className={`transition-opacity px-6 py-4 duration-300 ease-in-out bg-link/10 text-link text-center font-medium ${
           draggableItemType === "folder" ? "opacity-100" : "opacity-0"
@@ -135,7 +137,10 @@ function Folder({
 
   return (
     <div ref={ref}>
-      <DragSensible additionalCondition={draggableItemType === "contact"}>
+      <DragSensible
+        additionalCondition={draggableItemType === "contact"}
+        onDragEnd={() => {}}
+      >
         <div className="px-4 py-2">
           <Accordion
             title="Folder 13"

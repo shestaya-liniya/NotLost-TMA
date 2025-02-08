@@ -1,8 +1,8 @@
 import { createJazzReactApp, useDemoAuth } from "jazz-react";
-import { JazzAccount } from "./schema";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { JazzAccount, RootUserProfile } from "./schema";
+import { createContext, ReactNode, useContext } from "react";
+import { useJazzProfile } from "./hooks/use-jazz-profile";
+import { AutoSignIn } from "./auto-sign-in-jazz";
 
 const Jazz = createJazzReactApp({
   AccountSchema: JazzAccount,
@@ -16,49 +16,41 @@ export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
-        {children}
+        <JazzProfileProvider>{children}</JazzProfileProvider>
       </Jazz.Provider>
       {state.state !== "signedIn" && <AutoSignIn state={state} />}
     </>
   );
 }
 
-type DemoAuthState = (
-  | {
-      state: "uninitialized";
-    }
-  | {
-      state: "loading";
-    }
-  | {
-      state: "ready";
-      existingUsers: string[];
-      signUp: (username: string) => void;
-      logInAs: (existingUser: string) => void;
-    }
-  | {
-      state: "signedIn";
-      logOut: () => void;
-    }
-) & {
-  errors: string[];
-};
+export interface JazzProfileContextType {
+  jazzProfile: RootUserProfile;
+}
 
-function AutoSignIn({ state }: { state: DemoAuthState }) {
-  if (!state) return;
+// Create the context
+const JazzProfileContext = createContext<JazzProfileContextType | undefined>(
+  undefined
+);
 
-  const navigate = useNavigate();
-  const lp = useLaunchParams();
+// Context Provider Component
+export function JazzProfileProvider({ children }: { children: ReactNode }) {
+  const jazzProfile = useJazzProfile();
+  if (!jazzProfile) return null;
 
-  useEffect(() => {
-    if (!lp.initData?.user) return;
-    console.log(state);
+  return (
+    <JazzProfileContext.Provider value={{ jazzProfile }}>
+      {jazzProfile ? children : null}
+    </JazzProfileContext.Provider>
+  );
+}
 
-    if (state.state === "ready") {
-      state.signUp(lp.initData.user.username || lp.initData.user.id.toString());
-      navigate("/tab-bar");
-    }
-  }, [state]);
-
-  if (state.state === "loading") return <div>Loading</div>;
+// Custom hook to use the context
+export function useJazzProfileContext() {
+  const context = useContext(JazzProfileContext);
+  if (!context) {
+    throw new Error(
+      "useJazzProfileContext must be used within a JazzProfileProvider"
+    );
+  }
+  return context;
 }

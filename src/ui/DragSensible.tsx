@@ -1,15 +1,28 @@
+import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { useEffect, useRef, useState } from "react";
 
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener
 export default function DragSensible({
   children,
   additionalCondition,
+  onDragEnd,
 }: {
   children: React.ReactNode;
   additionalCondition: boolean;
+  onDragEnd: () => void;
 }) {
   const [touchInside, setTouchInside] = useState(false);
+  const { draggableItemType } = useDragStore();
+
+  const [lastItemType, setLastItemType] = useState<"folder" | "contact" | null>(
+    null
+  );
+
   const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setLastItemType(draggableItemType);
+  }, [draggableItemType]);
 
   const isTouchInside = (touch: Touch) => {
     if (!elementRef.current) return false;
@@ -33,6 +46,9 @@ export default function DragSensible({
   };
 
   const onTouchEnd = () => {
+    if (touchInside && lastItemType === "folder") {
+      onDragEnd();
+    }
     setTouchInside(false);
   };
 
@@ -46,7 +62,7 @@ export default function DragSensible({
       document.removeEventListener("touchmove", onTouchMove);
       document.removeEventListener("touchend", onTouchEnd);
     };
-  }, []);
+  }, [lastItemType, touchInside]);
 
   return (
     <div
