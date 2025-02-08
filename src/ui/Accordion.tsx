@@ -1,35 +1,38 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
-import AnimateHeight from "react-animate-height";
 
 function Accordion({
   children,
   title,
   expanded,
   setExpanded,
+  updateHeight,
 }: {
   children: React.ReactNode;
   title: string;
   expanded: boolean;
   setExpanded: (expanded: boolean) => void;
+  updateHeight: (height: number) => void;
 }) {
-  const [height, setHeight] = useState<"auto" | number>(0);
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    setHeight(expanded ? "auto" : 0);
+    if (ref.current) {
+      updateHeight(ref.current.clientHeight);
+    }
   }, [expanded]);
   return (
-    <Tappable>
-      <AccordionHeader
-        title={title}
-        toggleExpanded={() => setExpanded(!expanded)}
-        expanded={expanded}
-      />
-      <AnimateHeight id="example-panel" duration={200} height={height}>
-        <AccordionContent>{children}</AccordionContent>
-      </AnimateHeight>
-    </Tappable>
+    <div ref={ref}>
+      <Tappable>
+        <AccordionHeader
+          title={title}
+          toggleExpanded={() => setExpanded(!expanded)}
+          expanded={expanded}
+        />
+        {expanded && <AccordionContent>{children}</AccordionContent>}
+      </Tappable>
+    </div>
   );
 }
 

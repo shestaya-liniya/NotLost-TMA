@@ -13,27 +13,58 @@ export default function Folders() {
 
   const dropFolderAppear = draggableItemType === "folder";
 
+  const [foldersHeight, setFoldersHeight] = useState([
+    {
+      id: 1,
+      height: 60,
+    },
+    {
+      id: 2,
+      height: 60,
+    },
+  ]);
+
+  const setFolderHeight = (id: number, height: number) => {
+    setFoldersHeight((prev) =>
+      prev.map((folder) => (folder.id === id ? { ...folder, height } : folder))
+    );
+  };
+
+  const getFolderTopInset = (id: number) => {
+    return foldersHeight
+      .slice(0, id)
+      .reduce((acc, folder) => acc + folder.height, 0);
+  };
+
   return (
     <div className="h-full flex flex-col">
       <div className="p-2">
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
-      <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen">
+      <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
         <div className="absolute w-screen">
           <DropFolder />
         </div>
         <div
-          className={`transition-all duration-300 ease-in-out ${
+          className={`h-full transition-all duration-300 ease-in-out relative ${
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
-          <Folder />
-          <Folder />
-          <Folder />
-          <Folder />
-          <Folder />
-          <Folder />
-          <Folder />
+          <div className="absolute top-0 left-0 w-full transition-all duration-300 ease-in-out">
+            <Folder
+              setFolderHeight={(height: number) => setFolderHeight(1, height)}
+            />
+          </div>
+          <div
+            className="absolute top-0 left-0 w-full transition-all duration-300 ease-in-out"
+            style={{
+              transform: `translateY(${getFolderTopInset(1)}px)`,
+            }}
+          >
+            <Folder
+              setFolderHeight={(height: number) => setFolderHeight(2, height)}
+            />
+          </div>
         </div>
       </div>
 
@@ -63,7 +94,11 @@ function DropFolder() {
   );
 }
 
-function Folder() {
+function Folder({
+  setFolderHeight,
+}: {
+  setFolderHeight: (height: number) => void;
+}) {
   const { draggableItemType } = useDragStore();
   const [expanded, setExpanded] = useState(false);
 
@@ -74,6 +109,7 @@ function Folder() {
           title="Folder 13"
           expanded={expanded}
           setExpanded={setExpanded}
+          updateHeight={setFolderHeight}
         >
           <div>Hello</div>
         </Accordion>
