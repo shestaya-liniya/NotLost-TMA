@@ -5,7 +5,7 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -73,7 +73,7 @@ export default function Folders() {
           {mockFolders.map((folder) => (
             <div key={folder.id}>
               <div
-                className="absolute top-0 left-0 w-full transition-all duration-300 ease-in-out"
+                className="absolute top-0 left-0 w-full transition-all duration-150 ease-in-out"
                 style={{
                   transform:
                     folder.id !== 1
@@ -83,7 +83,7 @@ export default function Folders() {
               >
                 <Folder
                   setFolderHeight={
-                    (height: number) => setFolderHeight(folder.id, height + 16) // 16 is a margin between folders
+                    (height: number) => setFolderHeight(folder.id, height + 8) // 16 is a margin between folders
                   }
                 />
               </div>
@@ -126,18 +126,26 @@ function Folder({
   const { draggableItemType } = useDragStore();
   const [expanded, setExpanded] = useState(false);
 
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current) {
+      setFolderHeight(ref.current.clientHeight);
+    }
+  }, [expanded]);
+
   return (
-    <DragSensible additionalCondition={draggableItemType === "contact"}>
-      <div className="px-4 py-2">
-        <Accordion
-          title="Folder 13"
-          expanded={expanded}
-          setExpanded={setExpanded}
-          updateHeight={setFolderHeight}
-        >
-          <div>Hello</div>
-        </Accordion>
-      </div>
-    </DragSensible>
+    <div ref={ref}>
+      <DragSensible additionalCondition={draggableItemType === "contact"}>
+        <div className="px-4 py-2">
+          <Accordion
+            title="Folder 13"
+            expanded={expanded}
+            setExpanded={setExpanded}
+          >
+            <div>Hello</div>
+          </Accordion>
+        </div>
+      </DragSensible>
+    </div>
   );
 }

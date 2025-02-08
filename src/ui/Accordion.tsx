@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from "react";
+import { memo } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
@@ -8,22 +8,14 @@ function Accordion({
   title,
   expanded,
   setExpanded,
-  updateHeight,
 }: {
   children: React.ReactNode;
   title: string;
   expanded: boolean;
   setExpanded: (expanded: boolean) => void;
-  updateHeight: (height: number) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (ref.current) {
-      updateHeight(ref.current.clientHeight);
-    }
-  }, [expanded]);
   return (
-    <div ref={ref}>
+    <div>
       <Tappable>
         <AccordionHeader
           title={title}
