@@ -69,7 +69,6 @@ export default function DragSensible({
       ref={elementRef}
       className={`transition-all duration-150 ease-in-out ${touchInside && additionalCondition ? "bg-link/20" : ""}`}
       style={{
-        touchAction: "none",
         position: "relative",
       }}
     >
