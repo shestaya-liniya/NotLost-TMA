@@ -83,7 +83,7 @@ export default function Folders() {
               >
                 <Folder
                   setFolderHeight={
-                    (height: number) => setFolderHeight(folder.id, height + 8) // 16 is a margin between folders
+                    (height: number) => setFolderHeight(folder.id, height + 4) // 4 is a margin between folders
                   }
                 />
               </div>
