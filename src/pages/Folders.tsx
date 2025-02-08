@@ -70,7 +70,7 @@ export default function Folders() {
             return (
               <div key={folder.id}>
                 <div
-                  className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out"
+                  className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out animate-fadeIn"
                   style={{
                     transform:
                       index !== 0
