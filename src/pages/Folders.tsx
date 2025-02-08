@@ -30,7 +30,7 @@ export default function Folders() {
           <DropFolder />
         </div>
         <div
-          className={`transition-all duration-150 ease-in-out ${
+          className={`transition-all duration-300 ease-in-out ${
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
