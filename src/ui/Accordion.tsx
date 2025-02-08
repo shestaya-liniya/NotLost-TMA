@@ -1,7 +1,8 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
+import AnimateHeight from "react-animate-height";
 
 function Accordion({
   children,
@@ -14,6 +15,10 @@ function Accordion({
   expanded: boolean;
   setExpanded: (expanded: boolean) => void;
 }) {
+  const [height, setHeight] = useState<"auto" | number>(0);
+  useEffect(() => {
+    setHeight(expanded ? "auto" : 0);
+  }, [expanded]);
   return (
     <Tappable>
       <AccordionHeader
@@ -21,13 +26,9 @@ function Accordion({
         toggleExpanded={() => setExpanded(!expanded)}
         expanded={expanded}
       />
-      <div
-        className={`transition-height duration-150 ease-in-out ${
-          expanded ? "h-20 opacity-100" : "h-0 opacity-0"
-        }`}
-      >
+      <AnimateHeight id="example-panel" duration={200} height={height}>
         <AccordionContent>{children}</AccordionContent>
-      </div>
+      </AnimateHeight>
     </Tappable>
   );
 }
