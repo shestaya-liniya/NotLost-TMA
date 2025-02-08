@@ -50,7 +50,7 @@ export default function Folders() {
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
-          <div className="absolute top-0 left-0 w-full transition-all duration-300 ease-in-out">
+          <div className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out">
             <Folder
               setFolderHeight={(height: number) => setFolderHeight(1, height)}
             />
