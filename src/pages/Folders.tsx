@@ -5,20 +5,13 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Folders() {
   const { setManageDialogsModalOpen } = useModalStore();
   const { draggableItemType } = useDragStore();
 
-  const [dropFolderAppear, setDropFolderAppear] = useState(false);
-  useEffect(() => {
-    if (draggableItemType === "folder") {
-      setDropFolderAppear(true);
-    } else {
-      setDropFolderAppear(false);
-    }
-  }, [draggableItemType]);
+  const dropFolderAppear = draggableItemType === "folder";
 
   return (
     <div className="h-full flex flex-col">
@@ -72,10 +65,16 @@ function DropFolder() {
 
 function Folder() {
   const { draggableItemType } = useDragStore();
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <DragSensible additionalCondition={draggableItemType === "contact"}>
       <div className="px-4 py-2">
-        <Accordion title="Folder 13">
+        <Accordion
+          title="Folder 13"
+          expanded={expanded}
+          setExpanded={setExpanded}
+        >
           <div>Hello</div>
         </Accordion>
       </div>

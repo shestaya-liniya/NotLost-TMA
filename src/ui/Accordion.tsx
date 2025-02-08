@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
@@ -6,11 +6,14 @@ import Tappable from "./Tappable";
 function Accordion({
   children,
   title,
+  expanded,
+  setExpanded,
 }: {
   children: React.ReactNode;
   title: string;
+  expanded: boolean;
+  setExpanded: (expanded: boolean) => void;
 }) {
-  const [expanded, setExpanded] = useState(false);
   return (
     <Tappable>
       <AccordionHeader
@@ -18,7 +21,13 @@ function Accordion({
         toggleExpanded={() => setExpanded(!expanded)}
         expanded={expanded}
       />
-      {expanded && <AccordionContent>{children}</AccordionContent>}
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          expanded ? "h-20 opacity-100" : "h-0 opacity-0"
+        }`}
+      >
+        <AccordionContent>{children}</AccordionContent>
+      </div>
     </Tappable>
   );
 }
