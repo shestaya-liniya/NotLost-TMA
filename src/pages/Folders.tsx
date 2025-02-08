@@ -6,10 +6,19 @@ import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { useEffect, useState } from "react";
-import AnimateHeight from "react-animate-height";
 
 export default function Folders() {
   const { setManageDialogsModalOpen } = useModalStore();
+  const { draggableItemType } = useDragStore();
+
+  const [dropFolderAppear, setDropFolderAppear] = useState(false);
+  useEffect(() => {
+    if (draggableItemType === "folder") {
+      setDropFolderAppear(true);
+    } else {
+      setDropFolderAppear(false);
+    }
+  }, [draggableItemType]);
 
   return (
     <div className="h-full flex flex-col">
@@ -17,14 +26,22 @@ export default function Folders() {
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
       <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen">
-        <DropFolder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
-        <Folder />
+        <div className="absolute w-screen">
+          <DropFolder />
+        </div>
+        <div
+          className={`transition-all duration-150 ease-in-out ${
+            dropFolderAppear ? "translate-y-14" : "translate-y-0"
+          }`}
+        >
+          <Folder />
+          <Folder />
+          <Folder />
+          <Folder />
+          <Folder />
+          <Folder />
+          <Folder />
+        </div>
       </div>
 
       <Tappable
@@ -39,30 +56,17 @@ export default function Folders() {
 
 function DropFolder() {
   const { draggableItemType } = useDragStore();
-  const [height, setHeight] = useState<number | "auto">(0);
-
-  useEffect(() => {
-    if (draggableItemType === "folder") {
-      setHeight("auto");
-    } else {
-      setHeight(0);
-    }
-  }, [draggableItemType]);
 
   return (
-    <AnimateHeight id="example-panel" duration={300} height={height}>
-      <DragSensible additionalCondition={draggableItemType === "folder"}>
-        <div
-          className={`transition-all duration-150 ease-in-out bg-link/10 text-link text-center font-medium ${
-            draggableItemType === "folder"
-              ? "opacity-100 px-6 py-4"
-              : "opacity-0"
-          }`}
-        >
-          Drop here to create a new folder
-        </div>
-      </DragSensible>
-    </AnimateHeight>
+    <DragSensible additionalCondition={draggableItemType === "folder"}>
+      <div
+        className={`transition-all duration-300 ease-in-out  bg-link/10 text-link text-center font-medium ${
+          draggableItemType === "folder" ? "opacity-100 px-6 py-4" : "opacity-0"
+        }`}
+      >
+        Drop here to create a new folder
+      </div>
+    </DragSensible>
   );
 }
 
