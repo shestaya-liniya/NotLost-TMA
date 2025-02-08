@@ -24,9 +24,9 @@ try {
     <StrictMode>
       <TelegramProvider>
         <Router>
-          <JazzAndAuth>
-            <App />
-          </JazzAndAuth>
+          {/* <JazzAndAuth> */}
+          <App />
+          {/* </JazzAndAuth> */}
         </Router>
       </TelegramProvider>
     </StrictMode>

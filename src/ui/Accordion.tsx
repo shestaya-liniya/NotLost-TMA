@@ -22,7 +22,7 @@ function Accordion({
         expanded={expanded}
       />
       <div
-        className={`transition-all duration-300 ease-in-out ${
+        className={`transition-height duration-150 ease-in-out ${
           expanded ? "h-20 opacity-100" : "h-0 opacity-0"
         }`}
       >
