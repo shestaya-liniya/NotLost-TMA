@@ -60,10 +60,8 @@ function DropFolder() {
   return (
     <DragSensible additionalCondition={draggableItemType === "folder"}>
       <div
-        className={`bg-link/10 text-link text-center font-medium ${
-          draggableItemType === "folder"
-            ? "transition-opacity duration-300 ease-in-outopacity-100 px-6 py-4"
-            : "opacity-0"
+        className={`transition-opacity px-6 py-4 duration-300 ease-in-out bg-link/10 text-link text-center font-medium ${
+          draggableItemType === "folder" ? "opacity-100" : "opacity-0"
         }`}
       >
         Drop here to create a new folder
