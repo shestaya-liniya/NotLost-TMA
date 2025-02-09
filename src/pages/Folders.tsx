@@ -2,13 +2,17 @@ import Accordion from "@/ui/Accordion";
 import Input from "@/ui/Input";
 import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
+import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { useModalStore } from "@/lib/zustand-store/modal-store";
 import DragSensible from "@/ui/DragSensible";
 import { useDragStore } from "@/lib/zustand-store/drag-store";
 import { useEffect, useRef, useState } from "react";
 import { JazzFolder, RootUserProfile } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";
-import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
+import {
+  jazzCreateNewFolder,
+  jazzDeleteFolder,
+} from "@/lib/jazz/actions/jazz-folder";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 
 // In that component custom animation is used for the folder height
@@ -41,6 +45,10 @@ export default function Folders() {
       }
       return [...prev, { id, height }];
     });
+  };
+
+  const removeFolderHeight = (id: ID<JazzFolder>) => {
+    setFoldersHeight((prev) => prev.filter((folder) => folder.id !== id));
   };
 
   const getFolderTopInset = (index: number) => {
@@ -83,9 +91,13 @@ export default function Folders() {
                   }}
                 >
                   <Folder
+                    folder={folder}
                     setFolderHeight={(height: number) =>
                       setFolderHeight(folder.id, height)
                     }
+                    onDeleteFolder={() => {
+                      removeFolderHeight(folder.id);
+                    }}
                   />
                 </div>
               </div>
@@ -124,11 +136,36 @@ function DropFolder({ jazzProfile }: { jazzProfile: RootUserProfile }) {
   );
 }
 
-function Folder({
-  setFolderHeight,
+function InlineButton({
+  title,
+  onClick,
+  Icon,
 }: {
-  setFolderHeight: (height: number) => void;
+  title: string;
+  onClick: () => void;
+  Icon: React.ReactNode;
 }) {
+  return (
+    <Tappable
+      className="px-4 py-2 flex flex-col gap-1 text-link justify-center items-center"
+      onClick={onClick}
+    >
+      {Icon}
+      <div className="text-sm font-medium">{title}</div>
+    </Tappable>
+  );
+}
+
+function Folder({
+  folder,
+  setFolderHeight,
+  onDeleteFolder,
+}: {
+  folder: JazzFolder;
+  setFolderHeight: (height: number) => void;
+  onDeleteFolder: () => void;
+}) {
+  const { jazzProfile } = useJazzProfileContext();
   const { draggableItemType } = useDragStore();
   const [expanded, setExpanded] = useState(false);
 
@@ -138,6 +175,11 @@ function Folder({
       setFolderHeight(ref.current.clientHeight);
     }
   }, [expanded]);
+
+  const handleRemoveFolder = () => {
+    jazzDeleteFolder(jazzProfile, folder);
+    onDeleteFolder();
+  };
 
   return (
     <div ref={ref}>
@@ -151,7 +193,13 @@ function Folder({
             expanded={expanded}
             setExpanded={setExpanded}
           >
-            <div>Hello</div>
+            <div className="flex flex-col gap-2">
+              <InlineButton
+                title="Remove"
+                onClick={handleRemoveFolder}
+                Icon={<RemoveIcon className="w-4 h-4" />}
+              />
+            </div>
           </Accordion>
         </div>
       </DragSensible>

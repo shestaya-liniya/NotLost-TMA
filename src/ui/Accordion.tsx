@@ -16,14 +16,12 @@ function Accordion({
 }) {
   return (
     <div>
-      <Tappable>
-        <AccordionHeader
-          title={title}
-          toggleExpanded={() => setExpanded(!expanded)}
-          expanded={expanded}
-        />
-        {expanded && <AccordionContent>{children}</AccordionContent>}
-      </Tappable>
+      <AccordionHeader
+        title={title}
+        toggleExpanded={() => setExpanded(!expanded)}
+        expanded={expanded}
+      />
+      {expanded && <AccordionContent>{children}</AccordionContent>}
     </div>
   );
 }
@@ -38,22 +36,24 @@ function AccordionHeader({
   expanded: boolean;
 }) {
   return (
-    <div
-      className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all ${
-        expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
-      }`}
-      onClick={toggleExpanded}
-    >
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <FolderIcon className="w-7 h-7 text-link" />
-          <div className="font-bold">{title}</div>
+    <Tappable>
+      <div
+        className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all ${
+          expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
+        }`}
+        onClick={toggleExpanded}
+      >
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <FolderIcon className="w-7 h-7 text-link" />
+            <div className="font-bold">{title}</div>
+          </div>
+          <ChevronIcon
+            className={`w-5 h-5 text-link transition-transform duration-300 ease-in-out ${expanded ? "-rotate-90" : "rotate-90"}`}
+          />
         </div>
-        <ChevronIcon
-          className={`w-5 h-5 text-link transition-transform duration-300 ease-in-out ${expanded ? "-rotate-90" : "rotate-90"}`}
-        />
       </div>
-    </div>
+    </Tappable>
   );
 }
 
