@@ -46,10 +46,10 @@ function AccordionHeader({
   onBlur: (title: string) => void;
 }) {
   const titleRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (editingTitle && titleRef.current) {
       const el = titleRef.current;
+      el.focus();
       const range = document.createRange();
       const sel = window.getSelection();
 
@@ -59,8 +59,6 @@ function AccordionHeader({
         sel.removeAllRanges();
         sel.addRange(range);
       }
-
-      el.focus();
     }
   }, [editingTitle]);
 
