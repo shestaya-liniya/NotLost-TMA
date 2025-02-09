@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
-import Folders from "@/pages/Folders";
+import Folders from "@/components/folders/-FoldersPage.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
 
 export default function App() {

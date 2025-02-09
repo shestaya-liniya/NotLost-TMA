@@ -71,7 +71,7 @@ export default function Folders() {
             label="Search"
             value=""
             onInput={() => {}}
-            before={<SearchIcon className="h-4 w-4 text-gray-500" />}
+            before={<SearchIcon className="h-4 w-4 opacity-50" />}
           />
           <div className="text-accent font-semibold text-center w-full absolute z-10 -top-7">
             NotLost
