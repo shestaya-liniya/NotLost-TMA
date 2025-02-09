@@ -27,15 +27,7 @@ export default function TabBarLayout({
             WebkitMaskPosition: "center",
           }}
         />
-        <div
-          style={{
-            paddingTop:
-              "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
-          }}
-          className="h-full"
-        >
-          {children}
-        </div>
+        <div className="h-full">{children}</div>
       </div>
       <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>

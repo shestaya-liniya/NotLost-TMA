@@ -51,7 +51,13 @@ export default function Folders() {
 
   return (
     <div className="h-full flex flex-col relative">
-      <div className="px-4 py-2 shadow-2xl bg-secondary pb-4">
+      <div
+        style={{
+          paddingTop:
+            "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+        }}
+        className="px-4 py-2 shadow-2xl bg-secondary pb-4"
+      >
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
       <div className="overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
