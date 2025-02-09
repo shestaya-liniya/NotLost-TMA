@@ -28,9 +28,8 @@ function Accordion({
         editingTitle={editingTitle}
         onBlur={onBlur}
       />
-
       <div
-        className={`${expanded ? "animate-fadeIn" : "animate-fadeOutHidden"}`}
+        className={`${expanded ? "animate-fadeIn" : "absolute w-full animate-fadeOutHidden -left-0 px-2"} `}
       >
         <AccordionContent>{children}</AccordionContent>
       </div>
