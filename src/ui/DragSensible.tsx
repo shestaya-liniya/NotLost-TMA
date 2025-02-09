@@ -1,8 +1,8 @@
 import { useDragStore } from "@/lib/zustand-store/drag-store";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener
-export default function DragSensible({
+function DragSensible({
   children,
   additionalCondition,
   onDragEnd,
@@ -76,3 +76,5 @@ export default function DragSensible({
     </div>
   );
 }
+
+export default memo(DragSensible);

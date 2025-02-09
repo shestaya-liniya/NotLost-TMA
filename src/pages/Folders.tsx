@@ -14,6 +14,7 @@ import {
   jazzDeleteFolder,
 } from "@/lib/jazz/actions/jazz-folder";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import InlineButton from "@/ui/InlineButton";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -133,26 +134,6 @@ function DropFolder({ jazzProfile }: { jazzProfile: RootUserProfile }) {
         Drop here to create a new folder
       </div>
     </DragSensible>
-  );
-}
-
-function InlineButton({
-  title,
-  onClick,
-  Icon,
-}: {
-  title: string;
-  onClick: () => void;
-  Icon: React.ReactNode;
-}) {
-  return (
-    <Tappable
-      className="px-4 py-2 flex flex-col gap-1 text-link justify-center items-center"
-      onClick={onClick}
-    >
-      {Icon}
-      <div className="text-sm font-medium">{title}</div>
-    </Tappable>
   );
 }
 
