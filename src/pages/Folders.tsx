@@ -9,7 +9,9 @@ import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Folder from "@/components/folders/Folder";
 import NewFolder from "@/components/folders/NewFolder";
-
+import SearchIcon from "@/assets/icons/search.svg?react";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
+import Button from "@/ui/Button";
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
 // To make smooth transition of all folders going down/up when some folder is expanded,
@@ -21,6 +23,8 @@ export default function Folders() {
 
   const { setManageDialogsModalOpen } = useModalStore();
   const { draggableItemType } = useDragStore();
+
+  const lp = useLaunchParams();
 
   const dropFolderAppear = draggableItemType === "folder";
 
@@ -54,14 +58,28 @@ export default function Folders() {
 
   return (
     <div className="h-full flex flex-col relative">
+      <div className="text-accent font-semibold text-center w-full absolute z-10 top-2">
+        NotLost
+      </div>
       <div
         style={{
-          paddingTop:
-            "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+          paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+            ? 40
+            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
         className="px-4 py-2 shadow-2xl bg-secondary pb-4"
       >
-        <Input label="Search" value="" onInput={() => {}} />
+        <Input
+          label="Search"
+          value=""
+          onInput={() => {}}
+          before={<SearchIcon className="h-4 w-4 text-link/80" />}
+        />
+        <div className="flex items-center gap-2 mt-2">
+          <Button title="Filter" onClick={() => {}} />
+          <Button title="Filter" onClick={() => {}} />
+          <Button title="Filter" onClick={() => {}} />
+        </div>
       </div>
       <div className="overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
         <div className="absolute w-screen">

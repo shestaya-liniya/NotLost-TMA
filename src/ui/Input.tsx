@@ -1,11 +1,13 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 
 const Input = (props: {
   label: string;
   value: string;
   onInput: (value: string) => void;
+  before?: React.ReactNode;
 }) => {
   const [inputValue, setInputValue] = useState(props.value);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -14,13 +16,17 @@ const Input = (props: {
   };
 
   return (
-    <input
-      className="appearance-none border-none rounded-full px-6 py-2 w-full focus:outline-none focus:ring-transparent bg-primary"
-      type="text"
-      placeholder={props.label}
-      value={inputValue}
-      onChange={(e) => handleInputChange(e)}
-    />
+    <div className="relative rounded-full px-4 py-2 w-full bg-primary flex items-center gap-2">
+      <div onClick={() => inputRef.current?.focus()}>{props.before}</div>
+      <input
+        ref={inputRef}
+        className="appearance-none border-none w-full focus:outline-none focus:ring-transparent "
+        type="text"
+        placeholder={props.label}
+        value={inputValue}
+        onChange={(e) => handleInputChange(e)}
+      />
+    </div>
   );
 };
 
