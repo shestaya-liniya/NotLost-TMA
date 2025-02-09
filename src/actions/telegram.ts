@@ -1,15 +1,15 @@
-import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
+//import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
 // import { validate } from "@telegram-apps/init-data-node";
 
-const API_ID = 1;
+/* const API_ID = 1;
 const API_HASH = "1";
-const STRING_SESSION = "1";
+const STRING_SESSION = "1"; */
 
-const client = TelegramApiClient.getInstance(
+/* const client = TelegramApiClient.getInstance(
   API_ID,
   API_HASH!,
   STRING_SESSION || ""
-);
+); */
 
 /* export const $sendCode = createServerFn({ method: "GET" })
   .validator((data: string) => data)
@@ -36,7 +36,7 @@ export const $validateInitData = createServerFn({ method: "GET" })
     validate(ctx.data, process.env.TELEGRAM_API_KEY!)
   }) */
 
-export const $getMyDialogs = async (): Promise<DialogData[]> => {
+/* export const $getMyDialogs = async (): Promise<DialogData[]> => {
   const res = await client.getDialogs();
   const dialogs = res.map((dialog) => {
     const { name, unreadCount, entity } = dialog;
@@ -50,16 +50,10 @@ export const $getMyDialogs = async (): Promise<DialogData[]> => {
   });
   //@ts-ignore
   return dialogs;
-};
+}; */
 
 /* interface SignInData {
   phone: string
   phoneCode: string
   password: string
 } */
-
-export interface DialogData {
-  unreadCount: number;
-  name: string;
-  username: null | string;
-}

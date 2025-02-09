@@ -2,7 +2,7 @@ import BottomModal from "@/ui/BottomModal.jsx";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Dialog from "@/ui/Dialog.jsx";
 import Draggable from "@/ui/Draggable";
-import { useModalStore } from "@/lib/zustand-store/modal-store";
+import { useModalStore } from "@/lib/store/modal-store";
 
 export default function ManageDialogsModal() {
   const { manageDialogsModalOpen, setManageDialogsModalOpen } = useModalStore();
@@ -15,7 +15,7 @@ export default function ManageDialogsModal() {
     >
       <div className="flex items-center text-link justify-center mb-6">
         <div className="absolute bg-secondary px-2 py-1 rounded-2xl -z-10 h-10 w-[180px] bg-opacity-30" />
-        <Draggable draggableItemType="folder">
+        <Draggable draggableItemType="folder" draggableItem={null}>
           <div className="flex items-center bg-link/20 px-2 py-1 rounded-xl gap-2 font-medium touch-none no-select">
             <div className="h-6 w-6">
               <FolderIcon />
@@ -29,7 +29,13 @@ export default function ManageDialogsModal() {
         {trialContacts.map((contact) => (
           <div className="relative" key={contact.username}>
             <div className="">
-              <Draggable draggableItemType="contact">
+              <Draggable
+                draggableItemType="contact"
+                draggableItem={{
+                  name: contact.name,
+                  username: contact.username,
+                }}
+              >
                 <Dialog name={contact.name} username={contact.username} />
               </Draggable>
             </div>

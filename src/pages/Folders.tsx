@@ -1,8 +1,8 @@
 import Input from "@/ui/Input";
 import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
-import { useModalStore } from "@/lib/zustand-store/modal-store";
-import { useDragStore } from "@/lib/zustand-store/drag-store";
+import { useModalStore } from "@/lib/store/modal-store";
+import { useDragStore } from "@/lib/store/drag-store";
 import { useState } from "react";
 import { JazzFolder } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";

@@ -75,7 +75,7 @@ function AccordionHeader({
             <FolderIcon className="w-7 h-7 text-link" />
             <div
               ref={titleRef}
-              className="font-bold outline-none"
+              className="font-semibold outline-none"
               contentEditable={editingTitle}
               onBlur={() => {
                 onBlur(titleRef.current?.innerText || "");

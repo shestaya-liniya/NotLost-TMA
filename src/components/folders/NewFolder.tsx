@@ -1,6 +1,6 @@
 import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
 import { RootUserProfile } from "@/lib/jazz/schema";
-import { useDragStore } from "@/lib/zustand-store/drag-store";
+import { useDragStore } from "@/lib/store/drag-store";
 import DragSensible from "@/ui/DragSensible";
 import { memo } from "react";
 
@@ -8,7 +8,7 @@ function NewFolder({ jazzProfile }: { jazzProfile: RootUserProfile }) {
   const { draggableItemType } = useDragStore();
   return (
     <DragSensible
-      additionalCondition={draggableItemType === "folder"}
+      sensibleFor="folder"
       onDragEnd={() => {
         jazzCreateNewFolder(jazzProfile, "New folder");
       }}

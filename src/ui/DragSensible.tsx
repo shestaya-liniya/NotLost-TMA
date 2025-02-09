@@ -1,14 +1,14 @@
-import { useDragStore } from "@/lib/zustand-store/drag-store";
+import { useDragStore } from "@/lib/store/drag-store";
 import { memo, useEffect, useRef, useState } from "react";
 
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener
 function DragSensible({
   children,
-  additionalCondition,
+  sensibleFor,
   onDragEnd,
 }: {
   children: React.ReactNode;
-  additionalCondition: boolean;
+  sensibleFor: "folder" | "contact";
   onDragEnd: () => void;
 }) {
   const [touchInside, setTouchInside] = useState(false);
@@ -46,7 +46,7 @@ function DragSensible({
   };
 
   const onTouchEnd = () => {
-    if (touchInside && lastItemType === "folder") {
+    if (touchInside && lastItemType === sensibleFor) {
       onDragEnd();
     }
     setTouchInside(false);
@@ -67,7 +67,7 @@ function DragSensible({
   return (
     <div
       ref={elementRef}
-      className={`transition-all duration-150 ease-in-out ${touchInside && additionalCondition ? "bg-link/20" : ""}`}
+      className={`transition-all duration-150 ease-in-out ${touchInside && lastItemType === sensibleFor ? "bg-link/20" : ""}`}
       style={{
         position: "relative",
       }}

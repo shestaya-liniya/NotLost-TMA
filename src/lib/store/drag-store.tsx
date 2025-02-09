@@ -1,12 +1,16 @@
 import { create } from "zustand";
-import { DialogData } from "@/actions/telegram";
+
+export interface DraggableItem {
+  name: string;
+  username: string | null;
+}
 
 interface DragState {
   draggableItemType: "folder" | "contact" | null;
-  draggableItem: null | DialogData;
+  draggableItem: null | DraggableItem;
   setDragState: (newState: {
     draggableItemType: "folder" | "contact" | null;
-    draggableItem?: DialogData | null;
+    draggableItem?: DraggableItem | null;
   }) => void;
 }
 
