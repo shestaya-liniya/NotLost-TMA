@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import FolderOpenIcon from "@/assets/icons/folder-open.svg?react";
@@ -19,12 +19,6 @@ function Accordion({
   editingTitle: boolean;
   onBlur: (title: string) => void;
 }) {
-  const [showContent, setShowContent] = useState(expanded);
-
-  useEffect(() => {
-    setShowContent(expanded);
-  }, [expanded]);
-
   return (
     <div>
       <AccordionHeader
@@ -34,7 +28,12 @@ function Accordion({
         editingTitle={editingTitle}
         onBlur={onBlur}
       />
-      {expanded && <AccordionContent>{children}</AccordionContent>}
+
+      <div
+        className={`${expanded ? "animate-fadeIn" : "animate-fadeOutHidden"}`}
+      >
+        <AccordionContent>{children}</AccordionContent>
+      </div>
     </div>
   );
 }

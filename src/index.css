@@ -11,12 +11,28 @@
   --color-accent: var(--tg-theme-accent-text-color);
 
   --animate-fadeIn: fadeIn 0.3s ease-in-out forwards;
+  --animate-fadeOutHidden: fadeOutHidden 0.3s ease-in-out forwards;
   @keyframes fadeIn {
     0% {
       opacity: 0;
     }
     100% {
       opacity: 1;
+    }
+  }
+
+  @keyframes fadeOutHidden {
+    0% {
+      opacity: 1;
+      display: block;
+    }
+    99% {
+      opacity: 0;
+      display: block;
+    }
+    100% {
+      opacity: 0;
+      display: none;
     }
   }
 }
