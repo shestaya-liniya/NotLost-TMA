@@ -169,6 +169,8 @@ function Folder({
   const { draggableItemType } = useDragStore();
   const [expanded, setExpanded] = useState(false);
 
+  const [hidden, setHidden] = useState(false);
+
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (ref.current) {
@@ -177,12 +179,22 @@ function Folder({
   }, [expanded]);
 
   const handleRemoveFolder = () => {
-    jazzDeleteFolder(jazzProfile, folder);
-    onDeleteFolder();
+    setHidden(true);
+    setTimeout(() => {
+      jazzDeleteFolder(jazzProfile, folder);
+      onDeleteFolder();
+    }, 300);
   };
 
   return (
-    <div ref={ref}>
+    <div
+      ref={ref}
+      className={
+        hidden
+          ? "transition-all duration-300 ease-in-out opacity-0"
+          : "opacity-100"
+      }
+    >
       <DragSensible
         additionalCondition={draggableItemType === "contact"}
         onDragEnd={() => {}}
