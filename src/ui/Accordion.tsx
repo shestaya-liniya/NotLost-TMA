@@ -9,7 +9,6 @@ function Accordion({
   expanded,
   setExpanded,
   editingTitle,
-  setEditingTitle,
   onBlur,
 }: {
   children: React.ReactNode;
@@ -17,7 +16,6 @@ function Accordion({
   expanded: boolean;
   setExpanded: (expanded: boolean) => void;
   editingTitle: boolean;
-  setEditingTitle: (editingTitle: boolean) => void;
   onBlur: (title: string) => void;
 }) {
   return (
@@ -27,7 +25,6 @@ function Accordion({
         toggleExpanded={() => setExpanded(!expanded)}
         expanded={expanded}
         editingTitle={editingTitle}
-        setEditingTitle={setEditingTitle}
         onBlur={onBlur}
       />
       {expanded && <AccordionContent>{children}</AccordionContent>}
@@ -40,20 +37,30 @@ function AccordionHeader({
   toggleExpanded,
   expanded,
   editingTitle,
-  setEditingTitle,
   onBlur,
 }: {
   title: string;
   toggleExpanded: () => void;
   expanded: boolean;
   editingTitle: boolean;
-  setEditingTitle: (editingTitle: boolean) => void;
   onBlur: (title: string) => void;
 }) {
   const titleRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (editingTitle) {
-      titleRef.current?.focus();
+    if (editingTitle && titleRef.current) {
+      const el = titleRef.current;
+      const range = document.createRange();
+      const sel = window.getSelection();
+
+      if (sel) {
+        range.selectNodeContents(el);
+        range.collapse(false);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+
+      el.focus();
     }
   }, [editingTitle]);
 
@@ -73,7 +80,6 @@ function AccordionHeader({
               className="font-bold outline-none"
               contentEditable={editingTitle}
               onBlur={() => {
-                setEditingTitle(false);
                 onBlur(titleRef.current?.innerText || "");
               }}
             >

@@ -58,8 +58,10 @@ function Folder({
             expanded={expanded}
             setExpanded={setExpanded}
             editingTitle={editingTitle}
-            setEditingTitle={setEditingTitle}
-            onBlur={(title: string) => (folder.title = title)}
+            onBlur={(title: string) => {
+              folder.title = title;
+              setEditingTitle(false);
+            }}
           >
             <div className="flex gap-2 justify-center">
               <InlineButton
