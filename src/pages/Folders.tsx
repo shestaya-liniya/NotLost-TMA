@@ -10,7 +10,6 @@ import { JazzFolder, RootUserProfile } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";
 import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
-import { CoMarker } from "jazz-tools/src/internal.js";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -28,7 +27,7 @@ export default function Folders() {
 
   const [foldersHeight, setFoldersHeight] = useState<
     {
-      id: ID<JazzFolder> | ID<JazzFolder & CoMarker> | undefined;
+      id: ID<JazzFolder>;
       height: number;
     }[]
   >([]);
@@ -51,11 +50,11 @@ export default function Folders() {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-2">
+    <div className="h-full flex flex-col relative">
+      <div className="px-4 py-2 shadow-2xl bg-secondary pb-4">
         <Input label="Folder Name" value="" onInput={() => {}} />
       </div>
-      <div className="mt-4 overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
+      <div className="overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
         <div className="absolute w-screen">
           <DropFolder jazzProfile={jazzProfile} />
         </div>
@@ -64,7 +63,6 @@ export default function Folders() {
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
-          <div></div>
           {jazzProfile.folders?.map((folder, index) => {
             if (!folder) return null;
             return (
