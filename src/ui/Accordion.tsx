@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "./Tappable";
@@ -8,11 +8,17 @@ function Accordion({
   title,
   expanded,
   setExpanded,
+  editingTitle,
+  setEditingTitle,
+  onBlur,
 }: {
   children: React.ReactNode;
   title: string;
   expanded: boolean;
   setExpanded: (expanded: boolean) => void;
+  editingTitle: boolean;
+  setEditingTitle: (editingTitle: boolean) => void;
+  onBlur: (title: string) => void;
 }) {
   return (
     <div>
@@ -20,6 +26,9 @@ function Accordion({
         title={title}
         toggleExpanded={() => setExpanded(!expanded)}
         expanded={expanded}
+        editingTitle={editingTitle}
+        setEditingTitle={setEditingTitle}
+        onBlur={onBlur}
       />
       {expanded && <AccordionContent>{children}</AccordionContent>}
     </div>
@@ -30,11 +39,24 @@ function AccordionHeader({
   title,
   toggleExpanded,
   expanded,
+  editingTitle,
+  setEditingTitle,
+  onBlur,
 }: {
   title: string;
   toggleExpanded: () => void;
   expanded: boolean;
+  editingTitle: boolean;
+  setEditingTitle: (editingTitle: boolean) => void;
+  onBlur: (title: string) => void;
 }) {
+  const titleRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (editingTitle) {
+      titleRef.current?.focus();
+    }
+  }, [editingTitle]);
+
   return (
     <Tappable>
       <div
@@ -46,7 +68,17 @@ function AccordionHeader({
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
             <FolderIcon className="w-7 h-7 text-link" />
-            <div className="font-bold">{title}</div>
+            <div
+              ref={titleRef}
+              className="font-bold outline-none"
+              contentEditable={editingTitle}
+              onBlur={() => {
+                setEditingTitle(false);
+                onBlur(titleRef.current?.innerText || "");
+              }}
+            >
+              {title}
+            </div>
           </div>
           <ChevronIcon
             className={`w-5 h-5 text-link transition-transform duration-300 ease-in-out ${expanded ? "-rotate-90" : "rotate-90"}`}
