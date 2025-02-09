@@ -3,6 +3,7 @@ import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/components/folders/-FoldersPage.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
+import Graph from "./graph/index.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -25,7 +26,7 @@ export default function App() {
                   direction="toLeft"
                   isActive={activeTab === "try"}
                 >
-                  <Folders />
+                  <Graph />
                 </TabTransition>
               </div>
             </TabBarLayout>

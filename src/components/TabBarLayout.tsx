@@ -47,7 +47,7 @@ function TabBar({
         <div className="flex justify-around items-center">
           <BottomBarLink
             onClick={() => setActiveTab("try")}
-            title="Try"
+            title="Mindmap"
             isActive={activeTab === "try"}
             Icon={GraphIcon}
           />
