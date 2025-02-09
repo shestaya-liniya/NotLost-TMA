@@ -58,9 +58,6 @@ export default function Folders() {
 
   return (
     <div className="h-full flex flex-col relative">
-      <div className="text-accent font-semibold text-center w-full absolute z-10 top-2">
-        NotLost
-      </div>
       <div
         style={{
           paddingTop: ["macos", "tdesktop"].includes(lp.platform)
@@ -69,12 +66,18 @@ export default function Folders() {
         }}
         className="px-4 py-2 shadow-2xl bg-secondary pb-4"
       >
-        <Input
-          label="Search"
-          value=""
-          onInput={() => {}}
-          before={<SearchIcon className="h-4 w-4 text-link/80" />}
-        />
+        <div className="relative">
+          <Input
+            label="Search"
+            value=""
+            onInput={() => {}}
+            before={<SearchIcon className="h-4 w-4 text-gray-500" />}
+          />
+          <div className="text-accent font-semibold text-center w-full absolute z-10 -top-7">
+            NotLost
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 mt-2">
           <Button title="Filter" onClick={() => {}} />
           <Button title="Filter" onClick={() => {}} />
