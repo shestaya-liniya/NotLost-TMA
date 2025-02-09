@@ -33,7 +33,7 @@ function Folder({
     if (ref.current) {
       setFolderHeight(ref.current.clientHeight);
     }
-  }, [expanded]);
+  }, [expanded, folder]);
 
   const handleRemoveFolder = () => {
     setHidden(true);
