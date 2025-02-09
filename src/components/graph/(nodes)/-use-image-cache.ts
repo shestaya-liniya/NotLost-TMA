@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GraphNode, GraphNodeImageCache, GraphNodeType } from "../-@interface";
 import { NodeObject } from "react-force-graph-2d";
 import tagIcon from "@/assets/icons/graph/tag.svg";
-import folderIcon from "@/assets/icons/graph/folder.svg";
+import { getCssVariable } from "@/helpers/css/get-css-variable";
 
 export const useImageCache = (nodes: GraphNode[]) => {
   const [imageCache, setImageCache] = useState<GraphNodeImageCache>({});
@@ -29,7 +29,16 @@ export const useImageCache = (nodes: GraphNode[]) => {
               break;
 
             case GraphNodeType.TOPIC:
-              img = (await loadImage(folderIcon)) as HTMLImageElement;
+              const svgString = `
+    <svg fill="${getCssVariable("--color-link")}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20,6H13.41L11,3.59A2,2,0,0,0,9.59,3H4A2,2,0,0,0,2,5V19a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V8A2,2,0,0,0,20,6Z"></path>
+    </svg>`;
+
+              // Convert to a Data URL
+              const svgBlob = new Blob([svgString], { type: "image/svg+xml" });
+              const svgUrl = URL.createObjectURL(svgBlob);
+
+              img = (await loadImage(svgUrl)) as HTMLImageElement;
               break;
 
             case GraphNodeType.TAG:

@@ -1,5 +1,6 @@
 import { NodeObject } from "react-force-graph-2d";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import { getCssVariable } from "@/helpers/css/get-css-variable";
 
 export const drawTopicNode = (
   node: NodeObject,
@@ -17,7 +18,7 @@ export const drawTopicNode = (
 
   ctx.beginPath();
   ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false);
-  ctx.fillStyle = hexToRgba("#5288c1", 1);
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), 1);
   ctx.fill();
 
   // circle stroke
@@ -36,7 +37,7 @@ export const drawTopicNode = (
   // text background
   const padding = 1;
   const cornerRadius = 3;
-  ctx.fillStyle = hexToRgba("#232e3c", 1);
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-secondary"), 1);
 
   ctx.beginPath();
   const x = node.x! - textWidth / 2 - padding * 2;
@@ -52,7 +53,7 @@ export const drawTopicNode = (
   ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = hexToRgba("#6ab3f3", 1);
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 1);
 
   // on ios / mac os text is lower than should be
   if (["macos", "ios"].includes(platform)) {
