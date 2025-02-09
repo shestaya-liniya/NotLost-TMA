@@ -31,13 +31,7 @@ function Folder({
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (ref.current) {
-      if (!expanded) {
-        setTimeout(() => {
-          setFolderHeight(ref.current!.clientHeight);
-        }, 310);
-      } else {
-        setFolderHeight(ref.current!.clientHeight);
-      }
+      setFolderHeight(ref.current.clientHeight);
     }
   }, [expanded, folder]);
 
