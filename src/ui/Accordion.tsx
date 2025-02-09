@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
+import FolderOpenIcon from "@/assets/icons/folder-open.svg?react";
 import Tappable from "./Tappable";
 
 function Accordion({
@@ -72,7 +73,11 @@ function AccordionHeader({
       >
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <FolderIcon className="w-7 h-7 text-link" />
+            {expanded ? (
+              <FolderOpenIcon className="w-7 h-7 text-link " />
+            ) : (
+              <FolderIcon className="w-7 h-7 text-link" />
+            )}
             <div
               ref={titleRef}
               className="font-semibold outline-none"

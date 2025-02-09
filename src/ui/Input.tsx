@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 
-const CustomInput = (props: {
+const Input = (props: {
   label: string;
   value: string;
   onInput: (value: string) => void;
@@ -17,11 +17,11 @@ const CustomInput = (props: {
     <input
       className="appearance-none border-none rounded-full px-6 py-2 w-full focus:outline-none focus:ring-transparent bg-primary"
       type="text"
-      placeholder={"hello"}
+      placeholder={props.label}
       value={inputValue}
       onChange={(e) => handleInputChange(e)}
     />
   );
 };
 
-export default CustomInput;
+export default Input;

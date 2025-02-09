@@ -61,7 +61,7 @@ export default function Folders() {
         }}
         className="px-4 py-2 shadow-2xl bg-secondary pb-4"
       >
-        <Input label="Folder Name" value="" onInput={() => {}} />
+        <Input label="Search" value="" onInput={() => {}} />
       </div>
       <div className="overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
         <div className="absolute w-screen">
