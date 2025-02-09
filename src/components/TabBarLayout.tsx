@@ -42,7 +42,7 @@ function TabBar({
   setActiveTab: (tab: string) => void;
 }) {
   return (
-    <div className="bg-primary">
+    <div className="bg-secondary">
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
           <BottomBarLink
