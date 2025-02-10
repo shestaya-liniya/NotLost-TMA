@@ -13,6 +13,7 @@ import SearchIcon from "@/assets/icons/search.svg?react";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
+import { getCssVariable } from "@/helpers/css/get-css-variable";
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
 // To make smooth transition of all folders going down/up when some folder is expanded,
@@ -93,7 +94,7 @@ export default function Folders() {
           height: manageDialogsModalOpen
             ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px ${
                 !["macos", "tdesktop"].includes(lp.platform)
-                  ? "- var(--tg-viewport-safe-area-inset-bottom)px"
+                  ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
               } ) `
             : "100%",

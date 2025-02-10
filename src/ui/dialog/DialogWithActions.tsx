@@ -49,7 +49,7 @@ export default function DialogWithActions(props: {
         <img
           loading="lazy"
           src={`https://t.me/i/userpic/320/${props.dialog.username}.svg`}
-          className="h-12 w-12 rounded-full touch-none"
+          className="h-12 w-12 rounded-full no-select"
           decoding="async"
           alt=""
         />
