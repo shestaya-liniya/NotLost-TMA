@@ -14,7 +14,6 @@ export default function DialogWithActions(props: {
   const [dialogWithTooltip, setDialogWithTooltip] = useState<null | JazzDialog>(
     null
   );
-
   const startPress = (dialog: JazzDialog) => {
     isLongPress.current = false;
     timerRef.current = window.setTimeout(() => {

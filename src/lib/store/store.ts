@@ -1,9 +1,9 @@
-import { create } from "zustand"
-import { JazzFolder } from "../jazz/schema"
+import { create } from "zustand";
+import { JazzFolder } from "../jazz/schema";
 
 interface AppState {
-  expandedFolder: JazzFolder | null
-  setExpandedFolder: (expandedFolder: JazzFolder | null) => void
+  expandedFolder: JazzFolder | null;
+  setExpandedFolder: (expandedFolder: JazzFolder | null) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -12,4 +12,4 @@ export const useAppStore = create<AppState>((set) => ({
     set(() => ({
       expandedFolder: expandedFolder,
     })),
-}))
+}));

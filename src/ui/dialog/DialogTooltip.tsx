@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import MoreIcon from "@/assets/icons/more.svg?react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import Tappable from "../Tappable";
+import { useModalStore } from "@/lib/store/modal-store";
 
 export const DialogTooltip = ({
   dialog,
@@ -19,7 +20,7 @@ export const DialogTooltip = ({
   closeTooltip: () => void;
 }) => {
   const { jazzProfile } = useJazzProfileContext();
-  //const router = useRouter();
+  const { setDialogInfoModalOpen, setDialogInfoModalData } = useModalStore();
 
   useEffect(() => {
     const handleTouchStart = (event: TouchEvent) => {
@@ -41,7 +42,8 @@ export const DialogTooltip = ({
   }, [showTooltip, closeTooltip]);
 
   const navigateToDialogInfo = () => {
-    //router.navigate({ to: `${ContactsRoute.to}/${dialog.id}` });
+    setDialogInfoModalData(dialog);
+    setDialogInfoModalOpen(true);
   };
 
   const removeDialog = () => {

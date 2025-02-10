@@ -1,7 +1,7 @@
-import tgWallpaper from "@/assets/tg-wallpaper-paris.svg";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
+import TelegramWallpaper from "@/ui/TelegramWallpaper";
 
 export default function TabBarLayout({
   activeTab,
@@ -17,19 +17,7 @@ export default function TabBarLayout({
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto text-white relative">
-        <div
-          className="h-full w-full -z-10 absolute bg-link/5"
-          style={{
-            maskImage: `url(${tgWallpaper})`,
-            WebkitMaskImage: `url(${tgWallpaper})`,
-            maskRepeat: "no-repeat",
-            WebkitMaskRepeat: "no-repeat",
-            maskSize: "cover",
-            WebkitMaskSize: "cover",
-            maskPosition: "center",
-            WebkitMaskPosition: "center",
-          }}
-        />
+        <TelegramWallpaper />
         <div className="h-full">{children}</div>
       </div>
       <div className={`${keyboardVisible ? "hidden" : ""}`}>

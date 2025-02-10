@@ -12,6 +12,7 @@
   --color-hint: var(--tg-theme-hint-color);
   --animate-fadeIn: fadeIn 0.3s ease-in-out forwards;
   --animate-fadeOutHidden: fadeOutHidden 0.15s ease-in-out forwards;
+  --animate-delayZindex: delayZindex 0.5s ease-in-out forwards;
   @keyframes fadeIn {
     0% {
       opacity: 0;
@@ -33,6 +34,18 @@
     100% {
       opacity: 0;
       display: none;
+    }
+  }
+
+  @keyframes delayZindex {
+    0% {
+      z-index: 1;
+    }
+    99% {
+      z-index: 1;
+    }
+    100% {
+      z-index: -10;
     }
   }
 }

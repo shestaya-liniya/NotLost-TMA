@@ -1,12 +1,18 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
-import Folders from "@/components/folders/-FoldersPage.tsx";
+import Folders from "@/pages/Folders.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
 import Graph from "./graph/index.tsx";
+import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
+import Tappable from "@/ui/Tappable.tsx";
+import DialogInfo from "@/pages/DialogInfo.tsx";
+import { useModalStore } from "@/lib/store/modal-store.tsx";
+import WebApp from "@twa-dev/sdk";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
+  const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
 
   return (
     <Routes>
@@ -31,6 +37,12 @@ export default function App() {
               </div>
             </TabBarLayout>
             <ManageDialogsModal />
+            <SlidingPage
+              open={dialogInfoModalOpen}
+              onClose={() => setDialogInfoModalOpen(false)}
+            >
+              <DialogInfo />
+            </SlidingPage>
           </div>
         }
       />
@@ -53,6 +65,59 @@ function TabTransition({
       className={`w-screen h-full absolute top-0 left-0 transition-all ease ${isActive ? "duration-300 translate-x-0 scale-100" : `duration-300 ${direction === "toRight" ? "translate-x-full" : "-translate-x-full"} -z-10 opacity-0 scale-90`}`}
     >
       {children}
+    </div>
+  );
+}
+
+function SlidingPage({
+  children,
+  open,
+  onClose,
+}: {
+  children: React.ReactNode;
+  open: boolean;
+  onClose: () => void;
+}) {
+  const backButton = WebApp.BackButton;
+  backButton.show();
+  backButton.onClick(() => {
+    backButton.hide();
+    onClose();
+  });
+
+  const mainButton = WebApp.MainButton;
+  mainButton.show();
+  mainButton.onClick(() => {
+    mainButton.hide();
+    onClose();
+  });
+  return (
+    <div>
+      <div
+        className={`absolute top-0 left-0 w-screen h-screen bg-black/50 transition-all ease duration-500 ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      ></div>
+      <div
+        className={`absolute top-0 left-0 w-screen h-screen bg-secondary transition-all ease duration-500 ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <TelegramWallpaper />
+        {children}
+        {import.meta.env.DEV && (
+          <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
+            <div className="flex justify-center items-center w-full px-4">
+              <Tappable
+                className="bg-link/30 text-center py-4 text-link rounded-2xl w-full font-semibold"
+                onClick={onClose}
+              >
+                Go back
+              </Tappable>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
