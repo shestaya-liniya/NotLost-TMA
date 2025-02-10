@@ -1,9 +1,26 @@
 import { useModalStore } from "@/lib/store/modal-store";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import {
+  backButton,
+  mainButton,
+  useLaunchParams,
+} from "@telegram-apps/sdk-react";
+import { useEffect } from "react";
 
 export default function DialogInfo() {
   const { dialogInfoModalData } = useModalStore();
   const lp = useLaunchParams();
+
+  useEffect(() => {
+    backButton.show();
+    backButton.onClick(() => {
+      console.log("back");
+      backButton.hide();
+    });
+    mainButton.mount();
+    mainButton.onClick(() => {
+      console.log("main");
+    });
+  }, []);
 
   if (!dialogInfoModalData) return;
 
