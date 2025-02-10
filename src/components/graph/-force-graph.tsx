@@ -10,7 +10,7 @@ import { useImageCache } from "./(nodes)/-use-image-cache";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { SelectedContact } from "./-selected-contact";
 import { AnimatePresence } from "framer-motion";
-import { JazzListOfFolders } from "@/lib/jazz/schema";
+import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
@@ -152,30 +152,53 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
   const nodes: GraphNode[] = [];
   const links: GraphLink[] = [];
 
-  folders.forEach((folder) => {
-    if (!folder) return;
-    nodes.push({
-      id: folder.id,
-      title: folder.title,
-      targets: [],
-      type: GraphNodeType.TOPIC,
-    });
-    folder?.dialogs?.forEach((dialog) => {
-      if (!dialog) return;
-      nodes.push({
-        id: dialog.id,
-        username: dialog.username,
-        firstName: dialog.name,
-        tags: [],
-        type: GraphNodeType.DIALOG,
-      });
-      links.push({
-        source: folder.id,
-        target: dialog.id,
-      });
-    });
-  });
+  function processFolders(
+    folders: JazzFolder[],
+    nodes: GraphNode[],
+    links: GraphLink[]
+  ) {
+    folders.forEach((folder) => {
+      if (!folder) return;
 
+      nodes.push({
+        id: folder.id,
+        title: folder.title,
+        targets: [],
+        type: GraphNodeType.TOPIC,
+      });
+
+      folder?.dialogs?.forEach((dialog) => {
+        if (!dialog) return;
+
+        nodes.push({
+          id: dialog.id,
+          username: dialog.username,
+          firstName: dialog.name,
+          tags: [],
+          type: GraphNodeType.DIALOG,
+        });
+
+        links.push({
+          source: folder.id,
+          target: dialog.id,
+        });
+      });
+
+      if (folder.nestedFolders?.length) {
+        processFolders(folder.nestedFolders as JazzFolder[], nodes, links);
+
+        folder.nestedFolders.forEach((subFolder) => {
+          if (!subFolder) return;
+          links.push({
+            source: folder.id,
+            target: subFolder.id,
+          });
+        });
+      }
+    });
+  }
+
+  processFolders(folders as JazzFolder[], nodes, links);
   return { nodes, links };
 };
 

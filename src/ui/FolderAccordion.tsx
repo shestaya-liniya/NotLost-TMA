@@ -2,15 +2,16 @@ import { memo, useEffect, useRef } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import FolderOpenIcon from "@/assets/icons/folder-open.svg?react";
+import { JazzFolder } from "@/lib/jazz/schema";
 import Tappable from "./Tappable";
 
-function Accordion({
+function FolderAccordion({
   children,
-  title,
   expanded,
   setExpanded,
   editingTitle,
   onBlur,
+  foldersStack,
 }: {
   children: React.ReactNode;
   title: string;
@@ -18,11 +19,12 @@ function Accordion({
   setExpanded: (expanded: boolean) => void;
   editingTitle: boolean;
   onBlur: (title: string) => void;
+  foldersStack: JazzFolder[];
 }) {
   return (
     <div>
       <AccordionHeader
-        title={title}
+        foldersStack={foldersStack}
         toggleExpanded={() => setExpanded(!expanded)}
         expanded={expanded}
         editingTitle={editingTitle}
@@ -38,17 +40,17 @@ function Accordion({
 }
 
 function AccordionHeader({
-  title,
   toggleExpanded,
   expanded,
   editingTitle,
   onBlur,
+  foldersStack,
 }: {
-  title: string;
   toggleExpanded: () => void;
   expanded: boolean;
   editingTitle: boolean;
   onBlur: (title: string) => void;
+  foldersStack: JazzFolder[];
 }) {
   const titleRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -67,6 +69,13 @@ function AccordionHeader({
     }
   }, [editingTitle]);
 
+  const getFolderStack = () => {
+    if (foldersStack.length === 1) {
+      return;
+    }
+    return foldersStack.slice(0, -1).map((folder) => folder.title + " / ");
+  };
+
   return (
     <Tappable>
       <div
@@ -82,15 +91,20 @@ function AccordionHeader({
             ) : (
               <FolderIcon className="w-7 h-7 text-link" />
             )}
-            <div
-              ref={titleRef}
-              className="font-semibold outline-none"
-              contentEditable={editingTitle}
-              onBlur={() => {
-                onBlur(titleRef.current?.innerText || "");
-              }}
-            >
-              {title}
+            <div className="flex gap-1">
+              <div className="font-semibold">{getFolderStack()}</div>
+              <div
+                ref={titleRef}
+                className="font-semibold outline-none"
+                contentEditable={editingTitle}
+                onBlur={() => {
+                  if (editingTitle) {
+                    onBlur(titleRef.current?.innerText || "");
+                  }
+                }}
+              >
+                {foldersStack[foldersStack.length - 1].title}
+              </div>
             </div>
           </div>
           <ChevronIcon
@@ -110,4 +124,4 @@ function AccordionContent({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default memo(Accordion);
+export default memo(FolderAccordion);

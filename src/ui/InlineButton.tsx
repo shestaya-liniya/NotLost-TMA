@@ -11,7 +11,7 @@ export default function InlineButton({
 }) {
   return (
     <Tappable
-      className="px-4 py-2 flex flex-col gap-1 text-link justify-center items-center"
+      className="px-4 py-2 flex flex-col gap-1 text-link justify-center items-center flex-1"
       onClick={onClick}
     >
       {Icon}

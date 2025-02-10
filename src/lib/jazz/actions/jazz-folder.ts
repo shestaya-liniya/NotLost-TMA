@@ -1,3 +1,4 @@
+import { co } from "jazz-tools";
 import {
   JazzDialog,
   JazzFolder,
@@ -15,6 +16,9 @@ export const jazzCreateNewFolder = (
       {
         title,
         dialogs: JazzListOfDialogs.create([], { owner: jazzProfile._owner }),
+        nestedFolders: JazzListOfFolders.create([], {
+          owner: jazzProfile._owner,
+        }),
       },
       { owner: jazzProfile._owner }
     )
@@ -23,16 +27,29 @@ export const jazzCreateNewFolder = (
 
 export const jazzDeleteFolder = (
   jazzProfile: RootUserProfile,
-  folder: JazzFolder
+  folder: JazzFolder,
+  nestedFolder: JazzFolder | null = null
 ) => {
   if (jazzProfile) {
-    const filteredFolders = jazzProfile.folders?.filter(
-      (f) => f?.id !== folder.id
-    );
+    let filteredFolders: co<JazzFolder | null>[] | undefined;
+    if (nestedFolder) {
+      filteredFolders = folder.nestedFolders?.filter(
+        (f) => f?.id !== nestedFolder.id
+      );
+    } else {
+      filteredFolders = jazzProfile.folders?.filter((f) => f?.id !== folder.id);
+    }
+
     if (filteredFolders) {
-      jazzProfile.folders = JazzListOfFolders.create(filteredFolders, {
-        owner: jazzProfile._owner,
-      });
+      if (nestedFolder) {
+        folder.nestedFolders = JazzListOfFolders.create(filteredFolders, {
+          owner: jazzProfile._owner,
+        });
+      } else {
+        jazzProfile.folders = JazzListOfFolders.create(filteredFolders, {
+          owner: jazzProfile._owner,
+        });
+      }
     }
   }
 };
@@ -61,4 +78,27 @@ export const jazzRemoveDialogFromFolder = (
   folder.dialogs! = JazzListOfDialogs.create(filteredDialogs, {
     owner: jazzProfile._owner,
   });
+};
+
+export const jazzAddNestedFolderToFolder = (
+  jazzProfile: RootUserProfile,
+  folder: JazzFolder,
+  title: string
+) => {
+  if (jazzProfile) {
+    folder.nestedFolders?.push(
+      JazzFolder.create(
+        {
+          title,
+          dialogs: JazzListOfDialogs.create([], { owner: jazzProfile._owner }),
+          nestedFolders: JazzListOfFolders.create([], {
+            owner: jazzProfile._owner,
+          }),
+        },
+        {
+          owner: jazzProfile._owner,
+        }
+      )
+    );
+  }
 };
