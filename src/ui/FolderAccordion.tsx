@@ -120,7 +120,7 @@ function AccordionHeader({
 
 function AccordionContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="p-4 bg-secondary rounded-b-2xl animate-fadeIn">
+    <div className="p-4 bg-secondary rounded-b-2xl animate-fadeIn border-2 border-primary">
       {children}
     </div>
   );
