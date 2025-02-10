@@ -13,7 +13,7 @@ export const drawContactNode = (
 
   if (getTopicRadius(globalScale) >= 36) return;
 
-  const firstNameFontSize = Math.min(3, (12 * globalScale) / 8);
+  /* const firstNameFontSize = Math.min(3, (12 * globalScale) / 8);
   const usernameFontSize = Math.min(2, (12 * globalScale) / 8);
 
   let textOpacity = Math.min(globalScale / 4, 1);
@@ -24,9 +24,9 @@ export const drawContactNode = (
 
   if (globalScale < 2) {
     textOpacity = 0;
-  }
+  } */
 
-  const drawText = (
+  /* const drawText = (
     text: string,
     fontSize: number,
     color: string,
@@ -37,9 +37,9 @@ export const drawContactNode = (
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillText(text, node.x!, node.y! + yOffset);
-  };
+  }; */
 
-  // first name
+  /* // first name
   drawText(
     node.firstName.toString(),
     firstNameFontSize,
@@ -53,7 +53,7 @@ export const drawContactNode = (
     usernameFontSize,
     getCssVariable("--tg-theme-link-color"),
     imgSize / 4 + 4.5
-  );
+  ); */
 
   const drawAvatar = (image: HTMLImageElement | null) => {
     ctx.save();

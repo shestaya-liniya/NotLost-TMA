@@ -83,12 +83,12 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           setSelectedContact(null);
         }}
         onNodeClick={(node) => {
-          fgRef?.current?.zoomToFit(
+          /* fgRef?.current?.zoomToFit(
             500,
             // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
             175,
             (filterNode) => filterNode.id === node.id
-          );
+          ); */
 
           if (selectedContact !== node) {
             setSelectedContactTimestamp(Date.now());
