@@ -14,6 +14,14 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
   const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
 
+  const backButton = WebApp.BackButton;
+  backButton.show();
+  backButton.onClick(() => {
+    /* onClose();
+        backButton.hide(); */
+    console.log("back");
+  });
+
   return (
     <Routes>
       <Route
