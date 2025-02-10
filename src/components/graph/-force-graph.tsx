@@ -61,7 +61,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [globalScale, setGlobalScale] = useState<number | null>(null);
 
   return (
-    <div className="h-full">
+    <div>
       <div
         style={{
           top: `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`,
@@ -78,6 +78,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
+        height={window.innerHeight}
         nodeAutoColorBy="group"
         onBackgroundClick={() => {
           setSelectedContact(null);
