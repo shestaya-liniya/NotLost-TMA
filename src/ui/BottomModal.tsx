@@ -1,3 +1,5 @@
+import RemoveIcon from "@/assets/icons/remove.svg?react";
+
 interface ModalProps {
   id: string;
   isOpen: boolean;
@@ -22,10 +24,10 @@ const BottomModal = (props: ModalProps) => {
       </div>
       {props.children}
       <div
-        className="absolute top-2 right-4 text-xl font-semibold text-link"
+        className="absolute top-2 right-2 text-xl font-semibold text-link rounded-full bg-link/20 p-2"
         onClick={() => props.onClose()}
       >
-        Done
+        <RemoveIcon className="w-4 h-4" />
       </div>
     </div>
   );
