@@ -123,7 +123,7 @@ function Folder(props: {
               </div>
               {activeFolderStack.length > 1 && (
                 <div
-                  className="w-full py-2 rounded-xl text-center bg-link/10 text-link"
+                  className="w-full py-2 rounded-xl text-center bg-link/10 text-link animate-fadeIn"
                   onClick={() => {
                     setActiveFolderStack(activeFolderStack.slice(0, -1));
                     setFoldersTitleStack(
