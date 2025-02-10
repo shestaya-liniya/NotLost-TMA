@@ -14,6 +14,7 @@ import { useLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
+
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
 // To make smooth transition of all folders going down/up when some folder is expanded,
@@ -84,9 +85,9 @@ export default function Folders() {
         </div>
 
         <div className="flex items-center gap-2 mt-2">
-          <Button title="Filter" onClick={() => {}} />
-          <Button title="Filter" onClick={() => {}} />
-          <Button title="Filter" onClick={() => {}} />
+          <Button title="Type" onClick={() => {}} />
+          <Button title="Tag" onClick={() => {}} />
+          <Button title="Date" onClick={() => {}} />
         </div>
       </div>
       <div
