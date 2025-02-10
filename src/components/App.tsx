@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
@@ -78,20 +78,25 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
-  const backButton = WebApp.BackButton;
-  backButton.show();
-  backButton.onClick(() => {
-    onClose();
-    backButton.hide();
-  });
+  useEffect(() => {
+    if (open) {
+      const backButton = WebApp.BackButton;
+      backButton.show();
+      backButton.onClick(() => {
+        onClose();
+        backButton.hide();
+      });
 
-  const mainButton = WebApp.MainButton;
-  mainButton.setText("Back");
-  mainButton.show();
-  mainButton.onClick(() => {
-    onClose();
-    mainButton.hide();
-  });
+      const mainButton = WebApp.MainButton;
+      mainButton.setText("Back");
+      mainButton.show();
+      mainButton.onClick(() => {
+        onClose();
+        mainButton.hide();
+      });
+    }
+  }, [open]);
+
   return (
     <div>
       <div
