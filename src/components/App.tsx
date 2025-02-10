@@ -81,15 +81,16 @@ function SlidingPage({
   const backButton = WebApp.BackButton;
   backButton.show();
   backButton.onClick(() => {
-    backButton.hide();
     onClose();
+    backButton.hide();
   });
 
   const mainButton = WebApp.MainButton;
+  mainButton.setText("Back");
   mainButton.show();
   mainButton.onClick(() => {
-    mainButton.hide();
     onClose();
+    mainButton.hide();
   });
   return (
     <div>
