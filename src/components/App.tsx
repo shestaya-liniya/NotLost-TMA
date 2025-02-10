@@ -16,11 +16,14 @@ export default function App() {
 
   useEffect(() => {
     const backButton = WebApp.BackButton;
-    backButton.show();
-    backButton.onClick(() => {
-      console.log("back");
-      backButton.hide();
-    });
+    if (!backButton.isVisible) {
+      debugger;
+      backButton.show();
+      backButton.onClick(() => {
+        console.log("back");
+        backButton.hide();
+      });
+    }
   }, []);
 
   return (
