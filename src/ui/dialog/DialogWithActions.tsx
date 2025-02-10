@@ -49,12 +49,12 @@ export default function DialogWithActions(props: {
         <img
           loading="lazy"
           src={`https://t.me/i/userpic/320/${props.dialog.username}.svg`}
-          className="h-12 w-12 rounded-full"
+          className="h-12 w-12 rounded-full touch-none"
           decoding="async"
           alt=""
         />
         <span
-          className={`px-2 py-[0.5px] text-xs font-normal bg-buttonBezeled text-link rounded-xl`}
+          className={`px-2 py-[0.5px] text-xs font-normal bg-link/10 text-link rounded-xl`}
         >
           {truncateWord(props.dialog.name || "", 5)}
         </span>
