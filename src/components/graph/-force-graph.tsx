@@ -61,7 +61,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [globalScale, setGlobalScale] = useState<number | null>(null);
 
   return (
-    <div>
+    <div className="h-full">
       <div
         style={{
           top: `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`,
