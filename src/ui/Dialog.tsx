@@ -3,7 +3,12 @@ import Tappable from "./Tappable.jsx";
 
 export default function Dialog(props: { name: string; username: string }) {
   return (
-    <Tappable className="flex flex-col items-center justify-center gap-1 rounded-xl p-2 relative">
+    <Tappable
+      className="flex flex-col items-center justify-center gap-1 rounded-xl p-2 relative"
+      onClick={() => {
+        window.open(`https://t.me/${props.username}`);
+      }}
+    >
       <img
         loading="lazy"
         src={`https://t.me/i/userpic/320/${props.username}.svg`}

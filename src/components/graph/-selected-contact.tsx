@@ -3,6 +3,7 @@ import { GraphNode, GraphNodeType } from "./-@interface";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import { motion } from "framer-motion";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
+import Tappable from "@/ui/Tappable";
 
 export const SelectedContact = ({
   selectedContact,
@@ -12,7 +13,12 @@ export const SelectedContact = ({
   if (selectedContact.type === GraphNodeType.DIALOG) {
     return (
       <Wrapper>
-        <div className="flex items-center py-2 px-4 gap-4">
+        <Tappable
+          className="flex items-center py-2 px-4 gap-4"
+          onClick={() => {
+            window.open(`https://t.me/${selectedContact.username}`);
+          }}
+        >
           <img
             loading="lazy"
             src={`https://t.me/i/userpic/320/${selectedContact.username}.svg`}
@@ -28,7 +34,7 @@ export const SelectedContact = ({
               @{selectedContact.username}
             </span>
           </div>
-        </div>
+        </Tappable>
       </Wrapper>
     );
   }
