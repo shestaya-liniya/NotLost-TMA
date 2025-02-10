@@ -15,13 +15,11 @@ export default function App() {
   const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
 
   useEffect(() => {
-    if (!backButton.isVisible) {
-      backButton.show();
-      backButton.onClick(() => {
-        console.log("back");
-        backButton.hide();
-      });
-    }
+    backButton.show();
+    backButton.onClick(() => {
+      console.log("back");
+      backButton.hide();
+    });
   }, []);
 
   return (
