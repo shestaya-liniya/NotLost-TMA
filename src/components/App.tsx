@@ -16,13 +16,22 @@ export default function App() {
 
   useEffect(() => {
     const backButton = WebApp.BackButton;
+
     if (!backButton.isVisible) {
-      debugger;
       backButton.show();
       backButton.onClick(() => {
+        /* onClose();
+        backButton.hide(); */
         console.log("back");
-        backButton.hide();
       });
+
+      /* const mainButton = WebApp.MainButton;
+      mainButton.setText("Back");
+      mainButton.show();
+      mainButton.onClick(() => {
+        onClose();
+        mainButton.hide();
+      }); */
     }
   }, []);
 
@@ -93,26 +102,6 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
-  useEffect(() => {
-    if (open) {
-      const backButton = WebApp.BackButton;
-      backButton.show();
-      backButton.onClick(() => {
-        /* onClose();
-        backButton.hide(); */
-        console.log("back");
-      });
-
-      /* const mainButton = WebApp.MainButton;
-      mainButton.setText("Back");
-      mainButton.show();
-      mainButton.onClick(() => {
-        onClose();
-        mainButton.hide();
-      }); */
-    }
-  }, [open]);
-
   return (
     <div>
       {/* <div
