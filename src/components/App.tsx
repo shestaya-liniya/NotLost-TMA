@@ -39,7 +39,10 @@ export default function App() {
             <ManageDialogsModal />
             <SlidingPage
               open={dialogInfoModalOpen}
-              onClose={() => setDialogInfoModalOpen(false)}
+              onClose={() => {
+                setDialogInfoModalOpen(false);
+                console.log("close");
+              }}
             >
               <DialogInfo />
             </SlidingPage>
