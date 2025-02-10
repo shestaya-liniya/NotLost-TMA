@@ -92,7 +92,7 @@ function AccordionHeader({
               <FolderIcon className="w-7 h-7 text-link" />
             )}
             <div className="flex gap-1">
-              <div className="font-semibold">{getFolderStack()}</div>
+              <div className="font-semibold text-hint">{getFolderStack()}</div>
               <div
                 ref={titleRef}
                 className="font-semibold outline-none"

@@ -43,7 +43,7 @@ function Folder(props: {
     if (ref.current) {
       props.setFolderHeight(ref.current.clientHeight);
     }
-  }, [expanded, mainFolder]);
+  }, [expanded, mainFolder, activeFolder]);
 
   const handleRemoveFolder = () => {
     if (activeFolderStack.length === 1) {

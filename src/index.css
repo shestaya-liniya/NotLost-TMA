@@ -9,7 +9,7 @@
 
   --color-link: var(--tg-theme-link-color);
   --color-accent: var(--tg-theme-accent-text-color);
-
+  --color-hint: var(--tg-theme-hint-color);
   --animate-fadeIn: fadeIn 0.3s ease-in-out forwards;
   --animate-fadeOutHidden: fadeOutHidden 0.15s ease-in-out forwards;
   @keyframes fadeIn {
