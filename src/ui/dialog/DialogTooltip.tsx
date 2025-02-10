@@ -58,7 +58,7 @@ export const DialogTooltip = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className={`absolute left-1 -top-full -translate-x-1/4 backdrop-blur-lg bg-secondary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
+          className={`absolute left-1 -top-full -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
           onTouchStart={(event) => {
             event.stopPropagation();
           }}
@@ -75,7 +75,7 @@ export const DialogTooltip = ({
             }}
             closeTooltip={closeTooltip}
           />
-          <div className="h-[2px] bg-primary/50"></div>
+          <div className="h-[2px] bg-link/10"></div>
           <DialogToolTipItem
             Icon={
               <div className="text-link">
