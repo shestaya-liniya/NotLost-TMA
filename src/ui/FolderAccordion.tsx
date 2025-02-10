@@ -92,19 +92,21 @@ function AccordionHeader({
               <FolderIcon className="w-7 h-7 text-link" />
             )}
             <div className="flex gap-1">
-              <div className="font-semibold text-hint">{getFolderStack()}</div>
-              <div
-                ref={titleRef}
-                className="font-semibold outline-none"
-                contentEditable={editingTitle}
-                onBlur={() => {
-                  if (editingTitle) {
-                    onBlur(titleRef.current?.innerText || "");
-                  }
-                }}
-              >
-                {foldersStack[foldersStack.length - 1].title}
-              </div>
+              <span className="font-semibold">
+                <span className="text-hint">{getFolderStack()}</span>
+                <span
+                  ref={titleRef}
+                  className="font-semibold outline-none"
+                  contentEditable={editingTitle}
+                  onBlur={() => {
+                    if (editingTitle) {
+                      onBlur(titleRef.current?.innerText || "");
+                    }
+                  }}
+                >
+                  {foldersStack[foldersStack.length - 1].title}
+                </span>
+              </span>
             </div>
           </div>
           <ChevronIcon
