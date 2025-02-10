@@ -69,7 +69,7 @@ export default function Folders() {
             ? 40
             : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
-        className="px-4 py-2 bg-secondary pb-4 border-b-2 border-link/10"
+        className="px-4 py-2 bg-secondary pb-4 border-b-2 border-primary"
       >
         <div className="relative">
           <Input
