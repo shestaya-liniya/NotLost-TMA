@@ -18,8 +18,8 @@ export default function App() {
     const backButton = WebApp.BackButton;
     backButton.show();
     backButton.onClick(() => {
-      backButton.hide();
       console.log("back");
+      backButton.hide();
     });
   }, []);
 
