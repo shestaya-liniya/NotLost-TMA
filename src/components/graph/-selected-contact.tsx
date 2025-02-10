@@ -45,7 +45,7 @@ const Wrapper = ({ children }: { children: ReactElement }) => {
       <div>
         <div className="p-4 pt-2">
           <div
-            className="bg-secondary rounded-xl"
+            className="bg-primary rounded-xl"
             style={{
               boxShadow: `${hexToRgba(getCssVariable("--color-link"), 0.8)} 0px 3px 0px 0px`,
             }}
