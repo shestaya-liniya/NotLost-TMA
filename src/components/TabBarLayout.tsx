@@ -1,6 +1,7 @@
 import tgWallpaper from "@/assets/tg-wallpaper-paris.svg";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
+import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 
 export default function TabBarLayout({
   activeTab,
@@ -11,6 +12,8 @@ export default function TabBarLayout({
   setActiveTab: (tab: string) => void;
   children: React.ReactNode;
 }) {
+  const keyboardVisible = useKeyboardState();
+
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
       <div className="flex-1 overflow-auto text-white relative">
@@ -29,7 +32,9 @@ export default function TabBarLayout({
         />
         <div className="h-full">{children}</div>
       </div>
-      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className={`${keyboardVisible ? "hidden" : ""}`}>
+        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
     </div>
   );
 }

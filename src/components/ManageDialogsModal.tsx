@@ -3,9 +3,18 @@ import FolderIcon from "@/assets/icons/folder.svg?react";
 import Dialog from "@/ui/Dialog.jsx";
 import Draggable from "@/ui/Draggable";
 import { useModalStore } from "@/lib/store/modal-store";
+import { useKeyboardState } from "@/helpers/use-keyboard-visible";
+import { useEffect } from "react";
 
 export default function ManageDialogsModal() {
   const { manageDialogsModalOpen, setManageDialogsModalOpen } = useModalStore();
+  const keyboardVisible = useKeyboardState();
+
+  useEffect(() => {
+    if (keyboardVisible) {
+      setManageDialogsModalOpen(false);
+    }
+  }, [keyboardVisible]);
 
   return (
     <BottomModal

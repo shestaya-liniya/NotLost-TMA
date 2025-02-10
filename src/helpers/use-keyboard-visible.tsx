@@ -1,32 +1,33 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
 export const useKeyboardState = () => {
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   useEffect(() => {
     const handleFocus = () => {
-      const activeElement = document.activeElement
+      const activeElement = document.activeElement;
       if (
         activeElement &&
         (activeElement.tagName === "INPUT" ||
-          activeElement.tagName === "TEXTAREA")
+          activeElement.tagName === "TEXTAREA" ||
+          activeElement.hasAttribute("contenteditable"))
       ) {
-        setIsKeyboardVisible(true)
+        setIsKeyboardVisible(true);
       }
-    }
+    };
 
     const handleBlur = () => {
-      setIsKeyboardVisible(false)
-    }
+      setIsKeyboardVisible(false);
+    };
 
-    window.addEventListener("focusin", handleFocus)
-    window.addEventListener("focusout", handleBlur)
+    window.addEventListener("focusin", handleFocus);
+    window.addEventListener("focusout", handleBlur);
 
     return () => {
-      window.removeEventListener("focusin", handleFocus)
-      window.removeEventListener("focusout", handleBlur)
-    }
-  }, [])
+      window.removeEventListener("focusin", handleFocus);
+      window.removeEventListener("focusout", handleBlur);
+    };
+  }, []);
 
-  return isKeyboardVisible
-}
+  return isKeyboardVisible;
+};
