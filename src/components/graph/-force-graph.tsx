@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, memo } from "react";
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
@@ -203,4 +203,4 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
   return { nodes, links };
 };
 
-export default ForceGraph;
+export default memo(ForceGraph);
