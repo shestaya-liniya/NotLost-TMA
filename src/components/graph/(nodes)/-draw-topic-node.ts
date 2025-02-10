@@ -53,7 +53,7 @@ export const drawTopicNode = (
   ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 1);
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 0.8);
 
   // on ios / mac os text is lower than should be
   if (["macos", "ios"].includes(platform)) {

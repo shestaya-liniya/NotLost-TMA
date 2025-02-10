@@ -91,13 +91,15 @@ function BottomBarLink({
           }}
           className="flex items-center justify-center transition-all duration-70 ease-in-out"
         >
-          <div className={`h-6 w-6 ${isActive ? "text-link" : "text-white"}`}>
+          <div
+            className={`h-6 w-6 ${isActive ? "text-link" : "text-white/80"}`}
+          >
             <Icon />
           </div>
         </div>
       </div>
       <span
-        className={`font-medium ${isActive ? "px-2 rounded-2xl text-accent" : ""}`}
+        className={`font-medium ${isActive ? "px-2 rounded-2xl text-accent" : "text-white/80"}`}
       >
         {title}
       </span>

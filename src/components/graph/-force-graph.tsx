@@ -66,7 +66,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         style={{
           top: `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`,
         }}
-        className="absolute left-0 w-full z-10"
+        className="absolute left-0 translate-x-1/2 right-1/2 z-10"
       >
         <AnimatePresence>
           {selectedContact && (
