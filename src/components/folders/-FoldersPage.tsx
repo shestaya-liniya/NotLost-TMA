@@ -21,7 +21,11 @@ import Button from "@/ui/Button";
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
 
-  const { setManageDialogsModalOpen } = useModalStore();
+  const {
+    setManageDialogsModalOpen,
+    manageDialogsModalHeight,
+    manageDialogsModalOpen,
+  } = useModalStore();
   const { draggableItemType } = useDragStore();
 
   const lp = useLaunchParams();
@@ -64,7 +68,7 @@ export default function Folders() {
             ? 40
             : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
-        className="px-4 py-2 shadow-2xl bg-secondary pb-4"
+        className="px-4 py-2 bg-secondary pb-4"
       >
         <div className="relative">
           <Input
@@ -84,7 +88,14 @@ export default function Folders() {
           <Button title="Filter" onClick={() => {}} />
         </div>
       </div>
-      <div className="overflow-y-auto overscroll-none pb-20 max-h-screen h-full">
+      <div
+        style={{
+          height: manageDialogsModalOpen
+            ? `calc(100% - ${manageDialogsModalHeight}px - 70px)` // 70px is the height of the tabbar
+            : "100%",
+        }}
+        className={`overflow-y-auto overscroll-none max-h-screen`}
+      >
         <div className="absolute w-screen">
           <NewFolder jazzProfile={jazzProfile} />
         </div>
