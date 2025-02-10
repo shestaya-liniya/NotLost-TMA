@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 
 // --- Telegram env ---
-import { backButton, retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { EnvUnsupported } from "@/lib/telegram/env/env-unsupported.tsx";
 import { init } from "@/lib/telegram/env/init.ts";
 import "./lib/telegram/env/mock-env.ts";
@@ -19,13 +19,6 @@ const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
   init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV);
-
-  backButton.show();
-  backButton.onClick(() => {
-    /* onClose();
-        backButton.hide(); */
-    console.log("back");
-  });
 
   root.render(
     <StrictMode>
