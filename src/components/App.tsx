@@ -8,7 +8,7 @@ import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
-import WebApp from "@twa-dev/sdk";
+//import WebApp from "@twa-dev/sdk";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -83,11 +83,13 @@ function SlidingPage({
 }) {
   useEffect(() => {
     if (open) {
-      const backButton = WebApp.BackButton;
+      const webApp = (window as any)?.Telegram?.WebApp;
+      const backButton = webApp.BackButton;
       backButton.show();
       backButton.onClick(() => {
-        onClose();
-        backButton.hide();
+        /* onClose();
+        backButton.hide(); */
+        console.log("back");
       });
 
       /* const mainButton = WebApp.MainButton;
