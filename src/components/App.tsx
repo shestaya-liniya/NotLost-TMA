@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
@@ -8,6 +8,8 @@ import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
+import { mainButton } from "@telegram-apps/sdk-react";
+import { backButton } from "@telegram-apps/sdk-react";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -80,13 +82,26 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
+  useEffect(() => {
+    if (open) {
+      backButton.show();
+      backButton.onClick(() => {
+        onClose();
+        backButton.hide();
+      });
+      mainButton.mount();
+      mainButton.onClick(() => {
+        console.log("main");
+      });
+    }
+  }, [open]);
   return (
     <div>
-      {/* <div
+      <div
         className={`absolute top-0 left-0 w-screen h-screen bg-black/50 transition-all ease duration-500 ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-      ></div> */}
+      ></div>
       <div
         className={`absolute top-0 left-0 w-screen h-screen bg-secondary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
