@@ -31,7 +31,7 @@ function FolderAccordion({
         onBlur={onBlur}
       />
       <div
-        className={`${expanded ? "animate-fadeIn" : "absolute w-full animate-fadeOutHidden -left-0 px-2"} `}
+        className={`${expanded ? "animate-fadeIn" : "absolute w-full animate-fadeOutHidden -left-0 px-4"} `}
       >
         <AccordionContent>{children}</AccordionContent>
       </div>
@@ -120,7 +120,7 @@ function AccordionHeader({
 
 function AccordionContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="p-4 bg-secondary rounded-b-2xl animate-fadeIn border-2 border-primary">
+    <div className="p-4 bg-secondary rounded-b-2xl animate-fadeIn border-l-2 border-r-2 border-b-2 border-primary/30">
       {children}
     </div>
   );
