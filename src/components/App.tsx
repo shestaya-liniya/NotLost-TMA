@@ -103,11 +103,11 @@ function SlidingPage({
 
   return (
     <div>
-      <div
+      {/* <div
         className={`absolute top-0 left-0 w-screen h-screen bg-black/50 transition-all ease duration-500 ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-      ></div>
+      ></div> */}
       <div
         className={`absolute top-0 left-0 w-screen h-screen bg-secondary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
