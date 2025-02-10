@@ -4,17 +4,11 @@ import Dialog from "@/ui/Dialog.jsx";
 import Draggable from "@/ui/Draggable";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export default function ManageDialogsModal() {
-  const {
-    manageDialogsModalOpen,
-    setManageDialogsModalOpen,
-    setManageDialogsModalHeight,
-  } = useModalStore();
+  const { manageDialogsModalOpen, setManageDialogsModalOpen } = useModalStore();
   const keyboardVisible = useKeyboardState();
-
-  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (keyboardVisible) {
@@ -22,15 +16,9 @@ export default function ManageDialogsModal() {
     }
   }, [keyboardVisible]);
 
-  useEffect(() => {
-    if (ref.current) {
-      setManageDialogsModalHeight(ref.current.clientHeight);
-    }
-  }, [ref]);
-
   return (
     <BottomModal
-      ref={ref}
+      id="manage-dialogs-modal"
       title="Manage dialogs"
       isOpen={manageDialogsModalOpen}
       onClose={() => setManageDialogsModalOpen(false)}

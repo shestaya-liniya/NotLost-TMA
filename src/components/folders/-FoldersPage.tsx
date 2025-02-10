@@ -12,6 +12,7 @@ import NewFolder from "@/components/folders/NewFolder";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
+import { getElementHeightById } from "@/helpers/css/get-element-height";
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
 // To make smooth transition of all folders going down/up when some folder is expanded,
@@ -21,11 +22,7 @@ import Button from "@/ui/Button";
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
 
-  const {
-    setManageDialogsModalOpen,
-    manageDialogsModalHeight,
-    manageDialogsModalOpen,
-  } = useModalStore();
+  const { setManageDialogsModalOpen, manageDialogsModalOpen } = useModalStore();
   const { draggableItemType } = useDragStore();
 
   const lp = useLaunchParams();
@@ -60,6 +57,9 @@ export default function Folders() {
       .reduce((acc, folder) => acc + folder.height, 0);
   };
 
+  const tabBarHeight = getElementHeightById("tab-bar");
+  const manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+
   return (
     <div className="h-full flex flex-col relative">
       <div
@@ -91,7 +91,7 @@ export default function Folders() {
       <div
         style={{
           height: manageDialogsModalOpen
-            ? `calc(100% - ${manageDialogsModalHeight}px - 70px)` // 70px is the height of the tabbar
+            ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px)`
             : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
