@@ -87,13 +87,13 @@ function SlidingPage({
         backButton.hide();
       });
 
-      const mainButton = WebApp.MainButton;
+      /* const mainButton = WebApp.MainButton;
       mainButton.setText("Back");
       mainButton.show();
       mainButton.onClick(() => {
         onClose();
         mainButton.hide();
-      });
+      }); */
     }
   }, [open]);
 
