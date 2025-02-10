@@ -1,6 +1,6 @@
 import BottomModal from "@/ui/BottomModal.jsx";
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import Dialog from "@/ui/Dialog.jsx";
+import Dialog from "@/ui/dialog/Dialog.js";
 import Draggable from "@/ui/Draggable";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";

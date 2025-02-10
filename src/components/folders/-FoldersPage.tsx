@@ -91,7 +91,11 @@ export default function Folders() {
       <div
         style={{
           height: manageDialogsModalOpen
-            ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px - var(--tg-viewport-safe-area-inset-bottom)) `
+            ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px ${
+                !["macos", "tdesktop"].includes(lp.platform)
+                  ? "- var(--tg-viewport-safe-area-inset-bottom)px"
+                  : ""
+              } ) `
             : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}

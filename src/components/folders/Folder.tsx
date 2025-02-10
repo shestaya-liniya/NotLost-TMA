@@ -13,8 +13,8 @@ import { useState, useRef, useEffect, memo } from "react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import Dialog from "@/ui/Dialog";
 import Tappable from "@/ui/Tappable";
+import DialogWithActions from "@/ui/dialog/DialogWithActions";
 
 function Folder(props: {
   folder: JazzFolder;
@@ -157,7 +157,10 @@ function Folder(props: {
                   if (!dialog) return null;
                   return (
                     <div key={dialog.id} className="animate-fadeIn">
-                      <Dialog name={dialog.name} username={dialog.username} />
+                      <DialogWithActions
+                        dialog={dialog}
+                        folder={activeFolder}
+                      />
                     </div>
                   );
                 })}

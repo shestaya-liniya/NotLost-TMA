@@ -4,6 +4,8 @@ function Tappable(props: {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
+  onTouchStart?: () => void;
+  onTouchEnd?: () => void;
 }) {
   const activeRef = useRef(false);
 
@@ -26,6 +28,8 @@ function Tappable(props: {
         activeRef.current = false;
       }}
       onClick={handleClick}
+      onTouchStart={props.onTouchStart}
+      onTouchEnd={props.onTouchEnd}
     >
       {props.children}
     </div>
