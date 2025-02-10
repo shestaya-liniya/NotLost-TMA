@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
@@ -8,32 +8,10 @@ import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
-import WebApp from "@twa-dev/sdk";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
   const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
-
-  useEffect(() => {
-    const backButton = WebApp.BackButton;
-
-    if (!backButton.isVisible) {
-      backButton.show();
-      backButton.onClick(() => {
-        /* onClose();
-        backButton.hide(); */
-        console.log("back");
-      });
-
-      /* const mainButton = WebApp.MainButton;
-      mainButton.setText("Back");
-      mainButton.show();
-      mainButton.onClick(() => {
-        onClose();
-        mainButton.hide();
-      }); */
-    }
-  }, []);
 
   return (
     <Routes>
