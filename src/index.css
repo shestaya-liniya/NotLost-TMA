@@ -10,6 +10,7 @@
   --color-link: var(--tg-theme-link-color);
   --color-accent: var(--tg-theme-accent-text-color);
   --color-hint: var(--tg-theme-hint-color);
+  --color-button: var(--tg-theme-button-color);
   --animate-fadeIn: fadeIn 0.3s ease-in-out forwards;
   --animate-fadeOutHidden: fadeOutHidden 0.15s ease-in-out forwards;
   --animate-delayZindex: delayZindex 0.5s ease-in-out forwards;

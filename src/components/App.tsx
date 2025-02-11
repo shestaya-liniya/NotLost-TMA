@@ -109,18 +109,17 @@ function SlidingPage({
       >
         <TelegramWallpaper />
         {children}
-        {import.meta.env.DEV && (
-          <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
-            <div className="flex justify-center items-center w-full px-4">
-              <Tappable
-                className="bg-link/30 text-center py-4 text-link rounded-2xl w-full font-semibold"
-                onClick={onClose}
-              >
-                Go back
-              </Tappable>
-            </div>
+
+        <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
+          <div className="flex justify-center items-center w-full px-4">
+            <Tappable
+              className="bg-button text-center py-4 text-white rounded-2xl w-full font-semibold"
+              onClick={onClose}
+            >
+              Go back
+            </Tappable>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
