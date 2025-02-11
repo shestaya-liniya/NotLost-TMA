@@ -36,7 +36,9 @@ function Tappable(props: {
     <div
       className={`transition duration-150 active:opacity-85 active:scale-98 ${props.className}`}
       onPointerDown={() => {
-        startPress();
+        if (props.onLongPress) {
+          startPress();
+        }
       }}
       onPointerUp={() => {
         endPress();
@@ -53,6 +55,11 @@ function Tappable(props: {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
           timerRef.current = null;
+        }
+      }}
+      onClick={() => {
+        if (!props.onLongPress) {
+          props.onClick?.();
         }
       }}
     >
