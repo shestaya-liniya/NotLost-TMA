@@ -52,6 +52,10 @@ export const drawTopicNode = (
   ctx.arcTo(x, y, x + width, y, cornerRadius);
   ctx.closePath();
   ctx.fill();
+  // border
+  ctx.lineWidth = 0.5; // Set the border width
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
+  ctx.stroke();
 
   ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 1);
 
