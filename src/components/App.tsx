@@ -111,9 +111,9 @@ function SlidingPage({
         {children}
 
         <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
-          <div className="flex justify-center items-center w-full px-4">
+          <div className="flex justify-center items-center w-full px-4 pb-4">
             <Tappable
-              className="bg-button text-center py-4 text-white rounded-2xl w-full font-semibold"
+              className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold"
               onClick={onClose}
             >
               Go back
