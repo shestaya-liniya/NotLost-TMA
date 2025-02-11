@@ -50,7 +50,7 @@ export const drawContactNode = (
   ); */
 
   // username
-  const textWidth = ctx.measureText(node.username).width;
+  const textWidth = ctx.measureText(node.firstName).width;
   const textHeight = usernameFontSize;
 
   // text background
@@ -77,7 +77,7 @@ export const drawContactNode = (
   ctx.stroke();
 
   drawText(
-    `${node.username!}`,
+    `${node.firstName!}`,
     usernameFontSize,
     getCssVariable("--color-link"),
     imgSize / 4 + 1
