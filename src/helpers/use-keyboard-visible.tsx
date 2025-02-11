@@ -8,7 +8,9 @@ export const useKeyboardState = () => {
       const activeElement = document.activeElement;
       if (
         activeElement &&
-        (activeElement.tagName === "INPUT" ||
+        ((activeElement.tagName === "INPUT" &&
+          //@ts-ignore
+          activeElement.type !== "checkbox") ||
           activeElement.tagName === "TEXTAREA" ||
           activeElement.hasAttribute("contenteditable"))
       ) {

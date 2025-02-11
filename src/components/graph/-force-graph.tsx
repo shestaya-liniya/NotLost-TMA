@@ -13,6 +13,7 @@ import { AnimatePresence } from "framer-motion";
 import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import Switch from "@/ui/Switch";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(
@@ -64,6 +65,8 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const [globalScale, setGlobalScale] = useState<number | null>(null);
 
+  const [dragNodes, setDragNodes] = useState<boolean>(false);
+
   return (
     <div>
       <div
@@ -79,11 +82,20 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         </AnimatePresence>
       </div>
 
+      <div className="absolute bottom-8 left-6 z-10 backdrop-blur-sm px-4 pt-2 pb-1 rounded-2xl border-2 border-primary/30">
+        <Switch
+          label="Drag mode"
+          checked={dragNodes}
+          onChange={(checked) => setDragNodes(checked)}
+        />
+      </div>
+
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
         height={window.innerHeight}
         nodeAutoColorBy="group"
+        enableNodeDrag={dragNodes}
         onBackgroundClick={() => {
           setSelectedContact(null);
         }}
