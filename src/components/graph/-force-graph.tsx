@@ -12,6 +12,7 @@ import { SelectedContact } from "./-selected-contact";
 import { AnimatePresence } from "framer-motion";
 import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(
@@ -133,7 +134,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = getCssVariable("--color-hint");
+          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.5);
           ctx.lineWidth = 0.25;
 
           ctx.beginPath();
