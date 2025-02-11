@@ -48,11 +48,38 @@ export const drawContactNode = (
   ); */
 
   // username
+
+  const textWidth = ctx.measureText(node.username).width;
+  const textHeight = usernameFontSize;
+
+  // text background
+  const padding = 0.8;
+  const cornerRadius = 1.6;
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), textOpacity);
+
+  ctx.beginPath();
+  const x = node.x! - textWidth / 2 - padding * 2;
+  const y = node.y! + imgSize - padding - 6.5;
+  const width = textWidth + padding * 4;
+  const height = textHeight + padding * 2;
+
+  ctx.moveTo(x + cornerRadius, y);
+  ctx.arcTo(x + width, y, x + width, y + height, cornerRadius);
+  ctx.arcTo(x + width, y + height, x, y + height, cornerRadius);
+  ctx.arcTo(x, y + height, x, y, cornerRadius);
+  ctx.arcTo(x, y, x + width, y, cornerRadius);
+  ctx.closePath();
+  ctx.fill();
+  // border
+  ctx.lineWidth = 0.5; // Set the border width
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
+  ctx.stroke();
+
   drawText(
     `@${node.username!}`,
     usernameFontSize,
-    getCssVariable("--color-white"),
-    imgSize / 4 + 0.5
+    getCssVariable("--color-link"),
+    imgSize / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
