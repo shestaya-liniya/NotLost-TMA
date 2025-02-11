@@ -53,7 +53,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   >(undefined);
 
   useEffect(() => {
-    fgRef?.current?.d3Force("charge")!.distanceMax(50);
+    fgRef?.current?.d3Force("charge")!.distanceMax(80);
     fgRef?.current?.centerAt(0, 0);
     fgRef?.current?.zoom(1);
   }, []);
@@ -121,7 +121,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           if (node.type === GraphNodeType.TOPIC) {
             imgSize = getTopicRadius(globalScale ? globalScale : 0);
           } else {
-            imgSize = 20;
+            imgSize = 10;
           }
           console.log();
           ctx.fillStyle = color;
@@ -131,7 +131,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         }}
         linkCanvasObject={(link, ctx) => {
           ctx.strokeStyle = getCssVariable("--tg-theme-button-color");
-          ctx.lineWidth = 0.5;
+          ctx.lineWidth = 0.25;
 
           ctx.beginPath();
           ctx.moveTo(

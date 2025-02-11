@@ -9,11 +9,11 @@ export const drawContactNode = (
   globalScale: number,
   img: HTMLImageElement | null
 ) => {
-  const imgSize = 20;
+  const imgSize = 10;
 
   if (getTopicRadius(globalScale) >= 36) return;
 
-  /* const firstNameFontSize = Math.min(3, (12 * globalScale) / 8);
+  //const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
   const usernameFontSize = Math.min(2, (12 * globalScale) / 8);
 
   let textOpacity = Math.min(globalScale / 4, 1);
@@ -24,9 +24,9 @@ export const drawContactNode = (
 
   if (globalScale < 2) {
     textOpacity = 0;
-  } */
+  }
 
-  /* const drawText = (
+  const drawText = (
     text: string,
     fontSize: number,
     color: string,
@@ -37,23 +37,23 @@ export const drawContactNode = (
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillText(text, node.x!, node.y! + yOffset);
-  }; */
+  };
 
-  /* // first name
-  drawText(
+  // first name
+  /* drawText(
     node.firstName.toString(),
     firstNameFontSize,
     getCssVariable("--tg-theme-text-color"),
     imgSize / 4 + 1
-  );
+  ); */
 
   // username
   drawText(
     `@${node.username!}`,
     usernameFontSize,
-    getCssVariable("--tg-theme-link-color"),
-    imgSize / 4 + 4.5
-  ); */
+    getCssVariable("--color-white"),
+    imgSize / 4 + 0.5
+  );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
     ctx.save();
@@ -89,7 +89,7 @@ export const drawContactNode = (
     // blue border around node
     ctx.beginPath();
     ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false);
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 0.5;
     ctx.strokeStyle = getCssVariable("--tg-theme-accent-text-color");
     ctx.stroke();
     ctx.restore();

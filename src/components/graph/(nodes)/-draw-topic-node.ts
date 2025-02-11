@@ -12,7 +12,7 @@ export const drawTopicNode = (
   const titleText = node.title!.toString();
 
   // circle
-  const radius = getTopicRadius(globalScale);
+  const radius = 5;
 
   const usernameFontSize = radius;
 
@@ -22,9 +22,9 @@ export const drawTopicNode = (
   ctx.fill();
 
   // circle stroke
-  /* ctx.lineWidth = 1.5
-  ctx.strokeStyle = hexToRgba("#6ab2f2", 1)
-  ctx.stroke() */
+  ctx.lineWidth = 0.5;
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1);
+  ctx.stroke();
 
   // topic title
   ctx.textAlign = "center";
@@ -52,6 +52,10 @@ export const drawTopicNode = (
   ctx.arcTo(x, y, x + width, y, cornerRadius);
   ctx.closePath();
   ctx.fill();
+  // border
+  ctx.lineWidth = 0.5; // Set the border width
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-primary"), 1); // Set the border color
+  ctx.stroke();
 
   ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 1);
 
@@ -86,7 +90,7 @@ export const drawTopicNode = (
 export const getTopicRadius = (globalScale: number): number => {
   const minScale = 0.5; // Smallest global scale (e.g., zoomed out)
   const maxScale = 1.0; // Largest global scale (e.g., zoomed in)
-  const minRadius = 36; // Radius when global scale is small
+  const minRadius = 8; // Radius when global scale is small
   const maxRadius = 8; // Radius when global scale is large
 
   const radius = Math.max(
