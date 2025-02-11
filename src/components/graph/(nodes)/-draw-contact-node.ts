@@ -53,7 +53,7 @@ export const drawContactNode = (
   const textHeight = usernameFontSize;
 
   // text background
-  const padding = 0.8;
+  const padding = 0.6;
   const cornerRadius = 1.6;
   ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), textOpacity);
 
@@ -71,12 +71,12 @@ export const drawContactNode = (
   ctx.closePath();
   ctx.fill();
   // border
-  ctx.lineWidth = 0.5; // Set the border width
+  ctx.lineWidth = 0.25; // Set the border width
   ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
   ctx.stroke();
 
   drawText(
-    `@${node.username!}`,
+    `${node.username!}`,
     usernameFontSize,
     getCssVariable("--color-link"),
     imgSize / 4 + 1

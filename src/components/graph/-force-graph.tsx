@@ -133,7 +133,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = getCssVariable("--tg-theme-button-color");
+          ctx.strokeStyle = getCssVariable("--color-hint");
           ctx.lineWidth = 0.25;
 
           ctx.beginPath();
