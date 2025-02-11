@@ -6,6 +6,7 @@ import {
   JazzListOfFolders,
   RootUserProfile,
 } from "../schema";
+import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
 
 export const jazzCreateNewFolder = (
   jazzProfile: RootUserProfile,
@@ -23,6 +24,7 @@ export const jazzCreateNewFolder = (
       { owner: jazzProfile._owner }
     )
   );
+  updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
 };
 
 export const jazzDeleteFolder = (
@@ -51,6 +53,7 @@ export const jazzDeleteFolder = (
         });
       }
     }
+    updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
   }
 };
 
@@ -66,6 +69,7 @@ export const jazzAddDialogToFolder = (
         { owner: jazzProfile._owner }
       )
     );
+    updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
   }
 };
 
@@ -78,6 +82,7 @@ export const jazzRemoveDialogFromFolder = (
   folder.dialogs! = JazzListOfDialogs.create(filteredDialogs, {
     owner: jazzProfile._owner,
   });
+  updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
 };
 
 export const jazzAddNestedFolderToFolder = (
@@ -100,5 +105,6 @@ export const jazzAddNestedFolderToFolder = (
         }
       )
     );
+    updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
   }
 };

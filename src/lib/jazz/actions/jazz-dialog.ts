@@ -1,3 +1,4 @@
+import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
 import {
   JazzDialog,
   JazzFolder,
@@ -14,4 +15,5 @@ export const jazzRemoveDialog = (
   folder.dialogs! = JazzListOfDialogs.create(filteredDialogs, {
     owner: jazzProfile._owner,
   });
+  updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
 };
