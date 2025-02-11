@@ -61,7 +61,7 @@ export default function DialogWithActions(props: {
             </span>
           </div>
           <div className="flex flex-col">
-            <div className="bg-green-500/10 h-4 mt-1 rounded-sm text-[8px] text-green-500 px-1 flex items-center gap-1 py-1 uppercase">
+            <div className="bg-green-500/10 mt-1 rounded-sm text-[8px] text-green-500 px-1 flex items-center gap-1 py-1 uppercase">
               dev
             </div>
           </div>
