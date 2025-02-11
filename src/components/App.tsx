@@ -8,7 +8,6 @@ import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
-import { mainButton } from "@telegram-apps/sdk-react";
 import { backButton } from "@telegram-apps/sdk-react";
 
 export default function App() {
