@@ -4,32 +4,57 @@ function Tappable(props: {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-  onTouchStart?: () => void;
-  onTouchEnd?: () => void;
+  onLongPress?: () => void;
 }) {
-  const activeRef = useRef(false);
+  const timerRef = useRef<number | null>(null);
+  const isLongPress = useRef(false);
 
-  const handleClick = () => {
-    if (props.onClick) {
-      requestAnimationFrame(props.onClick);
+  const startPress = () => {
+    isLongPress.current = false;
+    activeRef.current = true;
+
+    timerRef.current = window.setTimeout(() => {
+      isLongPress.current = true;
+      props.onLongPress?.();
+    }, 200);
+  };
+
+  const endPress = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+
+      if (!isLongPress.current) {
+        props.onClick?.();
+      }
     }
   };
+
+  const activeRef = useRef(false);
 
   return (
     <div
       className={`transition duration-150 active:opacity-85 active:scale-98 ${props.className}`}
       onPointerDown={() => {
-        activeRef.current = true;
+        startPress();
       }}
       onPointerUp={() => {
-        activeRef.current = false;
+        endPress();
       }}
       onPointerLeave={() => {
         activeRef.current = false;
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
       }}
-      onClick={handleClick}
-      onTouchStart={props.onTouchStart}
-      onTouchEnd={props.onTouchEnd}
+      onTouchMove={() => {
+        activeRef.current = false;
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      }}
     >
       {props.children}
     </div>

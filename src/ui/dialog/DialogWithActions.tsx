@@ -1,5 +1,5 @@
 import { JazzDialog, JazzFolder } from "@/lib/jazz/schema";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
 import { truncateWord } from "@/helpers/truncate-word";
@@ -8,40 +8,17 @@ export default function DialogWithActions(props: {
   dialog: JazzDialog;
   folder: JazzFolder;
 }) {
-  const timerRef = useRef<number | null>(null);
-  const isLongPress = useRef(false);
-
   const [dialogWithTooltip, setDialogWithTooltip] = useState<null | JazzDialog>(
     null
   );
-  const startPress = (dialog: JazzDialog) => {
-    isLongPress.current = false;
-    timerRef.current = window.setTimeout(() => {
-      setDialogWithTooltip(dialog);
-      isLongPress.current = true;
-    }, 200);
-  };
-
-  const endPress = (username: string) => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-
-      if (!isLongPress.current) {
-        window.open(`https://t.me/${username}`, "_blank");
-      }
-    }
-  };
   return (
     <div className={`relative`}>
       <Tappable
-        onTouchStart={() => {
-          startPress(props.dialog);
+        onClick={() => {
+          window.open(`https://t.me/${props.dialog.username}`, "_blank");
         }}
-        onTouchEnd={() => {
-          if (props.dialog.username) {
-            endPress(props.dialog.username);
-          }
+        onLongPress={() => {
+          setDialogWithTooltip(props.dialog);
         }}
         className="flex flex-col items-center justify-left gap-1 rounded-xl p-2"
       >
