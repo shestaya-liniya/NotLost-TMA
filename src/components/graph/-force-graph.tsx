@@ -27,6 +27,8 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const graphData = useMemo(() => initializeGraphData(data), [data]);
 
+  const [dragNodes, setDragNodes] = useState<boolean>(false);
+
   const { imageCache, fetchImages } = useImageCache(graphData.nodes);
 
   useEffect(() => {
@@ -64,8 +66,6 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   }, []);
 
   const [globalScale, setGlobalScale] = useState<number | null>(null);
-
-  const [dragNodes, setDragNodes] = useState<boolean>(false);
 
   return (
     <div>
