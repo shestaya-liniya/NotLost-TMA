@@ -41,7 +41,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           drawContactNode(node, ctx, globalScale, img);
           break;
         case GraphNodeType.TOPIC:
-          drawTopicNode(node, ctx, globalScale, img, lp.platform);
+          drawTopicNode(node, ctx, img, lp.platform);
           break;
       }
     },
@@ -53,7 +53,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   >(undefined);
 
   useEffect(() => {
-    fgRef?.current?.d3Force("charge")!.distanceMax(80);
+    fgRef?.current?.d3Force("charge")!.distanceMax(120);
     fgRef?.current?.centerAt(0, 0);
     fgRef?.current?.zoom(1);
   }, []);

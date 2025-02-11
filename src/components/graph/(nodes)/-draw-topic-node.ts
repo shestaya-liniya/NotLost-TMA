@@ -5,7 +5,7 @@ import { getCssVariable } from "@/helpers/css/get-css-variable";
 export const drawTopicNode = (
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
-  globalScale: number,
+  //globalScale: number,
   img: HTMLImageElement,
   platform: string
 ) => {
