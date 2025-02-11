@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
 import { truncateWord } from "@/helpers/truncate-word";
-import TagIcon from "@/assets/icons/tag.svg?react";
+
 export default function DialogWithActions(props: {
   dialog: JazzDialog;
   folder: JazzFolder;
