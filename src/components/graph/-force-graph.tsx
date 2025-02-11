@@ -57,7 +57,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   useEffect(() => {
     fgRef?.current?.d3Force("charge")!.distanceMax(80);
     fgRef?.current?.centerAt(0, 0);
-    fgRef?.current?.zoom(1);
+    fgRef?.current?.zoom(5);
     fgRef?.current?.d3Force("link")!.distance(() => {
       return 20;
     });
