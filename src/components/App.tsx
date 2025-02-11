@@ -82,17 +82,14 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
+  const handleClose = () => {
+    onClose();
+    backButton.hide();
+  };
   useEffect(() => {
     if (open) {
       backButton.show();
-      backButton.onClick(() => {
-        onClose();
-        backButton.hide();
-      });
-      mainButton.mount();
-      mainButton.onClick(() => {
-        console.log("main");
-      });
+      backButton.onClick(handleClose);
     }
   }, [open]);
   return (
@@ -114,7 +111,7 @@ function SlidingPage({
           <div className="flex justify-center items-center w-full px-4 pb-4">
             <Tappable
               className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold"
-              onClick={onClose}
+              onClick={handleClose}
             >
               Go back
             </Tappable>
