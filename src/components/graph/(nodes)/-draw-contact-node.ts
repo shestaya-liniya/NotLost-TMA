@@ -16,6 +16,8 @@ export const drawContactNode = (
   //const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
   const usernameFontSize = Math.min(2, (12 * globalScale) / 8);
 
+  ctx.font = `400 ${usernameFontSize}px Sans-Serif`;
+
   let textOpacity = Math.min(globalScale / 4, 1);
 
   if (globalScale < 4) {
@@ -48,7 +50,6 @@ export const drawContactNode = (
   ); */
 
   // username
-
   const textWidth = ctx.measureText(node.username).width;
   const textHeight = usernameFontSize;
 
