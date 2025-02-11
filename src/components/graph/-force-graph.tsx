@@ -124,7 +124,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           if (node.type === GraphNodeType.TOPIC) {
             imgSize = getTopicRadius(globalScale ? globalScale : 0);
           } else {
-            imgSize = 10;
+            imgSize = 15;
           }
           console.log();
           ctx.fillStyle = color;
