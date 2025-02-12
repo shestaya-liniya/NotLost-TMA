@@ -12,7 +12,7 @@ export default function ManageDialogsModal() {
 
   useEffect(() => {
     if (keyboardVisible) {
-      setManageDialogsModalOpen(false);
+      //setManageDialogsModalOpen(false);
     }
   }, [keyboardVisible]);
 

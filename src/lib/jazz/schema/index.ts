@@ -9,15 +9,6 @@ import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
 // then user can create contacts and add them to the root, more later
 
 export class JazzListOfTags extends CoList.Of(co.string) {}
-export class JazzContact extends CoMap {
-  username = co.string;
-  firstName = co.string;
-  lastName = co.string;
-  description = co.string;
-  topic = co.string;
-  tags = co.ref(JazzListOfTags);
-}
-export class JazzListOfContacts extends CoList.Of(co.ref(JazzContact)) {}
 
 export class JazzFolder extends CoMap {
   title = co.string;
@@ -27,6 +18,7 @@ export class JazzFolder extends CoMap {
 export class JazzDialog extends CoMap {
   name = co.string;
   username = co.string;
+  tags = co.ref(JazzListOfTags);
 }
 
 export class JazzListOfDialogs extends CoList.Of(co.ref(JazzDialog)) {}
@@ -36,7 +28,6 @@ export class JazzListOfFolders extends CoList.Of(co.ref(JazzFolder)) {}
 // where you can store top-level objects for that user
 export class RootUserProfile extends Profile {
   telegramId = co.number; // unique id for the user (how auth is done kind of)
-  contacts = co.ref(JazzListOfContacts);
 
   username = co.string;
   firstName = co.string;
@@ -63,12 +54,6 @@ export class JazzAccount extends Account {
 
     if (!profile) {
       throw new Error("Account profile missing, not able to run the migration");
-    }
-
-    if (!profile._refs.contacts) {
-      profile.contacts = JazzListOfContacts.create([], {
-        owner: this.profile!._owner,
-      });
     }
 
     if (!profile._refs.folders) {
