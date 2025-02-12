@@ -143,7 +143,7 @@ export default function Folders() {
         className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
         onClick={() => setManageDialogsModalOpen(true)}
       >
-        <PencilIcon className="w-7 h-7" />
+        <PencilIcon className="w-7 h-7 text-white" />
       </Tappable>
     </div>
   );

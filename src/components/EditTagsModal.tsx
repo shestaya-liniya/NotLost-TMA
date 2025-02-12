@@ -164,6 +164,7 @@ text-yellow-500
 text-purple-500
 text-orange-500
 text-pink-500
+text-black
 */
 
 const ColorCircle = ({

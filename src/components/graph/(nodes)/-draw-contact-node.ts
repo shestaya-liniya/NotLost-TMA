@@ -98,7 +98,7 @@ export const drawContactNode = (
         imgSize / 2,
         imgSize / 2
       );
-    } else {
+    } /* else {
       // acronym
       const acronymFontSize = Math.min(4, (12 * globalScale) / 8);
       const acronym = node.firstName[0];
@@ -112,13 +112,13 @@ export const drawContactNode = (
       // acronym bg
       ctx.fillStyle = "rgba(41, 144, 255, .15)";
       ctx.fill();
-    }
+    } */
 
     // blue border around node
     ctx.beginPath();
     ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false);
     ctx.lineWidth = 0.5;
-    ctx.strokeStyle = getCssVariable("--tg-theme-accent-text-color");
+    ctx.strokeStyle = getCssVariable("--color-link");
     ctx.stroke();
     ctx.restore();
 

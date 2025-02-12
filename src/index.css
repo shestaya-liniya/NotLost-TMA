@@ -1,16 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- backgrounds --- */
   --color-primary: var(--tg-bg-color);
   --color-secondary: var(--tg-theme-secondary-bg-color);
-  --color-bezeled: var(--tgui--secondary_fill);
-  /*------*/
 
   --color-link: var(--tg-theme-link-color);
   --color-accent: var(--tg-theme-accent-text-color);
   --color-hint: var(--tg-theme-hint-color);
   --color-button: var(--tg-theme-button-color);
+  --color-default: var(--tg-theme-text-color);
+
   --animate-fadeIn: fadeIn 0.3s ease-in-out forwards;
   --animate-fadeOutHidden: fadeOutHidden 0.15s ease-in-out forwards;
   --animate-delayZindex: delayZindex 0.5s ease-in-out forwards;
@@ -51,11 +50,70 @@
   }
 }
 
+[data-theme="rose"] {
+  --color-primary: #38282f;
+  --color-secondary: #251a1f;
+
+  --color-link: #d884b1;
+  --color-accent: #e58cbc;
+  --color-hint: #96848c;
+  --color-button: #e07db1;
+  --color-default: #fff;
+}
+
+[data-theme="blue"] {
+  --color-primary: #232e39;
+  --color-secondary: #161f25;
+
+  --color-link: #6ab0d7;
+  --color-accent: #71bbe4;
+  --color-hint: #7f8c97;
+  --color-button: #60b0e1;
+  --color-default: #fff;
+}
+
+[data-theme="green"] {
+  --color-primary: #1f3421;
+  --color-secondary: #142214;
+
+  --color-link: #5dc35a;
+  --color-accent: #63cf5f;
+  --color-hint: #79927a;
+  --color-button: #51cc4f;
+  --color-default: #fff;
+}
+
+[data-theme="purple"] {
+  --color-primary: #30203c;
+  --color-secondary: #1f1528;
+
+  --color-link: #a764f8;
+  --color-accent: #b36aff;
+  --color-hint: #8c7d99;
+  --color-button: #ac57ff;
+  --color-default: #fff;
+}
+
+[data-theme="white"] {
+  --color-primary: #fff;
+  --color-secondary: #f0f0f0;
+
+  --color-link: #328ae5;
+  --color-accent: #3e96e8;
+  --color-hint: #a8a8a8;
+  --color-button: #50a8eb;
+  --color-default: #000;
+}
+
+#app {
+  z-index: 1;
+}
+
 body {
-  background: var(--tg-theme-secondary-bg-color, white);
   padding: 0;
   margin: 0;
-  color: var(--tg-theme-text-color, black);
+  color: var(--color-default, #000) !important;
+  background: var(--color-secondary);
   height: 100dvh;
   overflow: hidden;
 }

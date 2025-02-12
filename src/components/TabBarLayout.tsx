@@ -16,7 +16,7 @@ export default function TabBarLayout({
 
   return (
     <div className="flex flex-col" style={{ height: "100dvh" }}>
-      <div className="flex-1 overflow-auto text-white relative">
+      <div className="flex-1 overflow-auto relative">
         <TelegramWallpaper />
         <div className="h-full">{children}</div>
       </div>
@@ -85,14 +85,14 @@ function BottomBarLink({
           className="flex items-center justify-center transition-all duration-70 ease-in-out"
         >
           <div
-            className={`h-6 w-6 ${isActive ? "text-link" : "text-white/80"}`}
+            className={`h-6 w-6 ${isActive ? "text-link" : "text-link opacity-70"}`}
           >
             <Icon />
           </div>
         </div>
       </div>
       <span
-        className={`font-medium ${isActive ? "px-2 rounded-2xl text-accent" : "text-white/80"}`}
+        className={`font-medium ${isActive ? "px-2 rounded-2xl text-accent" : "text-link opacity-70"}`}
       >
         {title}
       </span>
