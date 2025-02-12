@@ -59,6 +59,7 @@ export default function EditTagsModal() {
     if (dialog) {
       jazzRemoveTagFromDialog(jazzProfile, dialog, tag);
       setDialogInfoModalDialog(dialog);
+      inputRef.current?.focus();
     }
   };
 
