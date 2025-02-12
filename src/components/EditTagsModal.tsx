@@ -93,7 +93,7 @@ export default function EditTagsModal() {
                         }}
                         className={`flex items-center gap-1 bg-${tag.color}/20 rounded-md pr-1`}
                       >
-                        <Tag title={tag.title} color={tag.color} size="sm" />
+                        <Tag title={tag.title} color={tag.color} size="md" />
                         <RemoveIcon className={`w-3 h-3 text-${tag.color}`} />
                       </Tappable>
                     </motion.div>
