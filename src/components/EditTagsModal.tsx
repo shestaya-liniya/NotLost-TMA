@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import { jazzAddTag } from "@/lib/jazz/actions/jazz-dialog";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import Tag from "@/ui/Tag";
 
 export default function EditTagsModal() {
   const { editTagsModalOpen, setEditTagsModalOpen, dialogInfoModalData } =
@@ -50,14 +51,8 @@ export default function EditTagsModal() {
     >
       <div className="px-4 flex flex-col items-center">
         <div className="flex justify-between items-center w-full pb-2 pl-4 ">
-          <div className="text-sm text-gray-500 uppercase self-start ">
-            New tag
-          </div>
-          <div
-            className={`bg-${activeColor}/20 h-3.5 rounded-sm text-[8px] text-${activeColor} px-1 flex items-center gap-1 py-1 uppercase`}
-          >
-            {inputValue}
-          </div>
+          <div className="text-sm text-hint uppercase self-start ">New tag</div>
+          <Tag title={inputValue} color={activeColor} />
         </div>
 
         <input
@@ -74,7 +69,10 @@ export default function EditTagsModal() {
               key={color}
               color={color}
               activeColor={activeColor}
-              setActiveColor={(color: string) => setActiveColor(color)}
+              setActiveColor={(color: string) => {
+                inputRef.current?.focus();
+                setActiveColor(color);
+              }}
             />
           ))}
         </div>

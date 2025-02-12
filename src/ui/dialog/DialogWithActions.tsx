@@ -3,6 +3,7 @@ import { useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
 import { truncateWord } from "@/helpers/truncate-word";
+import Tag from "../Tag";
 
 export default function DialogWithActions(props: {
   dialog: JazzDialog;
@@ -38,9 +39,12 @@ export default function DialogWithActions(props: {
             </span>
           </div>
           <div className="flex flex-col">
-            <div className="bg-green-500/10 mt-1 h-3.5 rounded-sm text-[8px] text-green-500 px-1 flex items-center gap-1 py-1 uppercase">
-              fullstack
-            </div>
+            {props.dialog.tags?.map((tag) => {
+              if (!tag) return;
+              return (
+                <Tag key={tag.title} title={tag.title} color={tag.color} />
+              );
+            })}
           </div>
         </div>
       </Tappable>

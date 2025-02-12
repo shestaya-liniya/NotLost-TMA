@@ -3,6 +3,7 @@ import { useLaunchParams } from "@telegram-apps/sdk-react";
 import TagIcon from "@/assets/icons/tag.svg?react";
 import InlineButton from "@/ui/InlineButton";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
+import Tag from "@/ui/Tag";
 
 export default function DialogInfo() {
   const { dialogInfoModalData, setEditTagsModalOpen } = useModalStore();
@@ -40,14 +41,10 @@ export default function DialogInfo() {
           onClick={() => {}}
         />
       </div>
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="flex gap-2 mt-4">
         {dialogInfoModalData.tags?.map((tag) => {
           if (!tag) return null;
-          return (
-            <div key={tag.title} className="text-sm text-gray-500">
-              {tag.title}
-            </div>
-          );
+          return <Tag key={tag.title} title={tag.title} color={tag.color} />;
         })}
       </div>
     </div>
