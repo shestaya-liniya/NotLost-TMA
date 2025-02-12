@@ -3,6 +3,7 @@ import {
   JazzDialog,
   JazzFolder,
   JazzListOfDialogs,
+  JazzTag,
   RootUserProfile,
 } from "../schema";
 
@@ -15,5 +16,25 @@ export const jazzRemoveDialog = (
   folder.dialogs! = JazzListOfDialogs.create(filteredDialogs, {
     owner: jazzProfile._owner,
   });
+  updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
+};
+
+export const jazzAddTag = (
+  jazzProfile: RootUserProfile,
+  dialog: JazzDialog,
+  tag: { title: string; color: string }
+) => {
+  dialog.tags!.push(
+    JazzTag.create(
+      {
+        title: tag.title,
+        color: tag.color,
+      },
+      {
+        owner: jazzProfile._owner,
+      }
+    )
+  );
+    
   updateLocalStorage("folders", JSON.stringify(jazzProfile.folders));
 };

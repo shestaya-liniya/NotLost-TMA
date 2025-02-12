@@ -8,7 +8,11 @@ import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
 // this root acccount starts with an empty contacts list and some default values
 // then user can create contacts and add them to the root, more later
 
-export class JazzListOfTags extends CoList.Of(co.string) {}
+export class JazzTag extends CoMap {
+  title = co.string;
+  color = co.string;
+}
+export class JazzListOfTags extends CoList.Of(co.ref(JazzTag)) {}
 
 export class JazzFolder extends CoMap {
   title = co.string;

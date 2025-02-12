@@ -7,7 +7,6 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 export default function DialogInfo() {
   const { dialogInfoModalData, setEditTagsModalOpen } = useModalStore();
   const lp = useLaunchParams();
-
   if (!dialogInfoModalData) return;
 
   return (
@@ -40,6 +39,16 @@ export default function DialogInfo() {
           Icon={<PencilIcon className="h-6 w-6 text-link pt-1" />}
           onClick={() => {}}
         />
+      </div>
+      <div className="flex flex-col gap-2 mt-4">
+        {dialogInfoModalData.tags?.map((tag) => {
+          if (!tag) return null;
+          return (
+            <div key={tag.title} className="text-sm text-gray-500">
+              {tag.title}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
