@@ -6,27 +6,20 @@ import {
   jazzAddTag,
   jazzRemoveTagFromDialog,
 } from "@/lib/jazz/actions/jazz-dialog";
-import { useCoState, useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Tag from "@/ui/Tag";
-import { JazzDialog } from "@/lib/jazz/schema";
-import { ID } from "jazz-tools";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
+import { JazzTag } from "@/lib/jazz/schema";
 
 export default function EditTagsModal() {
-  const { editTagsModalOpen, setEditTagsModalOpen, dialogInfoModalDialogId } =
-    useModalStore();
+  const {
+    editTagsModalOpen,
+    setEditTagsModalOpen,
+    dialogInfoModalDialog: dialog,
+    setDialogInfoModalDialog,
+  } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
-
-  const [dialogId, setDialogId] = useState<ID<JazzDialog>>(
-    dialogInfoModalDialogId ?? ("" as ID<JazzDialog>)
-  );
-
-  const dialog = useCoState(JazzDialog, dialogId);
-
-  useEffect(() => {
-    setDialogId(dialogInfoModalDialogId ?? ("" as ID<JazzDialog>));
-  }, [dialogInfoModalDialogId]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -56,7 +49,16 @@ export default function EditTagsModal() {
         title: inputValue,
         color: activeColor,
       });
+      setDialogInfoModalDialog(dialog);
       setInputValue("");
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleRemoveTag = (tag: JazzTag) => {
+    if (dialog) {
+      jazzRemoveTagFromDialog(jazzProfile, dialog, tag);
+      setDialogInfoModalDialog(dialog);
     }
   };
 
@@ -81,12 +83,12 @@ export default function EditTagsModal() {
                       key={tag.title}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                       transition={{ duration: 0.2 }}
                     >
                       <Tappable
                         onClick={() => {
-                          jazzRemoveTagFromDialog(jazzProfile, dialog, tag);
+                          handleRemoveTag(tag);
                         }}
                         className={`flex items-center gap-1 bg-${tag.color}/20 rounded-md pr-1`}
                       >

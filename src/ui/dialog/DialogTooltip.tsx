@@ -20,7 +20,7 @@ export const DialogTooltip = ({
   closeTooltip: () => void;
 }) => {
   const { jazzProfile } = useJazzProfileContext();
-  const { setDialogInfoModalOpen, setDialogInfoModalDialogId } =
+  const { setDialogInfoModalOpen, setDialogInfoModalDialog } =
     useModalStore();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const DialogTooltip = ({
   }, [showTooltip, closeTooltip]);
 
   const navigateToDialogInfo = () => {
-    setDialogInfoModalDialogId(dialog.id);
+    setDialogInfoModalDialog(dialog);
     setDialogInfoModalOpen(true);
   };
 

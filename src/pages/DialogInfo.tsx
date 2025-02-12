@@ -4,23 +4,11 @@ import TagIcon from "@/assets/icons/tag.svg?react";
 import InlineButton from "@/ui/InlineButton";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import Tag from "@/ui/Tag";
-import { JazzDialog } from "@/lib/jazz/schema";
-import { ID } from "jazz-tools";
-import { useEffect, useState } from "react";
-import { useCoState } from "@/lib/jazz/jazz-provider";
 
 export default function DialogInfo() {
-  const { dialogInfoModalDialogId, setEditTagsModalOpen } = useModalStore();
+  const { dialogInfoModalDialog: dialog, setEditTagsModalOpen } =
+    useModalStore();
   const lp = useLaunchParams();
-  const [dialogId, setDialogId] = useState<ID<JazzDialog>>(
-    dialogInfoModalDialogId ?? ("" as ID<JazzDialog>)
-  );
-
-  const dialog = useCoState(JazzDialog, dialogId);
-
-  useEffect(() => {
-    setDialogId(dialogInfoModalDialogId ?? ("" as ID<JazzDialog>));
-  }, [dialogInfoModalDialogId]);
 
   if (!dialog) return;
 
