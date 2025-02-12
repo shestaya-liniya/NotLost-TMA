@@ -2,14 +2,31 @@ import BottomModal from "@/ui/BottomModal";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useEffect, useRef, useState } from "react";
 import Tappable from "@/ui/Tappable";
-import { jazzAddTag } from "@/lib/jazz/actions/jazz-dialog";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import {
+  jazzAddTag,
+  jazzRemoveTagFromDialog,
+} from "@/lib/jazz/actions/jazz-dialog";
+import { useCoState, useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Tag from "@/ui/Tag";
+import { JazzDialog } from "@/lib/jazz/schema";
+import { ID } from "jazz-tools";
+import RemoveIcon from "@/assets/icons/remove.svg?react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function EditTagsModal() {
-  const { editTagsModalOpen, setEditTagsModalOpen, dialogInfoModalData } =
+  const { editTagsModalOpen, setEditTagsModalOpen, dialogInfoModalDialogId } =
     useModalStore();
   const { jazzProfile } = useJazzProfileContext();
+
+  const [dialogId, setDialogId] = useState<ID<JazzDialog>>(
+    dialogInfoModalDialogId ?? ("" as ID<JazzDialog>)
+  );
+
+  const dialog = useCoState(JazzDialog, dialogId);
+
+  useEffect(() => {
+    setDialogId(dialogInfoModalDialogId ?? ("" as ID<JazzDialog>));
+  }, [dialogInfoModalDialogId]);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -34,13 +51,16 @@ export default function EditTagsModal() {
   }, [editTagsModalOpen]);
 
   const handleAddTag = () => {
-    if (dialogInfoModalData) {
-      jazzAddTag(jazzProfile, dialogInfoModalData, {
+    if (dialog) {
+      jazzAddTag(jazzProfile, dialog, {
         title: inputValue,
         color: activeColor,
       });
+      setInputValue("");
     }
   };
+
+  if (!dialog) return null;
 
   return (
     <BottomModal
@@ -50,9 +70,41 @@ export default function EditTagsModal() {
       onClose={() => setEditTagsModalOpen(false)}
     >
       <div className="px-4 flex flex-col items-center">
+        {dialog.tags && dialog.tags?.length > 0 && (
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="flex gap-2 flex-wrap items-start">
+              <AnimatePresence>
+                {dialog.tags?.map((tag) => {
+                  if (!tag) return null;
+                  return (
+                    <motion.div
+                      key={tag.title}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Tappable
+                        onClick={() => {
+                          jazzRemoveTagFromDialog(jazzProfile, dialog, tag);
+                        }}
+                        className={`flex items-center gap-1 bg-${tag.color}/20 rounded-md pr-1`}
+                      >
+                        <Tag title={tag.title} color={tag.color} size="sm" />
+                        <RemoveIcon className={`w-3 h-3 text-${tag.color}`} />
+                      </Tappable>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+          </div>
+        )}
         <div className="flex justify-between items-center w-full pb-2 pl-4 ">
           <div className="text-sm text-hint uppercase self-start ">New tag</div>
-          <Tag title={inputValue} color={activeColor} />
+          {inputValue.length > 0 && (
+            <Tag title={inputValue} color={activeColor} size="md" />
+          )}
         </div>
 
         <input

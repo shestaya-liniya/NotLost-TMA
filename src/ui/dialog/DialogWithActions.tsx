@@ -23,12 +23,12 @@ export default function DialogWithActions(props: {
         }}
         className="flex flex-col items-center justify-left gap-1 rounded-xl p-2"
       >
-        <div className="flex gap-2">
+        <div className="flex items-start">
           <div className="flex flex-col gap-1 items-center">
             <img
               loading="lazy"
               src={`https://t.me/i/userpic/320/${props.dialog.username}.svg`}
-              className="h-12 w-12 rounded-full"
+              className="h-12 w-12 min-w-12 rounded-full"
               decoding="async"
               alt=""
             />
@@ -38,11 +38,13 @@ export default function DialogWithActions(props: {
               {truncateWord(props.dialog.name || "", 5)}
             </span>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col max-h-12 flex-wrap items-center">
             {props.dialog.tags?.map((tag) => {
-              if (!tag) return;
+              if (!tag) return null;
               return (
-                <Tag key={tag.title} title={tag.title} color={tag.color} />
+                <div key={tag.title} className="break-inside-avoid ml-2">
+                  <Tag title={tag.title} color={tag.color} />
+                </div>
               );
             })}
           </div>

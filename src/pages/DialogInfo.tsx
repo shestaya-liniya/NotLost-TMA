@@ -4,11 +4,25 @@ import TagIcon from "@/assets/icons/tag.svg?react";
 import InlineButton from "@/ui/InlineButton";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import Tag from "@/ui/Tag";
+import { JazzDialog } from "@/lib/jazz/schema";
+import { ID } from "jazz-tools";
+import { useEffect, useState } from "react";
+import { useCoState } from "@/lib/jazz/jazz-provider";
 
 export default function DialogInfo() {
-  const { dialogInfoModalData, setEditTagsModalOpen } = useModalStore();
+  const { dialogInfoModalDialogId, setEditTagsModalOpen } = useModalStore();
   const lp = useLaunchParams();
-  if (!dialogInfoModalData) return;
+  const [dialogId, setDialogId] = useState<ID<JazzDialog>>(
+    dialogInfoModalDialogId ?? ("" as ID<JazzDialog>)
+  );
+
+  const dialog = useCoState(JazzDialog, dialogId);
+
+  useEffect(() => {
+    setDialogId(dialogInfoModalDialogId ?? ("" as ID<JazzDialog>));
+  }, [dialogInfoModalDialogId]);
+
+  if (!dialog) return;
 
   return (
     <div
@@ -21,13 +35,24 @@ export default function DialogInfo() {
     >
       <img
         loading="lazy"
-        src={`https://t.me/i/userpic/320/${dialogInfoModalData.username}.svg`}
+        src={`https://t.me/i/userpic/320/${dialog.username}.svg`}
         className="h-24 w-24 rounded-full"
         decoding="async"
         alt=""
       />
-      <div className="text-xl font-semibold mt-4">
-        {dialogInfoModalData.name}
+      <div className="text-xl font-semibold mt-4">{dialog.name}</div>
+      <div className="flex gap-2 mt-4 flex-wrap px-4 justify-center">
+        {dialog.tags?.map((tag) => {
+          if (!tag) return null;
+          return (
+            <Tag
+              key={tag.title}
+              title={tag.title}
+              color={tag.color}
+              size="xl"
+            />
+          );
+        })}
       </div>
       <div className="flex gap-2 mt-4">
         <InlineButton
@@ -40,12 +65,6 @@ export default function DialogInfo() {
           Icon={<PencilIcon className="h-6 w-6 text-link pt-1" />}
           onClick={() => {}}
         />
-      </div>
-      <div className="flex gap-2 mt-4">
-        {dialogInfoModalData.tags?.map((tag) => {
-          if (!tag) return null;
-          return <Tag key={tag.title} title={tag.title} color={tag.color} />;
-        })}
       </div>
     </div>
   );

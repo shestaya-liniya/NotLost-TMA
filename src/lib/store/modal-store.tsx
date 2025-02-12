@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { JazzDialog } from "../jazz/schema";
+import { ID } from "jazz-tools";
 
 interface ModalState {
   manageDialogsModalOpen: boolean;
@@ -7,8 +8,8 @@ interface ModalState {
 
   dialogInfoModalOpen: boolean;
   setDialogInfoModalOpen: (newState: boolean) => void;
-  dialogInfoModalData: JazzDialog | null;
-  setDialogInfoModalData: (newState: JazzDialog | null) => void;
+  dialogInfoModalDialogId: ID<JazzDialog> | null;
+  setDialogInfoModalDialogId: (newState: ID<JazzDialog> | null) => void;
 
   editTagsModalOpen: boolean;
   setEditTagsModalOpen: (newState: boolean) => void;
@@ -26,10 +27,10 @@ export const useModalStore = create<ModalState>((set) => ({
     set(() => ({
       dialogInfoModalOpen: newState,
     })),
-  dialogInfoModalData: null,
-  setDialogInfoModalData: (newState) =>
+  dialogInfoModalDialogId: null,
+  setDialogInfoModalDialogId: (newState) =>
     set(() => ({
-      dialogInfoModalData: newState,
+      dialogInfoModalDialogId: newState,
     })),
 
   editTagsModalOpen: false,
