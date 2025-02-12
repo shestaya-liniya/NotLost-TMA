@@ -1,6 +1,6 @@
 import ForceGraph from "./-force-graph";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { useLocalStorageListener } from "@/helpers/use-localstorage-listener";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
 
@@ -20,7 +20,10 @@ const Graph = () => {
 
   if (!folders) return null;
 
-  const parsedFolders = JSON.parse(folders) as unknown as JazzListOfFolders;
+  const parsedFolders = useMemo(
+    () => JSON.parse(folders) as JazzListOfFolders,
+    [folders]
+  );
 
   return <ForceGraph data={parsedFolders} />;
 };
