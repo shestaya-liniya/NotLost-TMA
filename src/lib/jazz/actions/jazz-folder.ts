@@ -4,6 +4,7 @@ import {
   JazzFolder,
   JazzListOfDialogs,
   JazzListOfFolders,
+  JazzListOfTags,
   RootUserProfile,
 } from "../schema";
 import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
@@ -65,7 +66,11 @@ export const jazzAddDialogToFolder = (
   if (jazzProfile) {
     folder.dialogs?.push(
       JazzDialog.create(
-        { name: dialog.name, username: dialog.username || "No username" },
+        {
+          name: dialog.name,
+          username: dialog.username || "No username",
+          tags: JazzListOfTags.create([], { owner: jazzProfile._owner }),
+        },
         { owner: jazzProfile._owner }
       )
     );
