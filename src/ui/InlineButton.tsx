@@ -15,7 +15,7 @@ export default function InlineButton({
       onClick={onClick}
     >
       {Icon}
-      <div className="text-sm font-medium">{title}</div>
+      <div className="text-sm font-medium whitespace-nowrap">{title}</div>
     </Tappable>
   );
 }

@@ -9,6 +9,7 @@ import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
+import EditTagsModal from "./EditTagsModal.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -37,6 +38,7 @@ export default function App() {
               </div>
             </TabBarLayout>
             <ManageDialogsModal />
+            <EditTagsModal />
             <SlidingPage
               open={dialogInfoModalOpen}
               onClose={() => {

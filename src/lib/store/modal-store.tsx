@@ -9,6 +9,9 @@ interface ModalState {
   setDialogInfoModalOpen: (newState: boolean) => void;
   dialogInfoModalData: JazzDialog | null;
   setDialogInfoModalData: (newState: JazzDialog | null) => void;
+
+  editTagsModalOpen: boolean;
+  setEditTagsModalOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -27,5 +30,11 @@ export const useModalStore = create<ModalState>((set) => ({
   setDialogInfoModalData: (newState) =>
     set(() => ({
       dialogInfoModalData: newState,
+    })),
+
+  editTagsModalOpen: false,
+  setEditTagsModalOpen: (newState) =>
+    set(() => ({
+      editTagsModalOpen: newState,
     })),
 }));
