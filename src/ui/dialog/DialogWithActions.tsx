@@ -58,7 +58,7 @@ export default function DialogWithActions(props: {
                         key={tag.id}
                         title={tag.title}
                         color={tag.color}
-                        className="ml-2 mt-2"
+                        className="ml-1 mt-1"
                       />
                     );
                   })}
