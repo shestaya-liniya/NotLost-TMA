@@ -1,8 +1,8 @@
-import { createJazzReactApp, DemoAuthBasicUI, useDemoAuth } from "jazz-react";
+import { createJazzReactApp, useDemoAuth } from "jazz-react";
 import { JazzAccount, RootUserProfile } from "./schema";
 import { createContext, ReactNode, useContext } from "react";
 import { useJazzProfile } from "./hooks/use-jazz-profile";
-//import { AutoSignIn } from "./auto-sign-in-jazz";
+import { AutoSignIn } from "./auto-sign-in-jazz";
 
 const Jazz = createJazzReactApp({
   AccountSchema: JazzAccount,
@@ -18,9 +18,7 @@ export function JazzAndAuth({ children }: { children: React.ReactNode }) {
       <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
         <JazzProfileProvider>{children}</JazzProfileProvider>
       </Jazz.Provider>
-      {state.state !== "signedIn" && (
-        <DemoAuthBasicUI state={state} appName={"NotLost"} />
-      )}
+      {state.state !== "signedIn" && <AutoSignIn state={state} />}
     </>
   );
 }
@@ -37,8 +35,8 @@ const JazzProfileContext = createContext<JazzProfileContextType | undefined>(
 // Context Provider Component
 export function JazzProfileProvider({ children }: { children: ReactNode }) {
   const jazzProfile = useJazzProfile();
-  if (!jazzProfile) return null;
 
+  if (!jazzProfile) return null;
   return (
     <JazzProfileContext.Provider value={{ jazzProfile }}>
       {jazzProfile ? children : null}

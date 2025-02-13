@@ -18,12 +18,12 @@ const Graph = () => {
     }
   }, []);
 
-  if (!folders) return null;
+  const parsedFolders = useMemo(() => {
+    if (!folders) return null; // Handle the case where folders is null
+    return JSON.parse(folders) as JazzListOfFolders;
+  }, [folders]);
 
-  const parsedFolders = useMemo(
-    () => JSON.parse(folders) as JazzListOfFolders,
-    [folders]
-  );
+  if (!parsedFolders) return null;
 
   return <ForceGraph data={parsedFolders} />;
 };
