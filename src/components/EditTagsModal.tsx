@@ -40,6 +40,7 @@ export default function EditTagsModal() {
     if (editTagsModalOpen) {
       setTimeout(() => {
         inputRef.current?.focus();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }, 310);
     }
   }, [editTagsModalOpen]);

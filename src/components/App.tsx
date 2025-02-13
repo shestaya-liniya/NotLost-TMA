@@ -41,7 +41,7 @@ export default function App() {
       <Route
         path="/tab-bar"
         element={
-          <div>
+          <div className="h-dvh">
             <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
               <div className="relative w-screen h-full overflow-x-hidden">
                 <TabTransition
@@ -122,12 +122,12 @@ function SlidingPage({
   return (
     <div>
       <div
-        className={`absolute top-0 left-0 w-screen h-screen bg-black/50 transition-all ease duration-500 ${
+        className={`absolute top-0 left-0 w-screen h-dvh bg-black/50 transition-all ease duration-500 ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       ></div>
       <div
-        className={`absolute top-0 left-0 w-screen h-screen bg-secondary transition-all ease duration-500 ${
+        className={`absolute top-0 left-0 w-screen h-dvh bg-secondary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >

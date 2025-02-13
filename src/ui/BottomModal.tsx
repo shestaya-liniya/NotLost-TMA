@@ -1,4 +1,5 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
+import { useEffect } from "react";
 
 interface ModalProps {
   id: string;
@@ -9,13 +10,25 @@ interface ModalProps {
 }
 
 const BottomModal = (props: ModalProps) => {
+  // Set correct viewport height for Safari
+  useEffect(() => {
+    const setViewportHeight = () => {
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
+    };
+    setViewportHeight();
+    window.addEventListener("resize", setViewportHeight);
+    return () => window.removeEventListener("resize", setViewportHeight);
+  }, []);
   return (
     <div
       id={props.id}
-      className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out duration-300 absolute z-50 bottom-0 w-full ${
+      className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out duration-300  absolute z-50 bottom-0 w-full ${
         props.isOpen
-          ? "translate-y-0 opacity-100"
-          : "translate-y-full opacity-0"
+          ? "animate-slideUp  "
+          : "translate-y-full animate-slideDown"
       }`}
       onClick={(e) => e.stopPropagation()}
     >
