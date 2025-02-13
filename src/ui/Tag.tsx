@@ -1,11 +1,15 @@
+import { twMerge } from "tailwind-merge";
+
 export default function Tag({
   title,
   color,
   size = "sm",
+  className,
 }: {
   title: string;
   color: string;
   size?: "sm" | "md" | "xl";
+  className?: string;
 }) {
   const sizeClass =
     size === "sm"
@@ -16,7 +20,10 @@ export default function Tag({
 
   return (
     <div
-      className={`bg-${color}/20 ${sizeClass} text-${color} font-bold px-1 py-0.5 uppercase inline-block`}
+      className={twMerge(
+        `bg-${color}/20 ${sizeClass} text-${color} font-bold px-1 py-0.5 uppercase inline-block`,
+        className
+      )}
     >
       {title}
     </div>

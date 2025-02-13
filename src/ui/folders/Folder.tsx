@@ -15,6 +15,7 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Tappable from "@/ui/Tappable";
 import DialogWithActions from "@/ui/dialog/DialogWithActions";
+import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
 
 function Folder(props: {
   folder: JazzFolder;
@@ -100,6 +101,11 @@ function Folder(props: {
             editingTitle={editingTitle}
             onBlur={(title: string) => {
               activeFolder.title = title;
+              updateLocalStorage(
+                "folders",
+                JSON.stringify(jazzProfile.folders)
+              );
+
               setEditingTitle(false);
             }}
           >

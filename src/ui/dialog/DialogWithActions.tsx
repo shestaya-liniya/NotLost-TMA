@@ -1,4 +1,4 @@
-import { JazzDialog, JazzFolder } from "@/lib/jazz/schema";
+import { JazzDialog, JazzFolder, JazzTag } from "@/lib/jazz/schema";
 import { useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
@@ -12,6 +12,13 @@ export default function DialogWithActions(props: {
   const [dialogWithTooltip, setDialogWithTooltip] = useState<null | JazzDialog>(
     null
   );
+  // Distribute tags into three columns
+  const tags: JazzTag[][] = [[], [], []];
+  props.dialog.tags?.forEach((tag, index) => {
+    if (!tag) return null;
+    tags[index % 3].push(tag);
+  });
+
   return (
     <div className={`relative`}>
       <Tappable
@@ -38,12 +45,23 @@ export default function DialogWithActions(props: {
               {truncateWord(props.dialog.name || "", 5)}
             </span>
           </div>
-          <div className="flex flex-col max-h-12 flex-wrap items-center">
-            {props.dialog.tags?.map((tag) => {
-              if (!tag) return null;
+          <div className="-mt-1">
+            {tags.map((array) => {
               return (
-                <div key={tag.title} className="break-inside-avoid ml-2">
-                  <Tag title={tag.title} color={tag.color} />
+                <div
+                  className="flex"
+                  key={array.map((tag) => tag.title).join(",")}
+                >
+                  {array.map((tag) => {
+                    return (
+                      <Tag
+                        key={tag.id}
+                        title={tag.title}
+                        color={tag.color}
+                        className="ml-2 mt-2"
+                      />
+                    );
+                  })}
                 </div>
               );
             })}
