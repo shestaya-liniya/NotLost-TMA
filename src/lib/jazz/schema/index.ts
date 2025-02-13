@@ -38,6 +38,8 @@ export class RootUserProfile extends Profile {
   lastName = co.string;
   telegramSync = co.boolean; // if true, app will use live tg contact to sync up
 
+  colorScheme = co.string; // "blue", "green", "pink", "purple", "none" (telegram scheme), "white"
+
   folders = co.ref(JazzListOfFolders);
 }
 

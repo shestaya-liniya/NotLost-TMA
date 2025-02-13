@@ -1,5 +1,6 @@
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
 
@@ -42,13 +43,19 @@ function TabBar({
             onClick={() => setActiveTab("try")}
             title="Mindmap"
             isActive={activeTab === "try"}
-            Icon={GraphIcon}
+            Icon={<GraphIcon />}
           />
           <BottomBarLink
             onClick={() => setActiveTab("folders")}
             title="Folders"
             isActive={activeTab === "folders"}
-            Icon={FolderIcon}
+            Icon={<FolderIcon />}
+          />
+          <BottomBarLink
+            onClick={() => setActiveTab("settings")}
+            title="Settings"
+            isActive={activeTab === "settings"}
+            Icon={<SettingsIcon className="p-0.5" />}
           />
         </div>
       </div>
@@ -65,7 +72,7 @@ function BottomBarLink({
   onClick: () => void;
   title: string;
   isActive: boolean;
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: React.ReactElement;
 }) {
   return (
     <div
@@ -87,7 +94,7 @@ function BottomBarLink({
           <div
             className={`h-6 w-6 ${isActive ? "text-link" : "text-link opacity-70"}`}
           >
-            <Icon />
+            {Icon}
           </div>
         </div>
       </div>

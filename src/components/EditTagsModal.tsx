@@ -11,6 +11,7 @@ import Tag from "@/ui/Tag";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
 import { JazzTag } from "@/lib/jazz/schema";
+import ColorCircle from "@/ui/ColorCircle";
 
 export default function EditTagsModal() {
   const {
@@ -166,25 +167,3 @@ text-orange-500
 text-pink-500
 text-black
 */
-
-const ColorCircle = ({
-  color,
-  activeColor,
-  setActiveColor,
-}: {
-  color: string;
-  activeColor: string;
-  setActiveColor: (color: string) => void;
-}) => {
-  return (
-    <Tappable
-      onClick={() => {
-        setActiveColor(color);
-      }}
-    >
-      <div
-        className={`w-6 h-6 rounded-full bg-${color} ${activeColor === color ? "border-4 border-link" : ""}`}
-      />
-    </Tappable>
-  );
-};

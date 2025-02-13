@@ -27,7 +27,7 @@ const Input = (props: {
       <div onClick={() => inputRef.current?.focus()}>{props.before}</div>
       <input
         ref={inputRef}
-        className="appearance-none border-none w-full focus:outline-none focus:ring-transparent "
+        className="appearance-none border-none w-full focus:outline-none focus:ring-transparent placeholder:text-hint "
         type="text"
         placeholder={props.label}
         value={inputValue}

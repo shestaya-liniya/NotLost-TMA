@@ -1,5 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TabBarLayout from "./TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
 import ManageDialogsModal from "./ManageDialogsModal.jsx";
@@ -10,10 +10,31 @@ import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./EditTagsModal.tsx";
+import Settings from "@/pages/Settings.tsx";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
   const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
+  const { jazzProfile } = useJazzProfileContext();
+
+  const tabs = ["try", "folders", "settings"];
+  const previousIndex = useRef(0);
+
+  const direction =
+    tabs.indexOf(activeTab) > previousIndex.current ? "toLeft" : "toRight";
+
+  useEffect(() => {
+    if (!jazzProfile.colorScheme) {
+      jazzProfile.colorScheme = "blue";
+      document.documentElement.setAttribute("data-theme", "blue");
+    } else {
+      document.documentElement.setAttribute(
+        "data-theme",
+        jazzProfile.colorScheme
+      );
+    }
+  }, [jazzProfile]);
 
   return (
     <Routes>
@@ -24,16 +45,22 @@ export default function App() {
             <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
               <div className="relative w-screen h-full overflow-x-hidden">
                 <TabTransition
-                  direction="toRight"
+                  direction={direction}
                   isActive={activeTab === "folders"}
                 >
                   <Folders />
                 </TabTransition>
                 <TabTransition
-                  direction="toLeft"
+                  direction={direction}
                   isActive={activeTab === "try"}
                 >
                   <Graph />
+                </TabTransition>
+                <TabTransition
+                  direction={"toRight"}
+                  isActive={activeTab === "settings"}
+                >
+                  <Settings />
                 </TabTransition>
               </div>
             </TabBarLayout>
@@ -43,7 +70,6 @@ export default function App() {
               open={dialogInfoModalOpen}
               onClose={() => {
                 setDialogInfoModalOpen(false);
-                console.log("close");
               }}
             >
               <DialogInfo />
