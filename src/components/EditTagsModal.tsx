@@ -48,11 +48,11 @@ export default function EditTagsModal() {
             window.scroll({
               top: 0,
               left: 0,
-              behavior: "instant",
+              behavior: "smooth",
             });
             count++;
           }
-        }, 1000);
+        }, 100);
       }, 1000);
     }
   });
