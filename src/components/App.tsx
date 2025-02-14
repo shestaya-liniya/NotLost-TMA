@@ -36,6 +36,12 @@ export default function App() {
     }
   }, [jazzProfile]);
 
+  // Capture the initial viewport height
+  document.documentElement.style.setProperty(
+    "--initial-height",
+    `${window.innerHeight}px`
+  );
+
   return (
     <div>
       {/* shadow input is used to trigger keyboard */}
@@ -44,7 +50,7 @@ export default function App() {
         <Route
           path="/tab-bar"
           element={
-            <div style={{ height: "100dvh" }}>
+            <div style={{ height: "var(--initial-height)" }}>
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
