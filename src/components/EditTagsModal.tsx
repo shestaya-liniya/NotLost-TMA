@@ -44,7 +44,7 @@ export default function EditTagsModal() {
 
         blurInput.current = false;
         inputRef.current?.focus();
-      }, 1000);
+      }, 100);
     }
   });
   const blurInput = useRef(true);
