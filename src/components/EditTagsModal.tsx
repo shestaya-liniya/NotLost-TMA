@@ -42,13 +42,13 @@ export default function EditTagsModal() {
       setTimeout(() => {
         blurInput.current = false;
         inputRef.current?.focus();
-        let count = 0;
+        /* let count = 0;
         setInterval(() => {
           if (count < 10) {
             window.scrollTo(0, 0);
             count++;
           }
-        }, 10);
+        }, 10); */
       }, 10);
     }
   });
