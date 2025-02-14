@@ -12,7 +12,7 @@ import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
 import { JazzTag } from "@/lib/jazz/schema";
 import ColorCircle from "@/ui/ColorCircle";
-import useViewportSize from "@/helpers/use-viewport-height";
+import { useAppStore } from "@/lib/store/store";
 
 export default function EditTagsModal() {
   const {
@@ -23,7 +23,7 @@ export default function EditTagsModal() {
   } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLDivElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [activeColor, setActiveColor] = useState<string>("red-500");
 
@@ -37,50 +37,7 @@ export default function EditTagsModal() {
     "pink-500",
   ];
 
-  useViewportSize(() => {
-    if (editTagsModalOpen) {
-      setTimeout(() => {
-        window.addEventListener("scroll", (event) => {
-          event.preventDefault();
-          window.scroll({
-            top: 0,
-            left: 0,
-            behavior: "instant",
-          });
-        });
-        blurInput.current = false;
-        inputRef.current?.focus();
-        let count = 0;
-        setInterval(() => {
-          if (count < 100) {
-            window.scroll({
-              top: 0,
-              left: 0,
-              behavior: "smooth",
-            });
-            count++;
-          }
-        }, 5);
-      }, 1000);
-    }
-  });
-  const blurInput = useRef(true);
-  inputRef.current?.addEventListener("focus", (event) => {
-    if (blurInput.current) {
-      event.preventDefault();
-      document.getElementById("shadow-input")?.focus();
-      inputRef.current?.blur();
-    }
-  });
-
-  inputRef.current?.addEventListener("blur", () => {
-    blurInput.current = true;
-  });
-
-  /*   useEffect(() => {
-    if (editTagsModalOpen) {
-    }
-  }, [editTagsModalOpen]); */
+  inputRef.current?.addEventListener("focus", () => {});
 
   const handleAddTag = () => {
     if (dialog) {
@@ -101,6 +58,8 @@ export default function EditTagsModal() {
       inputRef.current?.focus();
     }
   };
+
+  const { shadowInputValue } = useAppStore();
 
   if (!dialog) return null;
 
@@ -149,14 +108,15 @@ export default function EditTagsModal() {
           )}
         </div>
 
-        <input
+        <div
           ref={inputRef}
-          className="appearance-none absolute border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
-          type="text"
-          placeholder="Tag"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-        />
+          onClick={() => {
+            document.getElementById("shadow-input")?.focus();
+          }}
+          className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
+        >
+          hello {shadowInputValue}
+        </div>
         <div className="flex flex-row gap-2 mt-2">
           {colors.map((color) => (
             <ColorCircle

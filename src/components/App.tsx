@@ -12,6 +12,7 @@ import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
+import { useAppStore } from "@/lib/store/store.ts";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -44,10 +45,18 @@ export default function App() {
     );
   }, []);
 
+  const { shadowInputValue, setShadowInputValue } = useAppStore();
+
   return (
     <div>
       {/* shadow input is used to trigger keyboard */}
-      <input type="text" className="absolute -z-50" id="shadow-input" />
+      <input
+        type="text"
+        className="absolute -z-50"
+        id="shadow-input"
+        value={shadowInputValue}
+        onChange={(e) => setShadowInputValue(e.target.value)}
+      />
       <Routes>
         <Route
           path="/tab-bar"
