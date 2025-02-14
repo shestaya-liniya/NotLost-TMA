@@ -1,6 +1,6 @@
 import BottomModal from "@/ui/BottomModal";
 import { useModalStore } from "@/lib/store/modal-store";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import {
   jazzAddTag,
@@ -59,10 +59,6 @@ export default function EditTagsModal() {
     }
   };
 
-  const { shadowInputValue } = useAppStore();
-
-  const [editable, setEditable] = useState(false);
-
   if (!dialog) return null;
 
   return (
@@ -113,20 +109,13 @@ export default function EditTagsModal() {
         <div
           ref={inputRef}
           onClick={() => {
-            if (!editable) {
-              document.getElementById("shadow-input")?.focus();
-              setTimeout(() => {
-                setEditable(true);
-              }, 1000);
-            } else {
-              inputRef.current?.focus();
-            }
+            document.getElementById("shadow-input")?.focus();
           }}
-          contentEditable={editable}
           className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
         >
-          hello {shadowInputValue}
+          <CustomInput />
         </div>
+        <input type="text" />
         <div className="flex flex-row gap-2 mt-2">
           {colors.map((color) => (
             <ColorCircle
@@ -150,6 +139,69 @@ export default function EditTagsModal() {
     </BottomModal>
   );
 }
+
+const CustomInput = () => {
+  const { shadowInputValue } = useAppStore();
+  const [previousShadowInputValue, setPreviousShadowInputValue] =
+    useState(shadowInputValue);
+
+  const shadowInput = document.getElementById(
+    "shadow-input"
+  ) as HTMLInputElement;
+
+  const [isFocusedShadow, setIsFocusedShadow] = useState(false);
+
+  shadowInput.addEventListener("focus", () => setIsFocusedShadow(true));
+  shadowInput.addEventListener("blur", () => setIsFocusedShadow(false));
+
+  useEffect(() => {
+    if (shadowInputValue.length > previousShadowInputValue.length) {
+      setCursorIndex((prev) => prev + 1);
+    }
+    if (shadowInputValue.length < previousShadowInputValue.length) {
+      setCursorIndex((prev) => prev - 1);
+    }
+    setPreviousShadowInputValue(shadowInputValue);
+  }, [shadowInputValue]);
+
+  const [cursorIndex, setCursorIndex] = useState(shadowInputValue.length);
+
+  useEffect(() => {
+    shadowInput?.setSelectionRange(cursorIndex, cursorIndex);
+  }, [cursorIndex]);
+
+  const beforeCursor = shadowInputValue.slice(0, cursorIndex);
+  const afterCursor = shadowInputValue.slice(cursorIndex);
+
+  return (
+    <div className="flex relative items-center w-full min-h-6">
+      {beforeCursor.split("").map((char, index) => (
+        <div key={index} onClick={() => setCursorIndex(index)}>
+          {char === " " ? "\u00A0" : char}
+        </div>
+      ))}
+      <div className="inline-block w-0">
+        {isFocusedShadow && (
+          <div className="h-5 py-1 w-[2px] relative -left-[1px] bg-white/50 animate-blink"></div>
+        )}
+      </div>
+      {afterCursor.split("").map((char, index) => (
+        <div
+          key={beforeCursor.length + index}
+          onClick={() => setCursorIndex(beforeCursor.length + index)}
+        >
+          {char === " " ? "\u00A0" : char}
+        </div>
+      ))}
+      <div
+        className="flex-grow w-20 h-4"
+        onClick={() => {
+          setCursorIndex(shadowInputValue.length);
+        }}
+      ></div>
+    </div>
+  );
+};
 
 /*
 bg-blue-500/20
