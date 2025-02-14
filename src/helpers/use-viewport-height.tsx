@@ -61,7 +61,8 @@ const useViewportSize = () => {
       updateViewportSize();
       // Closing the OSK in iOS does not immediately update the visual viewport
       // size :<
-      setTimeout(updateViewportSize, 1000);
+      //setTimeout(updateViewportSize, 1000);
+      updateViewportSize();
     };
 
     window.addEventListener("resize", effectTwice);
