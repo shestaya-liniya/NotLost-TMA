@@ -43,7 +43,14 @@ export default function EditTagsModal() {
   useEffect(() => {
     if (editTagsModalOpen) {
       //document.getElementById("shadow-input")?.focus();
+      let counter = 0;
       inputRef.current?.focus();
+      setInterval(() => {
+        counter++;
+        if (counter > 5) {
+          window.scrollTo(0, 0);
+        }
+      }, 100);
     }
   }, [editTagsModalOpen]);
 
