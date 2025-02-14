@@ -1,6 +1,7 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
+import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   id: string;
@@ -12,20 +13,39 @@ interface ModalProps {
 
 const BottomModal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
-  const windowHeightMinusVisibleHeight =
-    window.innerHeight - (viewportSize?.[1] ?? 0);
+  const keyboardState = useKeyboardState();
 
-  const lp = useLaunchParams();
+  const [translateY, setTranslateY] = useState(0);
+
+  useEffect(() => {
+    if (keyboardState) {
+      console.log(
+        "viewport-with-opened-keyboard",
+        localStorage.getItem("viewport-with-opened-keyboard"),
+        window.innerHeight
+      );
+
+      if (localStorage.getItem("viewport-with-opened-keyboard")) {
+        setTranslateY(
+          window.innerHeight -
+            parseInt(
+              localStorage.getItem("viewport-with-opened-keyboard") ?? "0"
+            )
+        );
+      } else {
+        setTranslateY(window.innerHeight - (viewportSize?.[1] ?? 0));
+      }
+    } else {
+      setTranslateY(0);
+    }
+  }, [keyboardState]);
 
   return (
     <div
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
       style={{
         height: "100dvh",
-        transform:
-          lp.platform === "ios"
-            ? `translateY(-${windowHeightMinusVisibleHeight}px)`
-            : "",
+        transform: `translateY(-${translateY}px)`,
       }}
     >
       <div

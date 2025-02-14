@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, useLayoutEffect } from "react";
+import { useKeyboardState } from "./use-keyboard-visible";
 
 const useBrowserLayoutEffect =
   typeof window !== "undefined"
@@ -38,6 +39,7 @@ export const getViewportSize = (): Size => {
  */
 const useViewportSize = (callback?: () => void) => {
   const [viewportSize, setViewportSize] = useState<Size | undefined>();
+  const keyboardState = useKeyboardState();
 
   const updateViewportSize = useCallback(() => {
     const viewportSize = getViewportSize();
@@ -50,6 +52,12 @@ const useViewportSize = (callback?: () => void) => {
       ) {
         // Maintain old instance to prevent unnecessary updates
         return oldViewportSize;
+      }
+      if (keyboardState) {
+        localStorage.setItem(
+          "viewport-with-opened-keyboard",
+          window.visualViewport?.height.toString() ?? "0"
+        );
       }
       callback?.();
       return viewportSize;

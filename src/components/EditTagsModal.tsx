@@ -1,6 +1,6 @@
 import BottomModal from "@/ui/BottomModal";
 import { useModalStore } from "@/lib/store/modal-store";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import {
   jazzAddTag,
@@ -23,8 +23,6 @@ export default function EditTagsModal() {
   } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
 
-  const inputRef = useRef<HTMLDivElement>(null);
-  const [inputValue, setInputValue] = useState("");
   const [activeColor, setActiveColor] = useState<string>("red-500");
 
   const colors = [
@@ -37,17 +35,22 @@ export default function EditTagsModal() {
     "pink-500",
   ];
 
-  inputRef.current?.addEventListener("focus", () => {});
+  const shadowInput = document.getElementById(
+    "shadow-input"
+  ) as HTMLInputElement;
+
+  const { shadowInputValue: tagValue, setShadowInputValue: setTagValue } =
+    useAppStore();
 
   const handleAddTag = () => {
-    if (dialog && inputValue.length > 0) {
+    if (dialog && tagValue.length > 0) {
       jazzAddTag(jazzProfile, dialog, {
-        title: inputValue,
+        title: tagValue,
         color: activeColor,
       });
       setDialogInfoModalDialog(dialog);
-      setInputValue("");
-      inputRef.current?.focus();
+      setTagValue("");
+      shadowInput.focus();
     }
   };
 
@@ -55,7 +58,7 @@ export default function EditTagsModal() {
     if (dialog) {
       jazzRemoveTagFromDialog(jazzProfile, dialog, tag);
       setDialogInfoModalDialog(dialog);
-      inputRef.current?.focus();
+      shadowInput.focus();
     }
   };
 
@@ -101,21 +104,19 @@ export default function EditTagsModal() {
         )}
         <div className="flex justify-between items-center w-full pb-2 pl-4 ">
           <div className="text-sm text-hint uppercase self-start ">New tag</div>
-          {inputValue.length > 0 && (
-            <Tag title={inputValue} color={activeColor} size="md" />
+          {tagValue.length > 0 && (
+            <Tag title={tagValue} color={activeColor} size="md" />
           )}
         </div>
 
         <div
-          ref={inputRef}
           onClick={() => {
-            document.getElementById("shadow-input")?.focus();
+            shadowInput.focus();
           }}
           className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
         >
           <FakeInput />
         </div>
-        <input type="text" />
         <div className="flex flex-row gap-2 mt-2">
           {colors.map((color) => (
             <ColorCircle
@@ -123,7 +124,7 @@ export default function EditTagsModal() {
               color={color}
               activeColor={activeColor}
               setActiveColor={(color: string) => {
-                inputRef.current?.focus();
+                shadowInput.focus();
                 setActiveColor(color);
               }}
             />
