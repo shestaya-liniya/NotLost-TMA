@@ -14,7 +14,7 @@ const BottomModal = (props: ModalProps) => {
   return (
     <div
       style={{ height: viewportSize?.[1] }}
-      className="absolute top-0 left-0 w-full z-50 pointer-events-none"
+      className="absolute top-0 left-0 w-full z-50 pointer-events-none transition-height duration-300 ease-in-out"
     >
       <div
         id={props.id}
