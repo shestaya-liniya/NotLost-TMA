@@ -40,7 +40,7 @@ export default function EditTagsModal() {
   inputRef.current?.addEventListener("focus", () => {});
 
   const handleAddTag = () => {
-    if (dialog) {
+    if (dialog && inputValue.length > 0) {
       jazzAddTag(jazzProfile, dialog, {
         title: inputValue,
         color: activeColor,
