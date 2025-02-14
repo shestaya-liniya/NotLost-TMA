@@ -37,10 +37,17 @@ export default function EditTagsModal() {
   ];
 
   //const [blurInput, setBlurInput] = useState(false);
-
+  const [blurInput, setBlurInput] = useState(false);
   inputRef.current?.addEventListener("focus", () => {
-    inputRef.current?.classList.add("input--focused");
-    setTimeout(() => inputRef.current?.classList.remove("input--focused"));
+    if (blurInput) {
+      document.getElementById("shadow-input")?.focus();
+      inputRef.current?.blur();
+      setBlurInput(false);
+    } else {
+      document.getElementById("shadow-input")?.blur();
+      inputRef.current?.focus();
+      setBlurInput(true);
+    }
   });
 
   /*   useEffect(() => {
