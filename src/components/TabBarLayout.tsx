@@ -16,7 +16,7 @@ export default function TabBarLayout({
   const keyboardVisible = useKeyboardState();
 
   return (
-    <div className="flex flex-col" style={{ height: "100dvh" }}>
+    <div className="flex flex-col h-full">
       <div className="flex-1 overflow-auto relative">
         <TelegramWallpaper />
         <div className="h-full">{children}</div>

@@ -12,6 +12,7 @@ import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
+import useViewportSize from "@/helpers/use-viewport-height.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -35,16 +36,15 @@ export default function App() {
       );
     }
   }, [jazzProfile]);
+  const viewportSize = useViewportSize();
 
   return (
     <div>
-      {/* shadow input is used to trigger keyboard */}
-      <input type="text" className="absolute -z-50" id="shadow-input" />
       <Routes>
         <Route
           path="/tab-bar"
           element={
-            <div className="h-dvh">
+            <div style={{ height: viewportSize?.[1] }}>
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
