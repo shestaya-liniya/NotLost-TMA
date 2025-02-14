@@ -1,7 +1,6 @@
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import SettingsIcon from "@/assets/icons/settings.svg?react";
-import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
 
 export default function TabBarLayout({
@@ -13,17 +12,13 @@ export default function TabBarLayout({
   setActiveTab: (tab: string) => void;
   children: React.ReactNode;
 }) {
-  const keyboardVisible = useKeyboardState();
-
   return (
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-auto relative">
         <TelegramWallpaper />
         <div className="h-full">{children}</div>
       </div>
-      <div className={`${keyboardVisible ? "hidden" : ""}`}>
-        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
-      </div>
+      <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 }
