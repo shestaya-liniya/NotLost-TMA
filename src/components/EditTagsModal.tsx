@@ -38,15 +38,10 @@ export default function EditTagsModal() {
 
   //const [blurInput, setBlurInput] = useState(false);
 
-  /* inputRef.current?.addEventListener("focus", () => {
-    let counter = 0;
-    setInterval(() => {
-      counter++;
-      if (counter > 10) {
-        window.scrollTo(0, 0);
-      }
-    }, 10);
-  }); */
+  inputRef.current?.addEventListener("focus", () => {
+    inputRef.current?.classList.add("input--focused");
+    setTimeout(() => inputRef.current?.classList.remove("input--focused"));
+  });
 
   /*   useEffect(() => {
     if (editTagsModalOpen) {
