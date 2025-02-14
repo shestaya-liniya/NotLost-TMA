@@ -14,11 +14,11 @@ const BottomModal = (props: ModalProps) => {
   return (
     <div
       style={{ height: viewportSize?.[1] }}
-      className="absolute top-0 left-0 w-full z-50"
+      className="absolute top-0 left-0 w-full z-50 pointer-events-none"
     >
       <div
         id={props.id}
-        className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out duration-300 ${
+        className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
           props.isOpen
             ? "animate-slideUp  "
             : "translate-y-full animate-slideDown"
