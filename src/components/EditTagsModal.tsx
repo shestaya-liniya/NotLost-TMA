@@ -39,7 +39,9 @@ export default function EditTagsModal() {
   useEffect(() => {
     if (editTagsModalOpen) {
       document.getElementById("shadow-input")?.focus();
-      //inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 300);
     }
   }, [editTagsModalOpen]);
 
