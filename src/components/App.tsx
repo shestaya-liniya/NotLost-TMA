@@ -12,7 +12,6 @@ import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
-import useViewportSize from "@/helpers/use-viewport-height.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -36,7 +35,6 @@ export default function App() {
       );
     }
   }, [jazzProfile]);
-  const viewportSize = useViewportSize();
 
   return (
     <div>
@@ -46,7 +44,7 @@ export default function App() {
         <Route
           path="/tab-bar"
           element={
-            <div style={{ height: viewportSize?.[1], position: "relative" }}>
+            <div style={{ height: "100dvh" }}>
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
