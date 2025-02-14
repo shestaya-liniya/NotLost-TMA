@@ -36,7 +36,7 @@ export const getViewportSize = (): Size => {
  * Returns the viewport size. This can also be used as a dependency in a
  * useEffect to trigger an update when the browser resizes.
  */
-const useViewportSize = () => {
+const useViewportSize = (callback?: () => void) => {
   const [viewportSize, setViewportSize] = useState<Size | undefined>();
   const updateViewportSize = useCallback(() => {
     const viewportSize = getViewportSize();
@@ -62,6 +62,7 @@ const useViewportSize = () => {
       // Closing the OSK in iOS does not immediately update the visual viewport
       // size :<
       setTimeout(updateViewportSize, 1000);
+      callback?.();
     };
 
     window.addEventListener("resize", effectTwice);

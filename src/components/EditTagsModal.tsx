@@ -12,6 +12,7 @@ import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
 import { JazzTag } from "@/lib/jazz/schema";
 import ColorCircle from "@/ui/ColorCircle";
+import useViewportSize from "@/helpers/use-viewport-height";
 
 export default function EditTagsModal() {
   const {
@@ -36,19 +37,22 @@ export default function EditTagsModal() {
     "pink-500",
   ];
 
-  //const [blurInput, setBlurInput] = useState(false);
+  useViewportSize(() => {
+    if (editTagsModalOpen) {
+      setTimeout(() => {
+        console.log("callback");
+
+        blurInput.current = false;
+        inputRef.current?.focus();
+      }, 1000);
+    }
+  });
   const blurInput = useRef(true);
   inputRef.current?.addEventListener("focus", (event) => {
-    console.log("focus");
-
     if (blurInput.current) {
       event.preventDefault();
       document.getElementById("shadow-input")?.focus();
       inputRef.current?.blur();
-      setTimeout(() => {
-        blurInput.current = false;
-        inputRef.current?.focus();
-      }, 1000);
     }
   });
 
