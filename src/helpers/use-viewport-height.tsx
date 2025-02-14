@@ -38,6 +38,7 @@ export const getViewportSize = (): Size => {
  */
 const useViewportSize = (callback?: () => void) => {
   const [viewportSize, setViewportSize] = useState<Size | undefined>();
+
   const updateViewportSize = useCallback(() => {
     const viewportSize = getViewportSize();
 
@@ -50,10 +51,10 @@ const useViewportSize = (callback?: () => void) => {
         // Maintain old instance to prevent unnecessary updates
         return oldViewportSize;
       }
-
+      callback?.();
       return viewportSize;
     });
-  }, []);
+  }, [callback]);
   useBrowserLayoutEffect(updateViewportSize, [updateViewportSize]);
 
   useEffect(() => {
@@ -62,7 +63,6 @@ const useViewportSize = (callback?: () => void) => {
       // Closing the OSK in iOS does not immediately update the visual viewport
       // size :<
       setTimeout(updateViewportSize, 1000);
-      callback?.();
     };
 
     window.addEventListener("resize", effectTwice);
