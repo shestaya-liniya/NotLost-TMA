@@ -40,11 +40,10 @@ export default function EditTagsModal() {
   useViewportSize(() => {
     if (editTagsModalOpen) {
       setTimeout(() => {
-        console.log("callback");
-
         blurInput.current = false;
         inputRef.current?.focus();
-      }, 100);
+        window.scrollTo(0, 0);
+      }, 10);
     }
   });
   const blurInput = useRef(true);
