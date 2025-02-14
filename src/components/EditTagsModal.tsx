@@ -61,6 +61,8 @@ export default function EditTagsModal() {
 
   const { shadowInputValue } = useAppStore();
 
+  const [editable, setEditable] = useState(false);
+
   if (!dialog) return null;
 
   return (
@@ -112,8 +114,11 @@ export default function EditTagsModal() {
           ref={inputRef}
           onClick={() => {
             document.getElementById("shadow-input")?.focus();
+            setTimeout(() => {
+              setEditable(true);
+            }, 1000);
           }}
-          contentEditable={false}
+          contentEditable={editable}
           className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
         >
           hello {shadowInputValue}
