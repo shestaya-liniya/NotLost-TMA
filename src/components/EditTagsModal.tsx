@@ -42,6 +42,11 @@ export default function EditTagsModal() {
       setTimeout(() => {
         window.addEventListener("scroll", (event) => {
           event.preventDefault();
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: "instant",
+          });
         });
         blurInput.current = false;
         inputRef.current?.focus();
