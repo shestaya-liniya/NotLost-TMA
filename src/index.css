@@ -134,6 +134,12 @@
   --color-default: #000;
 }
 
+html,
+body {
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
+}
+
 #app {
   z-index: 1;
 }
