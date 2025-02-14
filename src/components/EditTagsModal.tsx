@@ -1,6 +1,6 @@
 import BottomModal from "@/ui/BottomModal";
 import { useModalStore } from "@/lib/store/modal-store";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import {
   jazzAddTag,
