@@ -40,14 +40,11 @@ export default function EditTagsModal() {
   useViewportSize(() => {
     if (editTagsModalOpen) {
       setTimeout(() => {
-        window.addEventListener("scroll", (event) => {
-          event.preventDefault();
-          window.scroll({
-            top: 0,
-            left: 0,
-            behavior: "instant",
-          });
-        });
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.top = "0";
+        document.body.style.left = "0";
+        document.body.style.width = "100%";
         blurInput.current = false;
         inputRef.current?.focus();
         /* let count = 0;
