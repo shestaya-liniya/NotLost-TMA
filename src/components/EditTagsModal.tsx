@@ -40,10 +40,6 @@ export default function EditTagsModal() {
     if (editTagsModalOpen) {
       document.getElementById("shadow-input")?.focus();
       //inputRef.current?.focus();
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 310);
     }
   }, [editTagsModalOpen]);
 
