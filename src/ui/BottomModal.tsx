@@ -15,7 +15,11 @@ const BottomModal = (props: ModalProps) => {
     <div style={{ height: viewportSize?.[1] }}>
       <div
         id={props.id}
-        className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out duration-300  absolute z-50 bottom-0 w-full animate-slideUp`}
+        className={`bg-primary pointer-events-auto p-6 rounded-t-2xl shadow-lg transition-all ease-in-out duration-300  absolute z-50 bottom-0 w-full ${
+          props.isOpen
+            ? "animate-slideUp  "
+            : "translate-y-full animate-slideDown"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-2xl font-semibold text-center mb-4">
