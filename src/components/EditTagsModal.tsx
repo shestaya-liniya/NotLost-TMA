@@ -113,10 +113,14 @@ export default function EditTagsModal() {
         <div
           ref={inputRef}
           onClick={() => {
-            document.getElementById("shadow-input")?.focus();
-            setTimeout(() => {
-              setEditable(true);
-            }, 1000);
+            if (!editable) {
+              document.getElementById("shadow-input")?.focus();
+              setTimeout(() => {
+                setEditable(true);
+              }, 1000);
+            } else {
+              inputRef.current?.focus();
+            }
           }}
           contentEditable={editable}
           className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
