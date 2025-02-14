@@ -48,7 +48,7 @@ export default function EditTagsModal() {
       setTimeout(() => {
         blurInput.current = false;
         inputRef.current?.focus();
-      }, 500);
+      }, 5000);
     }
   });
 
