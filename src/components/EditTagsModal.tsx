@@ -26,9 +26,7 @@ export default function EditTagsModal() {
   const [inputValue, setInputValue] = useState("");
   const [activeColor, setActiveColor] = useState<string>("red-500");
 
-  inputRef.current?.addEventListener("focus", () => {
-    window.scrollTo(0, 0);
-  });
+  const [modalOpen, setModalOpen] = useState(false);
 
   const colors = [
     "red-500",
@@ -45,12 +43,17 @@ export default function EditTagsModal() {
       //document.getElementById("shadow-input")?.focus();
       let counter = 0;
       inputRef.current?.focus();
+      setTimeout(() => {
+        setModalOpen(true);
+      }, 300);
       setInterval(() => {
         counter++;
         if (counter > 5) {
           window.scrollTo(0, 0);
         }
       }, 100);
+    } else {
+      setModalOpen(false);
     }
   }, [editTagsModalOpen]);
 
@@ -80,7 +83,7 @@ export default function EditTagsModal() {
     <BottomModal
       id="edit-tags-modal"
       title="Edit tags"
-      isOpen={editTagsModalOpen}
+      isOpen={modalOpen}
       onClose={() => setEditTagsModalOpen(false)}
     >
       <div className="px-4 flex flex-col items-center">
