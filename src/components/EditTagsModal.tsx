@@ -36,10 +36,15 @@ export default function EditTagsModal() {
     "pink-500",
   ];
 
+  const [blurInput, setBlurInput] = useState(false);
+
   inputRef.current?.addEventListener("focus", () => {
     document.getElementById("shadow-input")?.focus();
-    inputRef.current?.blur();
+    if (blurInput) {
+      inputRef.current?.blur();
+    }
     setTimeout(() => {
+      setBlurInput(false);
       inputRef.current?.focus();
     }, 300);
   });
