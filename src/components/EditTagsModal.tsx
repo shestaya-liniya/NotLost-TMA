@@ -40,16 +40,19 @@ export default function EditTagsModal() {
   useViewportSize(() => {
     if (editTagsModalOpen) {
       setTimeout(() => {
-        document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.top = "0";
-        document.body.style.left = "0";
-        document.body.style.width = "100%";
+        window.addEventListener("scroll", (event) => {
+          event.preventDefault();
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: "instant",
+          });
+        });
         blurInput.current = false;
         inputRef.current?.focus();
-        /* let count = 0;
+        let count = 0;
         setInterval(() => {
-          if (count < 10) {
+          if (count < 100) {
             window.scroll({
               top: 0,
               left: 0,
@@ -57,7 +60,7 @@ export default function EditTagsModal() {
             });
             count++;
           }
-        }, 100); */
+        }, 5);
       }, 1000);
     }
   });
@@ -148,7 +151,7 @@ export default function EditTagsModal() {
 
         <input
           ref={inputRef}
-          className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
+          className="appearance-none absolute border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
           type="text"
           placeholder="Tag"
           value={inputValue}
