@@ -161,6 +161,16 @@ input {
   font-size: 16px;
 }
 
+.hidden-input {
+  position: fixed; /* Ensure it's out of view */
+  top: -1000px; /* Move it off-screen */
+  left: -1000px; /* Move it off-screen */
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none; /* Prevent accidental interactions */
+}
+
 body {
   padding: 0;
   margin: 0;

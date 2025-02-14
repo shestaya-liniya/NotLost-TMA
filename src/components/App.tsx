@@ -52,7 +52,7 @@ export default function App() {
       {/* shadow input is used to trigger keyboard */}
       <input
         type="text"
-        className="absolute -z-50"
+        className="hidden-input"
         id="shadow-input"
         value={shadowInputValue}
         onFocus={() => console.log("focus")}
