@@ -37,10 +37,12 @@ export default function App() {
   }, [jazzProfile]);
 
   // Capture the initial viewport height
-  document.documentElement.style.setProperty(
-    "--initial-height",
-    `${window.innerHeight}px`
-  );
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--initial-height",
+      `${window.innerHeight}px`
+    );
+  }, []);
 
   return (
     <div>
