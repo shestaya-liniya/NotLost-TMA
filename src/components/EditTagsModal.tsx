@@ -43,10 +43,10 @@ export default function EditTagsModal() {
       event.preventDefault();
       document.getElementById("shadow-input")?.focus();
       inputRef.current?.blur();
-      setBlurInput(false);
-    } else {
-      inputRef.current?.focus();
-      setBlurInput(true);
+      setTimeout(() => {
+        setBlurInput(false);
+        inputRef.current?.focus();
+      }, 500);
     }
   });
 
