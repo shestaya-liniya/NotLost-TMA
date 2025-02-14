@@ -62,7 +62,7 @@ const useViewportSize = (callback?: () => void) => {
       callback?.();
       return viewportSize;
     });
-  }, [callback]);
+  }, [callback, keyboardState]);
   useBrowserLayoutEffect(updateViewportSize, [updateViewportSize]);
 
   useEffect(() => {
