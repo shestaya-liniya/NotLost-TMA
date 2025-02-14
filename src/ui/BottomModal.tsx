@@ -1,5 +1,6 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import useViewportSize from "@/helpers/use-viewport-height";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
 
 interface ModalProps {
   id: string;
@@ -14,12 +15,17 @@ const BottomModal = (props: ModalProps) => {
   const windowHeightMinusVisibleHeight =
     window.innerHeight - (viewportSize?.[1] ?? 0);
 
+  const lp = useLaunchParams();
+
   return (
     <div
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
       style={{
         height: "var(--initial-height)",
-        transform: `translateY(-${windowHeightMinusVisibleHeight}px)`,
+        transform:
+          lp.platform === "ios"
+            ? `translateY(-${windowHeightMinusVisibleHeight}px)`
+            : "",
       }}
     >
       <div
