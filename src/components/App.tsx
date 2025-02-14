@@ -37,48 +37,52 @@ export default function App() {
   }, [jazzProfile]);
 
   return (
-    <Routes>
-      <Route
-        path="/tab-bar"
-        element={
-          <div className="h-dvh">
-            <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
-              <div className="relative w-screen h-full overflow-x-hidden">
-                <TabTransition
-                  direction={direction}
-                  isActive={activeTab === "folders"}
-                >
-                  <Folders />
-                </TabTransition>
-                <TabTransition
-                  direction={direction}
-                  isActive={activeTab === "try"}
-                >
-                  <Graph />
-                </TabTransition>
-                <TabTransition
-                  direction={"toRight"}
-                  isActive={activeTab === "settings"}
-                >
-                  <Settings />
-                </TabTransition>
-              </div>
-            </TabBarLayout>
-            <ManageDialogsModal />
-            <EditTagsModal />
-            <SlidingPage
-              open={dialogInfoModalOpen}
-              onClose={() => {
-                setDialogInfoModalOpen(false);
-              }}
-            >
-              <DialogInfo />
-            </SlidingPage>
-          </div>
-        }
-      />
-      <Route path="*" element={<Navigate to="/tab-bar" />} />
-    </Routes>
+    <div>
+      {/* shadow input is used to trigger keyboard */}
+      <input type="text" className="absolute -z-50" id="shadow-input" />
+      <Routes>
+        <Route
+          path="/tab-bar"
+          element={
+            <div className="h-dvh">
+              <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
+                <div className="relative w-screen h-full overflow-x-hidden">
+                  <TabTransition
+                    direction={direction}
+                    isActive={activeTab === "folders"}
+                  >
+                    <Folders />
+                  </TabTransition>
+                  <TabTransition
+                    direction={direction}
+                    isActive={activeTab === "try"}
+                  >
+                    <Graph />
+                  </TabTransition>
+                  <TabTransition
+                    direction={"toRight"}
+                    isActive={activeTab === "settings"}
+                  >
+                    <Settings />
+                  </TabTransition>
+                </div>
+              </TabBarLayout>
+              <ManageDialogsModal />
+              <EditTagsModal />
+              <SlidingPage
+                open={dialogInfoModalOpen}
+                onClose={() => {
+                  setDialogInfoModalOpen(false);
+                }}
+              >
+                <DialogInfo />
+              </SlidingPage>
+            </div>
+          }
+        />
+        <Route path="*" element={<Navigate to="/tab-bar" />} />
+      </Routes>
+    </div>
   );
 }
 
