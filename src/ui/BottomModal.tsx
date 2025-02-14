@@ -13,11 +13,12 @@ const BottomModal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
   const windowHeightMinusVisibleHeight =
     window.innerHeight - (viewportSize?.[1] ?? 0);
+
   return (
     <div
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
       style={{
-        height: "100dvh",
+        height: "var(--initial-height)",
         transform: `translateY(-${windowHeightMinusVisibleHeight}px)`,
       }}
     >
