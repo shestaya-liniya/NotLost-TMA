@@ -36,20 +36,21 @@ export default function EditTagsModal() {
     "pink-500",
   ];
 
-  useEffect(() => {
+  inputRef.current?.addEventListener("focus", () => {
+    let counter = 0;
+    setInterval(() => {
+      counter++;
+      if (counter > 10) {
+        window.scrollTo(0, 0);
+      }
+    }, 10);
+  });
+
+  /*   useEffect(() => {
     if (editTagsModalOpen) {
       //document.getElementById("shadow-input")?.focus();
-      let counter = 0;
-      inputRef.current?.focus();
-
-      setInterval(() => {
-        counter++;
-        if (counter > 10) {
-          window.scrollTo(0, 0);
-        }
-      }, 10);
     }
-  }, [editTagsModalOpen]);
+  }, [editTagsModalOpen]); */
 
   const handleAddTag = () => {
     if (dialog) {
