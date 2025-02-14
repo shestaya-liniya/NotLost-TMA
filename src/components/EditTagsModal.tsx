@@ -38,16 +38,15 @@ export default function EditTagsModal() {
 
   //const [blurInput, setBlurInput] = useState(false);
 
-  /* inputRef.current?.addEventListener("focus", () => {
-    document.getElementById("shadow-input")?.focus();
-    if (blurInput) {
-      inputRef.current?.blur();
-    }
-    setTimeout(() => {
-      setBlurInput(false);
-      inputRef.current?.focus();
-    }, 300);
-  }); */
+  inputRef.current?.addEventListener("focus", () => {
+    let counter = 0;
+    setInterval(() => {
+      counter++;
+      if (counter > 10) {
+        window.scrollTo(0, 0);
+      }
+    }, 10);
+  });
 
   /*   useEffect(() => {
     if (editTagsModalOpen) {
