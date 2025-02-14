@@ -21,7 +21,7 @@ const BottomModal = (props: ModalProps) => {
     <div
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
       style={{
-        height: "var(--initial-height)",
+        height: "100dvh",
         transform:
           lp.platform === "ios"
             ? `translateY(-${windowHeightMinusVisibleHeight}px)`
