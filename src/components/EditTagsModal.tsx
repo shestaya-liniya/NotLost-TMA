@@ -171,7 +171,9 @@ export const CustomInput = () => {
   const [cursorIndex, setCursorIndex] = useState(shadowInputValue.length);
 
   useEffect(() => {
-    shadowInput?.setSelectionRange(cursorIndex, cursorIndex);
+    if (shadowInputValue.length > 0) {
+      shadowInput?.setSelectionRange(cursorIndex, cursorIndex);
+    }
   }, [cursorIndex]);
 
   const beforeCursor = shadowInputValue.slice(0, cursorIndex);
