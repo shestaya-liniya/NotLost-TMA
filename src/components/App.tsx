@@ -40,6 +40,8 @@ export default function App() {
 
   return (
     <div>
+      {/* shadow input is used to trigger keyboard */}
+      <input type="text" className="absolute -z-50" id="shadow-input" />
       <Routes>
         <Route
           path="/tab-bar"

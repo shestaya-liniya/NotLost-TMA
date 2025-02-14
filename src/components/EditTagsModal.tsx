@@ -38,7 +38,8 @@ export default function EditTagsModal() {
 
   useEffect(() => {
     if (editTagsModalOpen) {
-      inputRef.current?.focus();
+      document.getElementById("shadow-input")?.focus();
+      //inputRef.current?.focus();
       window.scrollTo(0, 0);
       setTimeout(() => {
         window.scrollTo(0, 0);
