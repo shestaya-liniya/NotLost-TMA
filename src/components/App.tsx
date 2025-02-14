@@ -55,6 +55,7 @@ export default function App() {
         className="absolute -z-50"
         id="shadow-input"
         value={shadowInputValue}
+        onFocus={() => console.log("focus")}
         onChange={(e) => setShadowInputValue(e.target.value)}
       />
       <Routes>
