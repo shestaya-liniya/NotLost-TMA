@@ -26,6 +26,10 @@ export default function EditTagsModal() {
   const [inputValue, setInputValue] = useState("");
   const [activeColor, setActiveColor] = useState<string>("red-500");
 
+  inputRef.current?.addEventListener("focus", () => {
+    window.scrollTo(0, 0);
+  });
+
   const colors = [
     "red-500",
     "blue-500",
@@ -41,7 +45,6 @@ export default function EditTagsModal() {
       document.getElementById("shadow-input")?.focus();
       setTimeout(() => {
         inputRef.current?.focus();
-        window.scrollTo(0, 0);
       }, 300);
     }
   }, [editTagsModalOpen]);
