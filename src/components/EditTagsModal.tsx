@@ -53,7 +53,7 @@ export default function EditTagsModal() {
             count++;
           }
         }, 10);
-      }, 10);
+      }, 1000);
     }
   });
   const blurInput = useRef(true);
