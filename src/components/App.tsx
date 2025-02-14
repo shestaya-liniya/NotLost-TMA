@@ -44,7 +44,7 @@ export default function App() {
         <Route
           path="/tab-bar"
           element={
-            <div style={{ height: viewportSize?.[1] }}>
+            <div style={{ height: viewportSize?.[1], position: "relative" }}>
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
