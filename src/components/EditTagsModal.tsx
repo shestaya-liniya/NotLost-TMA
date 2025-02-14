@@ -40,9 +40,12 @@ export default function EditTagsModal() {
   useViewportSize(() => {
     if (editTagsModalOpen) {
       setTimeout(() => {
+        window.addEventListener("scroll", (event) => {
+          event.preventDefault();
+        });
         blurInput.current = false;
         inputRef.current?.focus();
-        let count = 0;
+        /* let count = 0;
         setInterval(() => {
           if (count < 10) {
             window.scroll({
@@ -52,7 +55,7 @@ export default function EditTagsModal() {
             });
             count++;
           }
-        }, 100);
+        }, 100); */
       }, 1000);
     }
   });
