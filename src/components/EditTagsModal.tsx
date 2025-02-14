@@ -52,7 +52,7 @@ export default function EditTagsModal() {
             });
             count++;
           }
-        }, 10);
+        }, 1000);
       }, 1000);
     }
   });
