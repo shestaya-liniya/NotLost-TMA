@@ -111,8 +111,9 @@ export default function EditTagsModal() {
         <div
           ref={inputRef}
           onClick={() => {
-            document.getElementById("shadow-input")?.focus();
+            //document.getElementById("shadow-input")?.focus();
           }}
+          contentEditable
           className="appearance-none border-none w-full focus:outline-none focus:ring-transparent bg-secondary rounded-full px-4 py-2"
         >
           hello {shadowInputValue}
