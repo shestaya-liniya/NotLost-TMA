@@ -37,18 +37,15 @@ export default function EditTagsModal() {
   ];
 
   inputRef.current?.addEventListener("focus", () => {
-    let counter = 0;
-    setInterval(() => {
-      counter++;
-      if (counter > 10) {
-        window.scrollTo(0, 0);
-      }
-    }, 10);
+    document.getElementById("shadow-input")?.focus();
+    inputRef.current?.blur();
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 300);
   });
 
   /*   useEffect(() => {
     if (editTagsModalOpen) {
-      //document.getElementById("shadow-input")?.focus();
     }
   }, [editTagsModalOpen]); */
 
