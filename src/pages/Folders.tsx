@@ -60,10 +60,12 @@ export default function Folders() {
   };
 
   const tabBarHeight = getElementHeightById("tab-bar");
-  const manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+  const [manageDialogsModalHeight, setManageDialogsModalHeight] = useState(0);
 
   useEffect(() => {
-    console.log("open", manageDialogsModalOpen);
+    setManageDialogsModalHeight(
+      Number(getElementHeightById("manage-dialogs-modal"))
+    );
   }, [manageDialogsModalOpen]);
 
   return (
@@ -83,7 +85,7 @@ export default function Folders() {
             onInput={() => {}}
             before={<SearchIcon className="h-4 w-4 opacity-50" />}
           />
-          <div className="text-accent font-semibold text-center w-full absolute z-10 -top-7">
+          <div className="text-accent font-semibold text-center w-full absolute z-10 -top-8">
             NotLost
           </div>
         </div>
@@ -95,13 +97,22 @@ export default function Folders() {
         </div>
       </div>
       <div
-        style={{
+        /* style={{
           height: manageDialogsModalOpen
             ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px ${
                 !["macos", "tdesktop"].includes(lp.platform)
                   ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
               } ) `
+            : "100%",
+        }} */
+        style={{
+          height: manageDialogsModalOpen
+            ? `calc(100% - ${manageDialogsModalHeight! + tabBarHeight!}px ${
+                !["macos", "tdesktop"].includes(lp.platform)
+                  ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
+                  : ""
+              })`
             : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
