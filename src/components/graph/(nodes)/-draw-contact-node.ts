@@ -81,7 +81,7 @@ export const drawContactNode = (
     `${node.firstName!}`,
     usernameFontSize,
     getCssVariable("--color-link"),
-    platform === "ios" ? imgSize / 4 : imgSize / 4 + 1
+    platform === "ios" ? imgSize / 4 + 0.5 : imgSize / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
