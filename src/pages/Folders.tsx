@@ -59,13 +59,16 @@ export default function Folders() {
       .reduce((acc, folder) => acc + folder.height, 0);
   };
 
-  const tabBarHeight = getElementHeightById("tab-bar");
+  const [tabBarHeight, setTabBarHeight] = useState(0);
   const [manageDialogsModalHeight, setManageDialogsModalHeight] = useState(0);
 
   useEffect(() => {
-    setManageDialogsModalHeight(
-      Number(getElementHeightById("manage-dialogs-modal"))
-    );
+    if (manageDialogsModalOpen) {
+      setManageDialogsModalHeight(
+        Number(getElementHeightById("manage-dialogs-modal"))
+      );
+      setTabBarHeight(Number(getElementHeightById("tab-bar")));
+    }
   }, [manageDialogsModalOpen]);
 
   return (
@@ -108,7 +111,7 @@ export default function Folders() {
         }} */
         style={{
           height: manageDialogsModalOpen
-            ? `calc(100% - ${manageDialogsModalHeight! + tabBarHeight!}px ${
+            ? `calc(100% - ${manageDialogsModalHeight + tabBarHeight}px ${
                 !["macos", "tdesktop"].includes(lp.platform)
                   ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
