@@ -110,7 +110,7 @@ export default function Folders() {
             : "100%",
         }} */
         style={{
-          height: manageDialogsModalOpen ? 400 : "100%",
+          height: manageDialogsModalOpen ? `calc(100% - 200px)` : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
       >
