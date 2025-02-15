@@ -142,18 +142,20 @@ function SlidingPage({
     }
   }, [open]);
   return (
-    <div
-      style={{
-        height: "var(--initial-height)",
-      }}
-    >
+    <div>
       <div
-        className={`absolute top-0 left-0 w-screen h-full bg-black/50 transition-all ease duration-500 ${
+        style={{
+          height: "var(--initial-height)",
+        }}
+        className={`absolute top-0 left-0 w-screen bg-black/50 transition-all ease duration-500 ${
           open ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       ></div>
       <div
-        className={`absolute h-full top-0 left-0 w-screen bg-secondary transition-all ease duration-500 ${
+        style={{
+          height: "var(--initial-height)",
+        }}
+        className={`absolute top-0 left-0 w-screen bg-secondary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
