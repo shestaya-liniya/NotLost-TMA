@@ -3,7 +3,7 @@ import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { JazzFolder } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
@@ -12,8 +12,8 @@ import NewFolder from "@/ui/folders/NewFolder";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
-import { getElementHeightById } from "@/helpers/css/get-element-height";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
+//import { getElementHeightById } from "@/helpers/css/get-element-height";
+//import { getCssVariable } from "@/helpers/css/get-css-variable";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -59,7 +59,7 @@ export default function Folders() {
       .reduce((acc, folder) => acc + folder.height, 0);
   };
 
-  const [tabBarHeight, setTabBarHeight] = useState(0);
+  /* const [tabBarHeight, setTabBarHeight] = useState(0);
   const [manageDialogsModalHeight, setManageDialogsModalHeight] = useState(0);
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Folders() {
       );
       setTabBarHeight(Number(getElementHeightById("tab-bar")));
     }
-  }, [manageDialogsModalOpen]);
+  }, [manageDialogsModalOpen]); */
 
   return (
     <div className="h-full flex flex-col relative">
