@@ -1,6 +1,7 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
 
 interface ModalProps {
@@ -14,7 +15,7 @@ interface ModalProps {
 const BottomModal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
   const keyboardState = useKeyboardState();
-
+  const lp = useLaunchParams();
   const [translateY, setTranslateY] = useState(0);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const BottomModal = (props: ModalProps) => {
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
       style={{
         height: "var(--initial-height)",
-        transform: `translateY(-${translateY}px)`,
+        transform: lp.platform === "ios" ? `translateY(-${translateY}px)` : "",
       }}
     >
       <div
