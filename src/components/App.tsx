@@ -152,7 +152,10 @@ function SlidingPage({
         }`}
       ></div>
       <div
-        className={`absolute top-0 left-0 w-screen h-dvh bg-secondary transition-all ease duration-500 ${
+        style={{
+          height: "var(--viewport-height)",
+        }}
+        className={`absolute top-0 left-0 w-screen bg-secondary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
