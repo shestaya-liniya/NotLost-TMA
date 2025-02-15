@@ -3,7 +3,7 @@ import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { JazzFolder } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
@@ -60,7 +60,11 @@ export default function Folders() {
   };
 
   const tabBarHeight = getElementHeightById("tab-bar");
-  const manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+  let manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+
+  useEffect(() => {
+    manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+  }, [manageDialogsModalOpen]);
 
   return (
     <div className="h-full flex flex-col relative">
