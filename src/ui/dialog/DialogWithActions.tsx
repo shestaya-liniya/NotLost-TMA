@@ -42,7 +42,7 @@ export default function DialogWithActions(props: {
             <span
               className={`px-2 py-[0.5px] text-xs font-normal bg-link/10 text-link rounded-xl`}
             >
-              {truncateWord(props.dialog.name || "", 5)}
+              {props.dialog.name}
             </span>
           </div>
           <div className="-mt-1">

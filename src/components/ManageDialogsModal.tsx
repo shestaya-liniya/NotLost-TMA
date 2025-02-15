@@ -35,7 +35,7 @@ export default function ManageDialogsModal() {
         </Draggable>
       </div>
 
-      <div className="flex flex-wrap gap-4 justify-center">
+      <div className="flex flex-wrap gap-2 justify-center">
         {trialContacts.map((contact) => (
           <div className="relative" key={contact.username}>
             <div className="">
@@ -61,4 +61,9 @@ const trialContacts = [
   { username: "shestaya_liniya", name: "Andrei", unreadCount: 0 },
   { username: "skywl_k", name: "Andrei", unreadCount: 0 },
   { username: "PiraJoke", name: "Max", unreadCount: 0 },
+  { username: "devs_cis", name: "Devs CIS", unreadCount: 0 },
+  { username: "tmabuild", name: "TMA Build", unreadCount: 0 },
+  { username: "toncoin_rus", name: "Toncoin Rus", unreadCount: 0 },
+  { username: "contests", name: "Contests", unreadCount: 0 },
+  { username: "tapps_bot", name: "Tapps", unreadCount: 0 },
 ];
