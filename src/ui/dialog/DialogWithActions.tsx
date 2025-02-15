@@ -2,7 +2,6 @@ import { JazzDialog, JazzFolder, JazzTag } from "@/lib/jazz/schema";
 import { useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
-import { truncateWord } from "@/helpers/truncate-word";
 import Tag from "../Tag";
 
 export default function DialogWithActions(props: {
