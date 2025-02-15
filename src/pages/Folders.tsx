@@ -110,13 +110,7 @@ export default function Folders() {
             : "100%",
         }} */
         style={{
-          height: manageDialogsModalOpen
-            ? `calc(100% - ${manageDialogsModalHeight + tabBarHeight}px ${
-                !["macos", "tdesktop"].includes(lp.platform)
-                  ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
-                  : ""
-              })`
-            : "100%",
+          height: manageDialogsModalOpen ? 400 : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
       >
