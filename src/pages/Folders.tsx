@@ -109,6 +109,7 @@ export default function Folders() {
                   : ""
               } ) `
             : "100%",
+          paddingBottom: 40,
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
       >

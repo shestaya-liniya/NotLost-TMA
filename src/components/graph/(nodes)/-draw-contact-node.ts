@@ -7,7 +7,8 @@ export const drawContactNode = (
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
   globalScale: number,
-  img: HTMLImageElement | null
+  img: HTMLImageElement | null,
+  platform: string
 ) => {
   const imgSize = 10;
 
@@ -80,7 +81,7 @@ export const drawContactNode = (
     `${node.firstName!}`,
     usernameFontSize,
     getCssVariable("--color-link"),
-    imgSize / 4 + 1
+    platform === "ios" ? imgSize / 4 - 2 : imgSize / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {

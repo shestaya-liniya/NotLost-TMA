@@ -43,7 +43,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
       switch (node.type) {
         case GraphNodeType.DIALOG:
-          drawContactNode(node, ctx, globalScale, img);
+          drawContactNode(node, ctx, globalScale, img, lp.platform);
           break;
         case GraphNodeType.TOPIC:
           drawTopicNode(node, ctx, img, lp.platform);
