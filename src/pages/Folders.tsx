@@ -3,7 +3,7 @@ import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { JazzFolder } from "@/lib/jazz/schema";
 import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
@@ -12,8 +12,8 @@ import NewFolder from "@/ui/folders/NewFolder";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
-//import { getElementHeightById } from "@/helpers/css/get-element-height";
-//import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { getElementHeightById } from "@/helpers/css/get-element-height";
+import { getCssVariable } from "@/helpers/css/get-css-variable";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -59,17 +59,18 @@ export default function Folders() {
       .reduce((acc, folder) => acc + folder.height, 0);
   };
 
-  /* const [tabBarHeight, setTabBarHeight] = useState(0);
-  const [manageDialogsModalHeight, setManageDialogsModalHeight] = useState(0);
+  const tabBarHeight = getElementHeightById("tab-bar");
+
+  const [manageDialogsHeight, setManageDialogsModalHeight] = useState(0);
 
   useEffect(() => {
-    if (manageDialogsModalOpen) {
-      setManageDialogsModalHeight(
-        Number(getElementHeightById("manage-dialogs-modal"))
-      );
-      setTabBarHeight(Number(getElementHeightById("tab-bar")));
+    const modal = document.getElementById("manage-dialogs-modal");
+    if (modal) {
+      setManageDialogsModalHeight(modal.getBoundingClientRect().height);
     }
-  }, [manageDialogsModalOpen]); */
+  }, [manageDialogsModalOpen]);
+
+  console.log(manageDialogsHeight);
 
   return (
     <div className="h-full flex flex-col relative">
@@ -100,17 +101,14 @@ export default function Folders() {
         </div>
       </div>
       <div
-        /* style={{
+        style={{
           height: manageDialogsModalOpen
-            ? `calc(100% - ${manageDialogsModalHeight}px - ${tabBarHeight}px ${
-                !["macos", "tdesktop"].includes(lp.platform)
+            ? `calc(100% - ${manageDialogsHeight}px - ${tabBarHeight}px ${
+                !["macos", "tdesktop", "android", "ios"].includes(lp.platform)
                   ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
               } ) `
             : "100%",
-        }} */
-        style={{
-          height: manageDialogsModalOpen ? `calc(100% - 200px)` : "100%",
         }}
         className={`overflow-y-auto overscroll-none max-h-screen`}
       >
