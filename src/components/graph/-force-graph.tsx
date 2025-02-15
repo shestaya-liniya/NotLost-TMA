@@ -97,7 +97,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
-        height={window.innerHeight}
+        height={Number(getCssVariable("--initial-height"))}
         nodeAutoColorBy="group"
         enableNodeDrag={dragNodes}
         onBackgroundClick={() => {
