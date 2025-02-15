@@ -14,6 +14,7 @@ import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import Switch from "@/ui/Switch";
+import { getElementHeightById } from "@/helpers/css/get-element-height";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(
@@ -67,10 +68,12 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const [globalScale, setGlobalScale] = useState<number | null>(null);
 
+  const tabBarHeight = getElementHeightById("tab-bar");
+
   return (
     <div
       style={{
-        height: "var(--initial-height)",
+        height: `calc(var(--initial-height) - ${tabBarHeight}px)`,
       }}
     >
       <div
@@ -97,7 +100,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
-        height={Number(getCssVariable("--initial-height"))}
+        height={
+          Number(getCssVariable("--initial-height").replace("px", "")) -
+          tabBarHeight!
+        }
         nodeAutoColorBy="group"
         enableNodeDrag={dragNodes}
         onBackgroundClick={() => {
