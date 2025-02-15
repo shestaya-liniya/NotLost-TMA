@@ -60,10 +60,16 @@ export default function Folders() {
   };
 
   const tabBarHeight = getElementHeightById("tab-bar");
-  let manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+  const [manageDialogsModalHeight, setManageDialogsModalHeight] = useState(0);
 
   useEffect(() => {
-    manageDialogsModalHeight = getElementHeightById("manage-dialogs-modal");
+    if (manageDialogsModalOpen) {
+      setTimeout(() => {
+        const height = getElementHeightById("manage-dialogs-modal");
+        console.log("Modal Height:", height); // Debugging
+        setManageDialogsModalHeight(Number(height));
+      }, 100); // Small delay to ensure modal is rendered
+    }
   }, [manageDialogsModalOpen]);
 
   return (
