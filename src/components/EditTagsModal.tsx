@@ -43,6 +43,7 @@ export default function EditTagsModal() {
     useAppStore();
 
   const handleAddTag = () => {
+    shadowInput.focus();
     if (dialog && tagValue.length > 0) {
       jazzAddTag(jazzProfile, dialog, {
         title: tagValue,
@@ -50,7 +51,6 @@ export default function EditTagsModal() {
       });
       setDialogInfoModalDialog(dialog);
       setTagValue("");
-      shadowInput.focus();
     }
   };
 
