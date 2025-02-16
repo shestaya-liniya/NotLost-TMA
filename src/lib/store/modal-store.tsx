@@ -12,6 +12,9 @@ interface ModalState {
 
   editTagsModalOpen: boolean;
   setEditTagsModalOpen: (newState: boolean) => void;
+
+  addDialogModalOpen: boolean;
+  setAddDialogModalOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -36,5 +39,11 @@ export const useModalStore = create<ModalState>((set) => ({
   setEditTagsModalOpen: (newState) =>
     set(() => ({
       editTagsModalOpen: newState,
+    })),
+
+  addDialogModalOpen: false,
+  setAddDialogModalOpen: (newState) =>
+    set(() => ({
+      addDialogModalOpen: newState,
     })),
 }));

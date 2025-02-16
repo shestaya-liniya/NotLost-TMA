@@ -13,6 +13,7 @@ import EditTagsModal from "./EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
+import AddDialogModal from "./AddDialogModal.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -87,6 +88,7 @@ export default function App() {
               </TabBarLayout>
               <ManageDialogsModal />
               <EditTagsModal />
+              <AddDialogModal />
               <SlidingPage
                 open={dialogInfoModalOpen}
                 onClose={() => {

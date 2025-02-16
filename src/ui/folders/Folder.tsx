@@ -13,9 +13,12 @@ import { useState, useRef, useEffect, memo } from "react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
+import TelegramIcon from "@/assets/icons/telegram.svg?react";
+
 import Tappable from "@/ui/Tappable";
 import DialogWithActions from "@/ui/dialog/DialogWithActions";
 import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
+import { useModalStore } from "@/lib/store/modal-store";
 
 function Folder(props: {
   folder: JazzFolder;
@@ -26,6 +29,7 @@ function Folder(props: {
 
   const { jazzProfile } = useJazzProfileContext();
   const { draggableItem } = useDragStore();
+  const { setAddDialogModalOpen } = useModalStore();
 
   const [foldersTitleStack, setFoldersTitleStack] = useState(mainFolder.title);
   const [activeFolderStack, setActiveFolderStack] = useState<JazzFolder[]>([
@@ -112,19 +116,24 @@ function Folder(props: {
             <div className="flex flex-col gap-2 justify-center">
               <div className="flex gap-2 justify-center items-center">
                 <InlineButton
+                  title="Add"
+                  onClick={() => setAddDialogModalOpen(true)}
+                  Icon={<TelegramIcon className="w-5 h-5" />}
+                />
+                <InlineButton
                   title="Edit"
                   onClick={() => setEditingTitle(true)}
-                  Icon={<PencilIcon className="w-4 h-4" />}
+                  Icon={<PencilIcon className="w-5 h-5" />}
                 />
                 <InlineButton
                   title="Folder"
                   onClick={handleAddNestedFolder}
-                  Icon={<FolderIcon className="w-4 h-4" />}
+                  Icon={<FolderIcon className="w-5 h-5" />}
                 />
                 <InlineButton
                   title="Remove"
                   onClick={handleRemoveFolder}
-                  Icon={<RemoveIcon className="w-4 h-4" />}
+                  Icon={<RemoveIcon className="w-5 h-5 p-0.5" />}
                 />
               </div>
               {activeFolderStack.length > 1 && (
