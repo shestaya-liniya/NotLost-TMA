@@ -46,15 +46,13 @@ const Modal = (props: ModalProps) => {
             style={{
               height: height ? height : "100dvh",
             }}
-            onClick={props.onClose}
+            onPointerDown={(e) => {
+              if (e.target === e.currentTarget) props.onClose();
+            }}
           >
             <div
               id={props.id}
-              className={`bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-2xl shadow-lg transition-all ease-in-out absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] duration-300 ${
-                props.isOpen
-                  ? "animate-slideUp  "
-                  : "translate-y-full animate-slideDown"
-              }`}
+              className={`bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-2xl shadow-lg transition-all ease-in-out absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] duration-300`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="text-2xl font-semibold text-center mb-4">

@@ -71,7 +71,7 @@ function BottomBarLink({
 }) {
   return (
     <div
-      onTouchStart={onClick}
+      onPointerDown={onClick}
       className="w-full text-[12px] flex flex-col items-center gap-0.5 cursor-pointer transition-all duration-150 ease-in-out"
     >
       <div

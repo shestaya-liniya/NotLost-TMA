@@ -1,4 +1,8 @@
-import { $getTelegramEntityByUsername } from "@/actions/telegram";
+import {
+  $getTelegramEntityByUsername,
+  ApiTelegramChannel,
+  ApiTelegramUser,
+} from "@/actions/telegram";
 import { truncateWord } from "@/helpers/truncate-word";
 import { useModalStore } from "@/lib/store/modal-store";
 import Input from "@/ui/Input";
@@ -10,15 +14,15 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function AddDialogModal() {
   const { addDialogModalOpen, setAddDialogModalOpen } = useModalStore();
   const [usernameValue, setUsernameValue] = useState("");
-  const [entity, setEntity] = useState(null);
+  const [entity, setEntity] = useState<
+    ApiTelegramUser | ApiTelegramChannel | null
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [title, setTitle] = useState("");
 
-  // Debounced username value for API call
+  // Debounced username value
   useEffect(() => {
     if (!usernameValue) {
       setEntity(null);
-      setTitle("");
       return;
     }
 
@@ -26,15 +30,7 @@ export default function AddDialogModal() {
       setIsLoading(true);
       $getTelegramEntityByUsername(usernameValue).then((res) => {
         setIsLoading(false);
-        if (res?.chats?.length) {
-          setEntity(res.chats[0]);
-          setTitle(res.chats[0].title);
-        } else if (res?.length) {
-          setEntity(res[0]);
-          setTitle(res[0].firstName);
-        } else {
-          setTitle("");
-        }
+        setEntity(res);
       });
     }, 300);
 
@@ -79,16 +75,21 @@ export default function AddDialogModal() {
           >
             <img
               loading="lazy"
-              src={`https://t.me/i/userpic/320/${usernameValue}.svg`}
+              src={`https://t.me/i/userpic/320/${entity.username}.svg`}
               className="h-12 w-12 rounded-full"
               decoding="async"
               alt=""
             />
             <div className="flex flex-col ml-4">
               <div className="text-sm font-medium">
-                {truncateWord(title, 20)}
+                {truncateWord(
+                  entity.type === "User"
+                    ? entity.firstName || "No firstname"
+                    : entity.title,
+                  20
+                )}
               </div>
-              <div className="text-xs text-link">@{usernameValue}</div>
+              <div className="text-xs text-link">@{entity.username}</div>
             </div>
           </motion.div>
         )}
