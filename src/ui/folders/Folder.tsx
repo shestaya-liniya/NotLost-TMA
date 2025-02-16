@@ -13,7 +13,7 @@ import { useState, useRef, useEffect, memo } from "react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import TelegramIcon from "@/assets/icons/telegram.svg?react";
+import AtSignIcon from "@/assets/icons/at.svg?react";
 
 import Tappable from "@/ui/Tappable";
 import DialogWithActions from "@/ui/dialog/DialogWithActions";
@@ -118,7 +118,7 @@ function Folder(props: {
                 <InlineButton
                   title="Add"
                   onClick={() => setAddDialogModalOpen(true)}
-                  Icon={<TelegramIcon className="w-5 h-5" />}
+                  Icon={<AtSignIcon className="w-5 h-5" />}
                 />
                 <InlineButton
                   title="Edit"

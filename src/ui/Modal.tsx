@@ -1,5 +1,4 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
 import { useEffect, useState } from "react";
@@ -16,10 +15,7 @@ const Modal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
   const keyboardState = useKeyboardState();
 
-  const initialHeight = Number(
-    getCssVariable("--initial-height").replace("px", "")
-  );
-  const [height, setHeight] = useState(initialHeight);
+  const [height, setHeight] = useState<number | null>(null);
 
   useEffect(() => {
     if (keyboardState) {
@@ -30,8 +26,6 @@ const Modal = (props: ModalProps) => {
       } else {
         setHeight(viewportSize?.[1] ?? 0);
       }
-    } else {
-      setHeight(initialHeight);
     }
   }, [keyboardState]);
 
@@ -39,7 +33,7 @@ const Modal = (props: ModalProps) => {
     <div
       className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-height duration-300 ease-in-out`}
       style={{
-        height,
+        height: height ? height : "100dvh",
       }}
     >
       <div
