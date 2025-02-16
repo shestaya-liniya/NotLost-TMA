@@ -10,9 +10,15 @@ import Modal from "@/ui/Modal";
 import { useState, useEffect } from "react";
 import Settings from "@/assets/icons/settings.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
+import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazz-folder";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import Button from "@/ui/Button";
 
 export default function AddDialogModal() {
-  const { addDialogModalOpen, setAddDialogModalOpen } = useModalStore();
+  const { addDialogModalOpen, setAddDialogModalOpen, addDialogModalFolder } =
+    useModalStore();
+  const { jazzProfile } = useJazzProfileContext();
+
   const [usernameValue, setUsernameValue] = useState("");
   const [entity, setEntity] = useState<
     ApiTelegramUser | ApiTelegramChannel | null
@@ -36,6 +42,18 @@ export default function AddDialogModal() {
 
     return () => clearTimeout(handler);
   }, [usernameValue]);
+
+  const handleAddDialogIntoFolder = () => {
+    if (addDialogModalFolder && entity) {
+      jazzAddDialogToFolder(jazzProfile, addDialogModalFolder, {
+        name:
+          entity?.type === "Channel" ? entity.title : entity.firstName || "X",
+        username: entity.username,
+      });
+      setEntity(null);
+      setUsernameValue("");
+    }
+  };
 
   return (
     <Modal
@@ -90,6 +108,9 @@ export default function AddDialogModal() {
                 )}
               </div>
               <div className="text-xs text-link">@{entity.username}</div>
+            </div>
+            <div className="ml-auto">
+              <Button title="Add" onClick={handleAddDialogIntoFolder} />
             </div>
           </motion.div>
         )}

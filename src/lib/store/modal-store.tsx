@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { JazzDialog } from "../jazz/schema";
+import { JazzDialog, JazzFolder } from "../jazz/schema";
 
 interface ModalState {
   manageDialogsModalOpen: boolean;
@@ -15,6 +15,8 @@ interface ModalState {
 
   addDialogModalOpen: boolean;
   setAddDialogModalOpen: (newState: boolean) => void;
+  addDialogModalFolder: JazzFolder | null;
+  setAddDialogModalFolder: (newState: JazzFolder | null) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -45,5 +47,10 @@ export const useModalStore = create<ModalState>((set) => ({
   setAddDialogModalOpen: (newState) =>
     set(() => ({
       addDialogModalOpen: newState,
+    })),
+  addDialogModalFolder: null,
+  setAddDialogModalFolder: (newState) =>
+    set(() => ({
+      addDialogModalFolder: newState,
     })),
 }));

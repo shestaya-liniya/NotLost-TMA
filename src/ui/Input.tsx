@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 const Input = (props: {
@@ -8,12 +8,10 @@ const Input = (props: {
   before?: React.ReactNode;
   className?: string;
 }) => {
-  const [inputValue, setInputValue] = useState(props.value);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setInputValue(value);
     props.onInput(value);
   };
 
@@ -30,7 +28,7 @@ const Input = (props: {
         className="appearance-none border-none w-full focus:outline-none focus:ring-transparent placeholder:text-hint "
         type="text"
         placeholder={props.label}
-        value={inputValue}
+        value={props.value}
         onChange={(e) => handleInputChange(e)}
       />
     </div>

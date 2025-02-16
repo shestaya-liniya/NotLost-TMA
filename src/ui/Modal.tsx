@@ -1,6 +1,7 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -15,10 +16,14 @@ interface ModalProps {
 const Modal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
   const keyboardState = useKeyboardState();
+  const lp = useLaunchParams();
 
-  const [height, setHeight] = useState<number | null>(null);
+  const [height, setHeight] = useState<number | string>("100dvh");
 
   useEffect(() => {
+    if (["macos", "tdesktop", "web", "weba"].includes(lp.platform)) {
+      return;
+    }
     if (keyboardState) {
       if (localStorage.getItem("viewport-with-opened-keyboard")) {
         setHeight(
@@ -28,7 +33,7 @@ const Modal = (props: ModalProps) => {
         setHeight(viewportSize?.[1] ?? 0);
       }
     } else {
-      setHeight(null);
+      setHeight("100dvh");
     }
   }, [keyboardState]);
 
@@ -39,14 +44,15 @@ const Modal = (props: ModalProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
         >
           <div
             className={`absolute top-0 left-0 w-full z-50 transition-height duration-300 ease-in-out bg-black/30`}
             style={{
-              height: height ? height : "100dvh",
+              height,
             }}
             onPointerDown={(e) => {
+              e.stopPropagation();
               if (e.target === e.currentTarget) props.onClose();
             }}
           >

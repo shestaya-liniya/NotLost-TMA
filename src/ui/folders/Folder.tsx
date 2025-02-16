@@ -29,7 +29,7 @@ function Folder(props: {
 
   const { jazzProfile } = useJazzProfileContext();
   const { draggableItem } = useDragStore();
-  const { setAddDialogModalOpen } = useModalStore();
+  const { setAddDialogModalOpen, setAddDialogModalFolder } = useModalStore();
 
   const [foldersTitleStack, setFoldersTitleStack] = useState(mainFolder.title);
   const [activeFolderStack, setActiveFolderStack] = useState<JazzFolder[]>([
@@ -117,7 +117,10 @@ function Folder(props: {
               <div className="flex gap-2 justify-center items-center">
                 <InlineButton
                   title="Add"
-                  onClick={() => setAddDialogModalOpen(true)}
+                  onClick={() => {
+                    setAddDialogModalOpen(true);
+                    setAddDialogModalFolder(props.folder);
+                  }}
                   Icon={<AtSignIcon className="w-5 h-5" />}
                 />
                 <InlineButton
