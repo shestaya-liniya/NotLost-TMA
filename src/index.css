@@ -150,8 +150,7 @@
 html,
 body {
   -webkit-overflow-scrolling: touch !important;
-  overflow: auto !important;
-  overflow-x: hidden !important;
+  overflow: hidden;
 }
 
 #app {
