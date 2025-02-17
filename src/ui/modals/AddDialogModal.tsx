@@ -6,7 +6,7 @@ import {
 import { truncateWord } from "@/helpers/truncate-word";
 import { useModalStore } from "@/lib/store/modal-store";
 import Input from "@/ui/Input";
-import Modal from "@/ui/Modal";
+import Modal from "@/ui/modals/Modal";
 import { useState, useEffect } from "react";
 import Settings from "@/assets/icons/settings.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -94,7 +94,7 @@ export default function AddDialogModal() {
             <img
               loading="lazy"
               src={`https://t.me/i/userpic/320/${entity.username}.svg`}
-              className="h-12 w-12 rounded-full"
+              className="h-12 w-12 rounded-full border-1 border-link"
               decoding="async"
               alt=""
             />

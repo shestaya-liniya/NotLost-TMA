@@ -1,4 +1,4 @@
-import BottomModal from "@/ui/BottomModal.jsx";
+import BottomModal from "@/ui/modals/BottomModal.js";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Dialog from "@/ui/dialog/Dialog.js";
 import Draggable from "@/ui/Draggable";

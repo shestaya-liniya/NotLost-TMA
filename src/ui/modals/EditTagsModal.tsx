@@ -1,4 +1,4 @@
-import BottomModal from "@/ui/BottomModal";
+import BottomModal from "@/ui/modals/BottomModal";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useEffect, useState } from "react";
 import Tappable from "@/ui/Tappable";

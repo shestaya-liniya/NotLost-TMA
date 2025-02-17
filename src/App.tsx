@@ -1,19 +1,19 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import TabBarLayout from "./TabBarLayout.tsx";
+import TabBarLayout from "./ui/tab-bar/TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
-import ManageDialogsModal from "./ManageDialogsModal.jsx";
-import Graph from "./graph/index.tsx";
+import ManageDialogsModal from "./ui/modals/ManageDialogsModal.js";
+import Graph from "./components/graph/index.tsx";
 import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
 import { useModalStore } from "@/lib/store/modal-store.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
-import EditTagsModal from "./EditTagsModal.tsx";
+import EditTagsModal from "./ui/modals/EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
-import AddDialogModal from "./AddDialogModal.tsx";
+import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
