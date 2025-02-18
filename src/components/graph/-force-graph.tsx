@@ -7,7 +7,7 @@ import { GraphData, GraphLink, GraphNode, GraphNodeType } from "./-@interface";
 import { drawContactNode } from "./(nodes)/-draw-contact-node";
 import { drawTopicNode, getTopicRadius } from "./(nodes)/-draw-topic-node";
 import { useImageCache } from "./(nodes)/-use-image-cache";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { SelectedContact } from "./-selected-contact";
 import { AnimatePresence } from "framer-motion";
 import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
@@ -24,7 +24,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     null | number
   >(null);
 
-  const lp = useLaunchParams();
+  const lp = retrieveLaunchParams();
 
   const graphData = useMemo(() => initializeGraphData(data), [data]);
 
@@ -43,10 +43,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
       switch (node.type) {
         case GraphNodeType.DIALOG:
-          drawContactNode(node, ctx, globalScale, img, lp.platform);
+          drawContactNode(node, ctx, globalScale, img, lp.tgWebAppPlatform);
           break;
         case GraphNodeType.TOPIC:
-          drawTopicNode(node, ctx, img, lp.platform);
+          drawTopicNode(node, ctx, img, lp.tgWebAppPlatform);
           break;
       }
     },

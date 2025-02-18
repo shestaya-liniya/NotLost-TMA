@@ -10,7 +10,7 @@ import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Folder from "@/ui/folders/Folder";
 import NewFolder from "@/ui/folders/NewFolder";
 import SearchIcon from "@/assets/icons/search.svg?react";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import Button from "@/ui/Button";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
@@ -27,7 +27,7 @@ export default function Folders() {
   const { setManageDialogsModalOpen, manageDialogsModalOpen } = useModalStore();
   const { draggableItemType } = useDragStore();
 
-  const lp = useLaunchParams();
+  const lp = retrieveLaunchParams();
 
   const dropFolderAppear = draggableItemType === "folder";
 
@@ -76,7 +76,7 @@ export default function Folders() {
     <div className="h-full flex flex-col relative">
       <div
         style={{
-          paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+          paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
             ? 40
             : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
@@ -104,7 +104,7 @@ export default function Folders() {
         style={{
           height: manageDialogsModalOpen
             ? `calc(100% - ${manageDialogsHeight}px - ${tabBarHeight}px ${
-                !["macos", "tdesktop", "android", "ios"].includes(lp.platform)
+                !["macos", "tdesktop", "android", "ios"].includes(lp.tgWebAppPlatform)
                   ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
               } ) `

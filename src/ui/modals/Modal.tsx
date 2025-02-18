@@ -1,7 +1,7 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -16,12 +16,12 @@ interface ModalProps {
 const Modal = (props: ModalProps) => {
   const viewportSize = useViewportSize();
   const keyboardState = useKeyboardState();
-  const lp = useLaunchParams();
+  const lp = retrieveLaunchParams();
 
   const [height, setHeight] = useState<number | string>("100dvh");
 
   useEffect(() => {
-    if (["macos", "tdesktop", "web", "weba"].includes(lp.platform)) {
+    if (["macos", "tdesktop", "web", "webview"].includes(lp.tgWebAppPlatform)) {
       return;
     }
     if (keyboardState) {

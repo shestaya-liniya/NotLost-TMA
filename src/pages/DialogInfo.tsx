@@ -1,5 +1,5 @@
 import { useModalStore } from "@/lib/store/modal-store";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import TagIcon from "@/assets/icons/tag.svg?react";
 import InlineButton from "@/ui/InlineButton";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
@@ -8,7 +8,7 @@ import Tag from "@/ui/Tag";
 export default function DialogInfo() {
   const { dialogInfoModalDialog: dialog, setEditTagsModalOpen } =
     useModalStore();
-  const lp = useLaunchParams();
+  const lp = retrieveLaunchParams();
 
   if (!dialog) return;
 
@@ -16,7 +16,7 @@ export default function DialogInfo() {
     <div
       className="flex flex-col items-center justify-center w-full"
       style={{
-        paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+        paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
           ? 40
           : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
       }}

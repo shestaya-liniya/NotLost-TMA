@@ -1,10 +1,10 @@
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import ColorPaletteIcon from "@/assets/icons/color-palette.svg?react";
 import ColorCircle from "@/ui/ColorCircle";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 
 export default function Settings() {
-  const lp = useLaunchParams();
+  const lp = retrieveLaunchParams();
   const { jazzProfile } = useJazzProfileContext();
 
   const changeColorScheme = (colorScheme: string) => {
@@ -18,7 +18,7 @@ export default function Settings() {
     <div
       className="flex flex-col items-center justify-center w-full px-4"
       style={{
-        paddingTop: ["macos", "tdesktop"].includes(lp.platform)
+        paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
           ? 40
           : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
       }}

@@ -32,5 +32,7 @@ try {
     </StrictMode>
   );
 } catch (e) {
+  console.log(e);
+
   root.render(<EnvUnsupported />);
 }
