@@ -2,6 +2,8 @@ import { Api, TelegramClient } from "telegram";
 //import { StringSession } from "telegram/sessions";
 import bigInt from "big-integer";
 import Photo = Api.Photo;
+import { Buffer } from "buffer/";
+import { StringSession } from "telegram/sessions";
 
 class TelegramApiClient {
   private static instance: TelegramApiClient;
@@ -23,9 +25,14 @@ class TelegramApiClient {
     this.apiId = api_id;
     this.apiHash = api_hash;
 
-    this.client = new TelegramClient(string_session, api_id, api_hash, {
-      connectionRetries: 5,
-    });
+    this.client = new TelegramClient(
+      new StringSession(string_session),
+      api_id,
+      api_hash,
+      {
+        connectionRetries: 5,
+      }
+    );
   }
 
   public async initialize(): Promise<void> {
@@ -57,15 +64,19 @@ class TelegramApiClient {
     phoneCode: string
   ): Promise<void> {
     try {
-      return await this.client.start({
-        phoneNumber,
-        password: userAuthParamCallback(password),
-        phoneCode: userAuthParamCallback(phoneCode),
-        onError: (e) => {
-          console.log(e);
-          return;
-        },
-      });
+      return await this.client
+        .start({
+          phoneNumber,
+          password: userAuthParamCallback(password),
+          phoneCode: userAuthParamCallback(phoneCode),
+          onError: (e) => {
+            console.log(e);
+            return;
+          },
+        })
+        .then(() => {
+          localStorage.setItem("session", this.getSession());
+        });
     } catch (e) {
       console.log(e);
     }

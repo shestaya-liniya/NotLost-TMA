@@ -5,9 +5,14 @@ import Draggable from "@/ui/Draggable";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import { useEffect } from "react";
+import Button from "../Button";
 
 export default function ManageDialogsModal() {
-  const { manageDialogsModalOpen, setManageDialogsModalOpen } = useModalStore();
+  const {
+    manageDialogsModalOpen,
+    setManageDialogsModalOpen,
+    setTelegramSignInModalOpen,
+  } = useModalStore();
   const keyboardVisible = useKeyboardState();
 
   useEffect(() => {
@@ -53,6 +58,10 @@ export default function ManageDialogsModal() {
           </div>
         ))}
       </div>
+      <Button
+        title="Sign in"
+        onClick={() => setTelegramSignInModalOpen(true)}
+      />
     </BottomModal>
   );
 }

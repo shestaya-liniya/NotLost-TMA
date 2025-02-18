@@ -17,6 +17,9 @@ interface ModalState {
   setAddDialogModalOpen: (newState: boolean) => void;
   addDialogModalFolder: JazzFolder | null;
   setAddDialogModalFolder: (newState: JazzFolder | null) => void;
+
+  telegramSignInModalOpen: boolean;
+  setTelegramSignInModalOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -52,5 +55,11 @@ export const useModalStore = create<ModalState>((set) => ({
   setAddDialogModalFolder: (newState) =>
     set(() => ({
       addDialogModalFolder: newState,
+    })),
+
+  telegramSignInModalOpen: false,
+  setTelegramSignInModalOpen: (newState) =>
+    set(() => ({
+      telegramSignInModalOpen: newState,
     })),
 }));

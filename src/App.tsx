@@ -14,10 +14,16 @@ import Settings from "@/pages/Settings.tsx";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
+import TelegramSignIn from "./pages/TelegramSignIn.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
-  const { dialogInfoModalOpen, setDialogInfoModalOpen } = useModalStore();
+  const {
+    dialogInfoModalOpen,
+    setDialogInfoModalOpen,
+    telegramSignInModalOpen,
+    setTelegramSignInModalOpen,
+  } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
 
   const tabs = ["try", "folders", "settings"];
@@ -97,6 +103,14 @@ export default function App() {
               >
                 <DialogInfo />
               </SlidingPage>
+              <SlidingPage
+                open={telegramSignInModalOpen}
+                onClose={() => {
+                  setTelegramSignInModalOpen(false);
+                }}
+              >
+                <TelegramSignIn />
+              </SlidingPage>
             </div>
           }
         />
@@ -135,12 +149,21 @@ function SlidingPage({
 }) {
   const handleClose = () => {
     onClose();
-    backButton.hide();
+    if (backButton.isSupported()) {
+      backButton.hide();
+    }
   };
   useEffect(() => {
     if (open) {
-      backButton.show();
-      backButton.onClick(handleClose);
+      if (backButton.isSupported()) {
+        console.log(backButton.isSupported());
+        try {
+          backButton.show();
+          backButton.onClick(handleClose);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   }, [open]);
   return (

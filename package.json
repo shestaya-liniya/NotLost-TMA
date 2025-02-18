@@ -28,7 +28,7 @@
     "react-router-dom": "^6.23.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss": "^4.0.1",
-    "telegram": "^2.26.15",
+    "telegram": "^2.26.21",
     "vite-plugin-svgr": "^4.3.0",
     "zustand": "^5.0.3"
   },
