@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 export default function TelegramSignIn() {
-  const [step, setStep] = useState(0);
+  const [step] = useState(0);
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneCode, setPhoneCode] = useState("");

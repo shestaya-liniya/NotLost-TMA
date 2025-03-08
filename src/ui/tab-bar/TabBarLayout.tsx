@@ -2,6 +2,7 @@ import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import SettingsIcon from "@/assets/icons/settings.svg?react";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
+import AiIcon from "@/assets/icons/ai.svg?react";
 
 export default function TabBarLayout({
   activeTab,
@@ -35,8 +36,14 @@ function TabBar({
       <div className="max-w-screen-xl mx-auto px-4 pt-2 pb-4">
         <div className="flex justify-around items-center">
           <BottomBarLink
+            onClick={() => setActiveTab("ai")}
+            title="AI"
+            isActive={activeTab === "ai"}
+            Icon={<AiIcon />}
+          />
+          <BottomBarLink
             onClick={() => setActiveTab("try")}
-            title="Mindmap"
+            title="Graph"
             isActive={activeTab === "try"}
             Icon={<GraphIcon />}
           />

@@ -64,6 +64,22 @@ class TelegramApiClient {
     phoneCode: string
   ): Promise<void> {
     try {
+      this.client.signInUserWithQrCode(
+        {
+          apiId: import.meta.env.VITE_TELEGRAM_API_ID,
+          apiHash: import.meta.env.VITE_TELEGRAM_API_HASH,
+        },
+        {
+          onError: async function (e: Error): Promise<boolean> {
+            console.log(e);
+            return true;
+          },
+          qrCode: async (code): Promise<void> => {
+            const tokenUrl = `tg://login?token=${code.token.toString("base64")}`;
+            console.log(tokenUrl);
+          },
+        }
+      );
       return await this.client
         .start({
           phoneNumber,
@@ -160,9 +176,21 @@ class TelegramApiClient {
 
   async getDialogs() {
     await this.initialize();
-    const dialogs = await this.client.getDialogs({ folder: 0, limit: 12 });
+    const dialogs = await this.client.getDialogs({ archived: false });
+    console.log(dialogs);
 
     return dialogs;
+  }
+
+  async getFullChannel(channelUsername: string) {
+    await this.initialize();
+    const channelInfo = await this.client.invoke(
+      new Api.channels.GetFullChannel({
+        channel: channelUsername,
+      })
+    );
+    console.log(channelInfo);
+    return channelInfo;
   }
 
   private async processQueue(): Promise<void> {

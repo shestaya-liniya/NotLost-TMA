@@ -11,7 +11,6 @@ import Folder from "@/ui/folders/Folder";
 import NewFolder from "@/ui/folders/NewFolder";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import Button from "@/ui/Button";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 
@@ -94,17 +93,19 @@ export default function Folders() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 mt-2">
+        {/* <div className="flex items-center gap-2 mt-2">
           <Button title="Type" onClick={() => {}} />
           <Button title="Tag" onClick={() => {}} />
           <Button title="Date" onClick={() => {}} />
-        </div>
+        </div> */}
       </div>
       <div
         style={{
           height: manageDialogsModalOpen
             ? `calc(100% - ${manageDialogsHeight}px - ${tabBarHeight}px ${
-                !["macos", "tdesktop", "android", "ios"].includes(lp.tgWebAppPlatform)
+                !["macos", "tdesktop", "android", "ios"].includes(
+                  lp.tgWebAppPlatform
+                )
                   ? `- ${getCssVariable("tg-viewport-safe-area-inset-bottom")}px`
                   : ""
               } ) `

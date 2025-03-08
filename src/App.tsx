@@ -15,6 +15,7 @@ import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 import TelegramSignIn from "./pages/TelegramSignIn.tsx";
+import Ai from "./pages/Ai.tsx";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("folders");
@@ -73,16 +74,22 @@ export default function App() {
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
                 <div className="relative w-screen h-full overflow-x-hidden">
                   <TabTransition
-                    direction={direction}
-                    isActive={activeTab === "folders"}
+                    direction={"toLeft"}
+                    isActive={activeTab === "ai"}
                   >
-                    <Folders />
+                    <Ai />
                   </TabTransition>
                   <TabTransition
                     direction={direction}
                     isActive={activeTab === "try"}
                   >
                     <Graph />
+                  </TabTransition>
+                  <TabTransition
+                    direction={direction}
+                    isActive={activeTab === "folders"}
+                  >
+                    <Folders />
                   </TabTransition>
                   <TabTransition
                     direction={"toRight"}

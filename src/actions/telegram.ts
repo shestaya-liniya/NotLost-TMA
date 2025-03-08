@@ -1,13 +1,15 @@
 import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
 import axios from "axios";
+import { TotalList } from "telegram/Helpers";
+import { Dialog } from "telegram/tl/custom/dialog";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_TELEGRAM_API_SERVER_ORIGIN,
 });
 
 const client = TelegramApiClient.getInstance(
-  21895764,
-  "b827c12729691cee0f2c5b044d582804",
+  import.meta.env.VITE_TELEGRAM_API_ID,
+  import.meta.env.VITE_TELEGRAM_API_HASH,
   localStorage.getItem("session")
     ? JSON.parse(localStorage.getItem("session")!)
     : ""
@@ -29,12 +31,12 @@ export const $getUserByUsername = async (username: string) => {
   return await client.getUserByUsername(username);
 };
 
-export const $getMyDialogs = async () => {
+export const $getMyDialogs = async (): Promise<TotalList<Dialog>> => {
   return await client.getDialogs();
 };
 
-export const $getFolders = async () => {
-  return await client.getFoldersAndDialogUsernames();
+export const $getFullChannel = async (channelUsername: string) => {
+  return await client.getFullChannel(channelUsername);
 };
 
 export const $getTelegramEntityByUsername = async (
