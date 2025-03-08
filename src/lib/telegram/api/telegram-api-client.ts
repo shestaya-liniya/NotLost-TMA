@@ -58,12 +58,8 @@ class TelegramApiClient {
     );
   }
 
-  public async signIn(
-    phoneNumber: string,
-    password: string,
-    phoneCode: string
-  ): Promise<void> {
-    try {
+  public async generateQrLink(): Promise<string> {
+    return new Promise((resolve, reject) => {
       this.client.signInUserWithQrCode(
         {
           apiId: import.meta.env.VITE_TELEGRAM_API_ID,
@@ -72,14 +68,24 @@ class TelegramApiClient {
         {
           onError: async function (e: Error): Promise<boolean> {
             console.log(e);
+            reject(e);
             return true;
           },
           qrCode: async (code): Promise<void> => {
             const tokenUrl = `tg://login?token=${code.token.toString("base64")}`;
             console.log(tokenUrl);
+            resolve(tokenUrl);
           },
         }
       );
+    });
+  }
+  public async signIn(
+    phoneNumber: string,
+    password: string,
+    phoneCode: string
+  ): Promise<void> {
+    try {
       return await this.client
         .start({
           phoneNumber,

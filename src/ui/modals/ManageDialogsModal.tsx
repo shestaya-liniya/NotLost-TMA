@@ -6,7 +6,7 @@ import { useModalStore } from "@/lib/store/modal-store";
 import { useEffect, useState } from "react";
 import ChevronIcon from "@/assets/icons/chevron-right.svg?react";
 import Tappable from "../Tappable";
-import { $getMyDialogs } from "@/actions/telegram";
+import { $getLoginByQrLink, $getMyDialogs } from "@/actions/telegram";
 import { qrScanner } from "@telegram-apps/sdk-react";
 import Button from "../Button";
 
@@ -58,6 +58,9 @@ export default function ManageDialogsModal() {
           }
         },
       });
+      setTimeout(() => {
+        $getLoginByQrLink().then((link) => window.open(link));
+      }, 500);
     }
   };
 

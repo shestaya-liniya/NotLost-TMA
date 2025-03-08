@@ -55,6 +55,8 @@ export default function App() {
 
   const { shadowInputValue, setShadowInputValue } = useAppStore();
 
+  import("eruda").then((lib) => lib.default.init()).catch(console.error);
+
   return (
     <div>
       {/* shadow input is used to trigger keyboard */}

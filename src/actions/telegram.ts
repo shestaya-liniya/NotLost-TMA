@@ -27,6 +27,10 @@ export const $signIn = async (
   client.signIn(phoneNumber, password, phoneCode);
 };
 
+export const $getLoginByQrLink = async () => {
+  return client.generateQrLink();
+};
+
 export const $getUserByUsername = async (username: string) => {
   return await client.getUserByUsername(username);
 };
