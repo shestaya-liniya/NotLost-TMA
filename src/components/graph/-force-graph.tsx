@@ -179,10 +179,20 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
   const nodes: GraphNode[] = [];
   const links: GraphLink[] = [];
 
+  const centerNode = {
+    id: "center",
+    title: "My space",
+    targets: [],
+    type: GraphNodeType.TOPIC,
+  };
+
+  nodes.push(centerNode as GraphNode);
+
   function processFolders(
     folders: JazzFolder[],
     nodes: GraphNode[],
-    links: GraphLink[]
+    links: GraphLink[],
+    nested: boolean
   ) {
     folders.forEach((folder) => {
       if (!folder) return;
@@ -193,6 +203,12 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
         targets: [],
         type: GraphNodeType.TOPIC,
       });
+      if (!nested) {
+        links.push({
+          source: folder.id,
+          target: "center",
+        });
+      }
 
       folder?.dialogs?.forEach((dialog) => {
         if (!dialog) return;
@@ -212,7 +228,12 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
       });
 
       if (folder.nestedFolders?.length) {
-        processFolders(folder.nestedFolders as JazzFolder[], nodes, links);
+        processFolders(
+          folder.nestedFolders as JazzFolder[],
+          nodes,
+          links,
+          true
+        );
 
         folder.nestedFolders.forEach((subFolder) => {
           if (!subFolder) return;
@@ -225,7 +246,7 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
     });
   }
 
-  processFolders(folders as JazzFolder[], nodes, links);
+  processFolders(folders as JazzFolder[], nodes, links, false);
   return { nodes, links };
 };
 
