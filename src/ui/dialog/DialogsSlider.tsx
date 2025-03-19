@@ -48,10 +48,9 @@ export default function DialogsSlider({
               const isSelected = selectedDialogs.some(
                 (dialog) => dialog.username === d.username
               );
-              const uniqueId = useMemo(() => uuidv4(), []);
               return (
                 <Tappable
-                  key={uniqueId}
+                  key={uuidv4()}
                   className={`flex flex-col items-center justify-center gap-1 rounded-xl p-2 relative ${isSelected ? "bg-accent" : ""}`}
                   onClick={() => {
                     if (isSelected) {

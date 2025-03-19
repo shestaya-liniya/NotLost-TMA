@@ -193,10 +193,6 @@ const WithTelegramSync = () => {
       d.label.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  useEffect(() => {
-    console.log("FILTERED", filteredDialogs);
-  }, [filteredDialogs]);
-
   const handleAddChatsIntoFolder = () => {
     if (selectedChats.length > 0 && addDialogModalFolder) {
       selectedChats.forEach((chat) => {
