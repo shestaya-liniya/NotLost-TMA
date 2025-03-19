@@ -18,9 +18,7 @@ import { JazzAndAuth } from "./lib/jazz/jazz-provider.tsx";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
-  await init(
-    retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV
-  );
+  init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV);
 
   root.render(
     <StrictMode>
