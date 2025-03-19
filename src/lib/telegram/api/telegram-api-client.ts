@@ -22,12 +22,12 @@ class TelegramApiClient {
     api_hash: string,
     string_session: string
   ) {
-    this.apiId = api_id;
+    this.apiId = Number(api_id);
     this.apiHash = api_hash;
 
     this.client = new TelegramClient(
       new StringSession(string_session),
-      api_id,
+      Number(api_id),
       api_hash,
       {
         connectionRetries: 5,
@@ -47,22 +47,30 @@ class TelegramApiClient {
     }
   }
 
-  public async sendSignInCode(phoneNumber: string): Promise<void> {
+  public async sendSignInCode(phoneNumber: string): Promise<boolean> {
+    console.log("send code func");
+
     await this.initialize();
-    await this.client.sendCode(
-      {
-        apiId: this.apiId,
-        apiHash: this.apiHash,
-      },
-      phoneNumber
-    );
+    try {
+      await this.client.sendCode(
+        {
+          apiId: this.apiId,
+          apiHash: this.apiHash,
+        },
+        phoneNumber
+      );
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 
   public async generateQrLink(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.client.signInUserWithQrCode(
         {
-          apiId: import.meta.env.VITE_TELEGRAM_API_ID,
+          apiId: Number(import.meta.env.VITE_TELEGRAM_API_ID),
           apiHash: import.meta.env.VITE_TELEGRAM_API_HASH,
         },
         {
@@ -84,23 +92,45 @@ class TelegramApiClient {
     phoneNumber: string,
     password: string,
     phoneCode: string
-  ): Promise<void> {
+  ): Promise<string | void | Error> {
     try {
-      return await this.client
-        .start({
-          phoneNumber,
-          password: userAuthParamCallback(password),
-          phoneCode: userAuthParamCallback(phoneCode),
-          onError: (e) => {
-            console.log(e);
-            return;
-          },
-        })
-        .then(() => {
-          localStorage.setItem("session", this.getSession());
-        });
+      await this.client.start({
+        phoneNumber,
+        password: userAuthParamCallback(password),
+        phoneCode: userAuthParamCallback(phoneCode),
+        onError: (e) => {
+          throw new Error(e.message);
+        },
+      });
+
+      localStorage.setItem("session", this.getSession());
     } catch (e) {
       console.log(e);
+      //@ts-ignore
+      return e;
+    }
+  }
+
+  public async signInWithPassword(password: string) {
+    try {
+      await this.client.signInWithPassword(
+        {
+          apiId: this.apiId,
+          apiHash: this.apiHash,
+        },
+        {
+          password: async () => password,
+          onError: (e) => {
+            throw new Error(e.message);
+          },
+        }
+      );
+
+      localStorage.setItem("session", this.getSession());
+    } catch (e) {
+      console.log(e);
+      //@ts-ignore
+      return e;
     }
   }
 
@@ -234,6 +264,12 @@ function userAuthParamCallback<T>(param: T): () => Promise<T> {
       resolve(param);
     });
   };
+}
+
+export interface TelegramDialogInfo {
+  id: bigInt.BigInteger;
+  label: string;
+  username: string;
 }
 
 export default TelegramApiClient;

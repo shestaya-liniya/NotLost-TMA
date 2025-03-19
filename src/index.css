@@ -209,7 +209,9 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
-
+.PhoneInputCountry {
+  display: none !important;
+}
 @keyframes blink_input_opacity_to_prevent_scrolling_when_focus {
   0% {
     opacity: 0;
@@ -221,4 +223,16 @@ body {
 
 .input--focused {
   animation: blink_input_opacity_to_prevent_scrolling_when_focus 0.01s;
+}
+
+input:focus {
+  outline: none;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--color-accent) !important;
+}
+
+.swiper-wrapper {
+  height: 288px !important;
 }

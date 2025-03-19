@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { JazzFolder } from "../jazz/schema";
+import { TelegramDialogInfo } from "../telegram/api/telegram-api-client";
 
 interface AppState {
   expandedFolder: JazzFolder | null;
@@ -7,6 +8,9 @@ interface AppState {
 
   shadowInputValue: string;
   setShadowInputValue: (shadowInputValue: string) => void;
+
+  telegramDialogs: TelegramDialogInfo[];
+  setTelegramDialogs: (dialogs: TelegramDialogInfo[]) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -15,9 +19,16 @@ export const useAppStore = create<AppState>((set) => ({
     set(() => ({
       expandedFolder: expandedFolder,
     })),
+
   shadowInputValue: "",
   setShadowInputValue: (shadowInputValue) =>
     set(() => ({
       shadowInputValue: shadowInputValue,
+    })),
+
+  telegramDialogs: [],
+  setTelegramDialogs: (dialogs) =>
+    set(() => ({
+      telegramDialogs: dialogs,
     })),
 }));

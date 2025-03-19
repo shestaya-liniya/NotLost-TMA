@@ -10,20 +10,24 @@ import FolderAccordion from "@/ui/FolderAccordion";
 import DragSensible from "@/ui/DragSensible";
 import InlineButton from "@/ui/InlineButton";
 import { useState, useRef, useEffect, memo } from "react";
-import RemoveIcon from "@/assets/icons/remove.svg?react";
-import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import AtSignIcon from "@/assets/icons/at.svg?react";
+import PlusIcon from "@/assets/icons/plus.svg?react";
+import PeopleIcon from "@/assets/icons/people.svg?react";
 
-import Tappable from "@/ui/Tappable";
-import DialogWithActions from "@/ui/dialog/DialogWithActions";
 import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
 import { useModalStore } from "@/lib/store/modal-store";
+import { SwiperSlider } from "../dialog/DialogsSlider";
+import { SwiperSlide } from "swiper/react";
+import DialogWithActions from "../dialog/DialogWithActions";
+
+import { v4 as uuidv4 } from "uuid";
 
 function Folder(props: {
   folder: JazzFolder;
   setFolderHeight: (height: number) => void;
   onDeleteFolder: () => void;
+  nested?: boolean;
+  setAsParentFolder?: () => void;
 }) {
   const mainFolder = props.folder;
 
@@ -48,7 +52,23 @@ function Folder(props: {
     if (ref.current) {
       props.setFolderHeight(ref.current.clientHeight);
     }
-  }, [expanded, mainFolder, activeFolder]);
+  }, [expanded, mainFolder, activeFolder, ref.current?.clientHeight]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const observer = new ResizeObserver(() => {
+      setTimeout(() => {
+        if (ref.current) {
+          props.setFolderHeight(ref.current.clientHeight);
+        }
+      }, 300);
+    });
+
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleRemoveFolder = () => {
     if (activeFolderStack.length === 1) {
@@ -101,7 +121,17 @@ function Folder(props: {
             title={foldersTitleStack}
             foldersStack={activeFolderStack}
             expanded={expanded}
-            setExpanded={setExpanded}
+            setExpanded={(expanded: boolean) => {
+              if (
+                props.nested &&
+                props.setAsParentFolder &&
+                props.folder.nestedFolders &&
+                props.folder.nestedFolders.length > 0
+              ) {
+                props.setAsParentFolder();
+              }
+              setExpanded(expanded);
+            }}
             editingTitle={editingTitle}
             onBlur={(title: string) => {
               activeFolder.title = title;
@@ -112,51 +142,24 @@ function Folder(props: {
 
               setEditingTitle(false);
             }}
+            returnToParentFolder={() => {
+              setActiveFolderStack(activeFolderStack.slice(0, -1));
+              setFoldersTitleStack(
+                activeFolderStack
+                  .slice(0, -1)
+                  .map((folder) => folder.title)
+                  .join(" / ")
+              );
+            }}
+            handleEditFolder={() => {
+              setEditingTitle(true);
+            }}
+            handleDeleteFolder={() => {
+              handleRemoveFolder();
+            }}
           >
             <div className="flex flex-col gap-2 justify-center">
-              <div className="flex gap-2 justify-center items-center">
-                <InlineButton
-                  title="Add"
-                  onClick={() => {
-                    setAddDialogModalOpen(true);
-                    setAddDialogModalFolder(props.folder);
-                  }}
-                  Icon={<AtSignIcon className="w-5 h-5" />}
-                />
-                <InlineButton
-                  title="Edit"
-                  onClick={() => setEditingTitle(true)}
-                  Icon={<PencilIcon className="w-5 h-5" />}
-                />
-                <InlineButton
-                  title="Folder"
-                  onClick={handleAddNestedFolder}
-                  Icon={<FolderIcon className="w-5 h-5" />}
-                />
-                <InlineButton
-                  title="Remove"
-                  onClick={handleRemoveFolder}
-                  Icon={<RemoveIcon className="w-5 h-5 p-0.5" />}
-                />
-              </div>
-              {activeFolderStack.length > 1 && (
-                <div
-                  className="w-full py-2 rounded-xl text-center bg-link/10 text-link animate-fadeIn"
-                  onClick={() => {
-                    setActiveFolderStack(activeFolderStack.slice(0, -1));
-                    setFoldersTitleStack(
-                      activeFolderStack
-                        .slice(0, -1)
-                        .map((folder) => folder.title)
-                        .join(" / ")
-                    );
-                  }}
-                >
-                  Return to{" "}
-                  {activeFolderStack[activeFolderStack.length - 2].title}
-                </div>
-              )}
-              <div className="flex justify-center gap-2 flex-wrap">
+              {/* <div className="flex justify-center gap-2 flex-wrap">
                 {activeFolder.nestedFolders?.map((nestedFolder) => {
                   if (!nestedFolder) return null;
                   return (
@@ -169,20 +172,112 @@ function Folder(props: {
                     />
                   );
                 })}
-              </div>
-              <div className="flex justify-center gap-2 flex-wrap">
-                {activeFolder.dialogs?.map((dialog) => {
-                  if (!dialog) return null;
-                  return (
-                    <div key={dialog.id} className="animate-fadeIn">
-                      <DialogWithActions
-                        dialog={dialog}
-                        folder={activeFolder}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+              </div> */}
+
+              {activeFolder.nestedFolders?.map((nestedFolder) => {
+                if (!nestedFolder) return null;
+                return (
+                  <div key={nestedFolder.id} className="-ml-4 -mr-4">
+                    <Folder
+                      nested={true}
+                      setAsParentFolder={() => updateFoldersStack(nestedFolder)}
+                      folder={nestedFolder}
+                      setFolderHeight={() => {}}
+                      onDeleteFolder={() => {
+                        jazzDeleteFolder(
+                          jazzProfile,
+                          activeFolder,
+                          nestedFolder
+                        );
+                        setActiveFolderStack(
+                          activeFolderStack.filter(
+                            (f) => f.id !== nestedFolder.id
+                          )
+                        );
+                      }}
+                    />
+                  </div>
+                );
+              })}
+              {activeFolder.dialogs && activeFolder.dialogs.length > 0 ? (
+                activeFolder.dialogs.length > 9 ? (
+                  <div className="-ml-4 -mr-4">
+                    <SwiperSlider>
+                      {activeFolder.dialogs
+                        ? chunkArray(activeFolder.dialogs, 9).map(
+                            (dialogGroup) => (
+                              <SwiperSlide key={uuidv4()}>
+                                <div className="grid grid-cols-3 gap-2">
+                                  {dialogGroup.map((d, index) => {
+                                    if (!d) return <></>;
+                                    return (
+                                      <DialogWithActions
+                                        key={d.id}
+                                        dialog={d}
+                                        folder={activeFolder}
+                                        index={index}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </SwiperSlide>
+                            )
+                          )
+                        : null}
+                    </SwiperSlider>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-2">
+                    {activeFolder.dialogs.map((d, index) => {
+                      if (!d) return <></>;
+
+                      return (
+                        <DialogWithActions
+                          key={`dialog-${d.id}-${index}`}
+                          dialog={d}
+                          folder={activeFolder}
+                          index={index}
+                        />
+                      );
+                    })}
+                  </div>
+                )
+              ) : (
+                <div className="text-hint text-center py-4 font-semibold">
+                  Nothing yet
+                </div>
+              )}
+            </div>
+            <div className="flex gap-2 justify-between items-center">
+              <InlineButton
+                title=""
+                onClick={() => {
+                  setAddDialogModalOpen(true);
+                  setAddDialogModalFolder(props.folder);
+                }}
+                Icon={
+                  <div className="flex gap-0.5 items-center">
+                    <PeopleIcon className="w-6 h-6" />
+                    <PlusIcon className="w-5 h-5" />
+                  </div>
+                }
+              />
+              {/* <InlineButton
+                  title="Edit"
+                  onClick={() => setEditingTitle(true)}
+                  Icon={<PencilIcon className="w-5 h-5" />}
+                /> */}
+              <div className="w-32"></div>
+              <InlineButton
+                title=""
+                onClick={handleAddNestedFolder}
+                Icon={
+                  <div className="flex gap-0.5 items-center">
+                    <FolderIcon className="w-6 h-6" />
+                    <PlusIcon className="w-5 h-5" />
+                  </div>
+                }
+              />
             </div>
           </FolderAccordion>
         </div>
@@ -191,7 +286,7 @@ function Folder(props: {
   );
 }
 
-function NestedFolder({
+/* function NestedFolder({
   updateFoldersStack,
   title,
 }: {
@@ -207,6 +302,13 @@ function NestedFolder({
       <span className="text-sm font-medium">{title}</span>
     </Tappable>
   );
-}
+} */
 
 export default memo(Folder);
+
+function chunkArray<T>(array: T[], size: number): T[][] {
+  return array.reduce((chunks: T[][], _, i) => {
+    if (i % size === 0) chunks.push(array.slice(i, i + size));
+    return chunks;
+  }, []);
+}

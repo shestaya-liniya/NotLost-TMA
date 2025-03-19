@@ -62,6 +62,10 @@ export class JazzAccount extends Account {
       throw new Error("Account profile missing, not able to run the migration");
     }
 
+    if (profile.telegramSync === undefined) {
+      profile.telegramSync = false;
+    }
+
     if (!profile._refs.folders) {
       profile.folders = JazzListOfFolders.create([], {
         owner: this.profile!._owner,

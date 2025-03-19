@@ -16,18 +16,25 @@ import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 import TelegramSignIn from "./pages/TelegramSignIn.tsx";
 import Ai from "./pages/Ai.tsx";
+import { $getMyDialogs } from "./actions/telegram.ts";
+import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
+import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("folders");
   const {
     dialogInfoModalOpen,
     setDialogInfoModalOpen,
     telegramSignInModalOpen,
     setTelegramSignInModalOpen,
+    settingsModalOpen,
+    setSettingsModalOpen,
+    graphModalOpen,
+    setGraphModalOpen,
   } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
 
-  const tabs = ["try", "folders", "settings"];
+  const [activeTab, setActiveTab] = useState("folders");
+  const tabs = ["ai", "folders", "events"];
   const previousIndex = useRef(0);
 
   const direction =
@@ -44,6 +51,12 @@ export default function App() {
       );
     }
   }, [jazzProfile]);
+
+  useEffect(() => {
+    if (getTelegramSession()) {
+      getTelegramDialogsAndSetToStore();
+    }
+  }, []);
 
   // Capture the initial viewport height
   useEffect(() => {
@@ -83,21 +96,15 @@ export default function App() {
                   </TabTransition>
                   <TabTransition
                     direction={direction}
-                    isActive={activeTab === "try"}
-                  >
-                    <Graph />
-                  </TabTransition>
-                  <TabTransition
-                    direction={direction}
                     isActive={activeTab === "folders"}
                   >
                     <Folders />
                   </TabTransition>
                   <TabTransition
                     direction={"toRight"}
-                    isActive={activeTab === "settings"}
+                    isActive={activeTab === "events"}
                   >
-                    <Settings />
+                    Events
                   </TabTransition>
                 </div>
               </TabBarLayout>
@@ -119,6 +126,18 @@ export default function App() {
                 }}
               >
                 <TelegramSignIn />
+              </SlidingPage>
+              <SlidingPage
+                open={settingsModalOpen}
+                onClose={() => setSettingsModalOpen(false)}
+              >
+                <Settings />
+              </SlidingPage>
+              <SlidingPage
+                open={graphModalOpen}
+                onClose={() => setGraphModalOpen(false)}
+              >
+                <Graph />
               </SlidingPage>
             </div>
           }
@@ -210,3 +229,33 @@ function SlidingPage({
     </div>
   );
 }
+
+export const getTelegramDialogsAndSetToStore = async () => {
+  const { setTelegramDialogs } = useAppStore.getState();
+
+  const tempDialogs: TelegramDialogInfo[] = [];
+
+  await $getMyDialogs().then((dialogs) => {
+    dialogs.forEach((d) => {
+      if (d.entity?.className === "User") {
+        if (!d.entity.username) return;
+        const userInfo = {
+          label: d.entity.firstName || "X",
+          username: d.entity.username || "X",
+          id: d.entity.id,
+        };
+        tempDialogs.push(userInfo);
+      } else if (d.entity?.className === "Channel") {
+        if (!d.entity.username) return;
+        const userInfo = {
+          label: d.entity.title || "X",
+          username: d.entity.username || "X",
+          id: d.entity.id,
+        };
+        tempDialogs.push(userInfo);
+      }
+    });
+  });
+
+  setTelegramDialogs(tempDialogs);
+};

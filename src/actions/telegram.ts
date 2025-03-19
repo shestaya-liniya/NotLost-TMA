@@ -1,3 +1,4 @@
+import { getTelegramSession } from "@/helpers/telegram/getTelegramSession";
 import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
 import axios from "axios";
 import { TotalList } from "telegram/Helpers";
@@ -6,17 +7,16 @@ import { Dialog } from "telegram/tl/custom/dialog";
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_TELEGRAM_API_SERVER_ORIGIN,
 });
+console.log(Number(import.meta.env.VITE_TELEGRAM_API_ID));
 
 const client = TelegramApiClient.getInstance(
-  import.meta.env.VITE_TELEGRAM_API_ID,
+  Number(import.meta.env.VITE_TELEGRAM_API_ID),
   import.meta.env.VITE_TELEGRAM_API_HASH,
-  localStorage.getItem("session")
-    ? JSON.parse(localStorage.getItem("session")!)
-    : ""
+  getTelegramSession() ? JSON.parse(getTelegramSession()!) : ""
 );
 
 export const $sendCode = async (phoneNumber: string) => {
-  client.sendSignInCode(phoneNumber);
+  return await client.sendSignInCode(phoneNumber);
 };
 
 export const $signIn = async (
@@ -24,7 +24,11 @@ export const $signIn = async (
   phoneCode: string,
   password: string
 ) => {
-  client.signIn(phoneNumber, password, phoneCode);
+  return await client.signIn(phoneNumber, password, phoneCode);
+};
+
+export const $signInWithPassword = async (password: string) => {
+  return await client.signInWithPassword(password);
 };
 
 export const $getLoginByQrLink = async () => {

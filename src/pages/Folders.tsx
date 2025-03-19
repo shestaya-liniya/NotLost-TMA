@@ -1,6 +1,7 @@
-import Input from "@/ui/Input";
 import Tappable from "@/ui/Tappable";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
+import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
 import { useEffect, useState } from "react";
@@ -9,7 +10,7 @@ import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Folder from "@/ui/folders/Folder";
 import NewFolder from "@/ui/folders/NewFolder";
-import SearchIcon from "@/assets/icons/search.svg?react";
+
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
@@ -23,7 +24,12 @@ import { getCssVariable } from "@/helpers/css/get-css-variable";
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
 
-  const { setManageDialogsModalOpen, manageDialogsModalOpen } = useModalStore();
+  const {
+    setManageDialogsModalOpen,
+    manageDialogsModalOpen,
+    setSettingsModalOpen,
+    setGraphModalOpen,
+  } = useModalStore();
   const { draggableItemType } = useDragStore();
 
   const lp = retrieveLaunchParams();
@@ -69,8 +75,6 @@ export default function Folders() {
     }
   }, [manageDialogsModalOpen]);
 
-  console.log(manageDialogsHeight);
-
   return (
     <div className="h-full flex flex-col relative">
       <div
@@ -81,13 +85,21 @@ export default function Folders() {
         }}
         className="px-4 py-2 bg-secondary pb-4 border-b-2 border-primary/30"
       >
-        <div className="relative">
-          <Input
-            label="Search"
-            value=""
-            onInput={() => {}}
-            before={<SearchIcon className="h-4 w-4 opacity-50" />}
-          />
+        <div className="relative flex justify-between">
+          <Tappable
+            onClick={() => setGraphModalOpen(true)}
+            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 bg-link/10 rounded-xl"
+          >
+            <GraphIcon className="h-5 w-5 " />
+            <div className="text-xs text-link font-semibold">Visualize</div>
+          </Tappable>
+          <Tappable
+            onClick={() => setSettingsModalOpen(true)}
+            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 bg-link/10 rounded-xl"
+          >
+            <SettingsIcon className="h-5 w-5 " />
+            <div className="text-xs text-link font-semibold">Settings</div>
+          </Tappable>
           <div className="text-accent font-semibold text-center w-full absolute z-10 -top-8">
             NotLost
           </div>
@@ -150,7 +162,6 @@ export default function Folders() {
           })}
         </div>
       </div>
-
       <Tappable
         className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
         onClick={() => setManageDialogsModalOpen(true)}

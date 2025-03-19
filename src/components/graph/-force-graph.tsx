@@ -89,7 +89,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-8 left-6 z-10 backdrop-blur-sm px-4 pt-2 pb-1 rounded-2xl border-2 border-primary/30">
+      <div className="absolute bottom-24 left-6 z-10 backdrop-blur-sm px-4 pt-2 pb-1 rounded-2xl border-2 border-primary/30">
         <Switch
           label="Drag mode"
           checked={dragNodes}

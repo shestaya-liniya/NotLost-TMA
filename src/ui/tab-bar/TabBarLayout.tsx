@@ -1,8 +1,7 @@
-import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
+import SparklesIcon from "@/assets/icons/sparkles.svg?react";
+import EventIcon from "@/assets/icons/event.svg?react";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
-import AiIcon from "@/assets/icons/ai.svg?react";
 
 export default function TabBarLayout({
   activeTab,
@@ -39,13 +38,7 @@ function TabBar({
             onClick={() => setActiveTab("ai")}
             title="AI"
             isActive={activeTab === "ai"}
-            Icon={<AiIcon />}
-          />
-          <BottomBarLink
-            onClick={() => setActiveTab("try")}
-            title="Graph"
-            isActive={activeTab === "try"}
-            Icon={<GraphIcon />}
+            Icon={<SparklesIcon />}
           />
           <BottomBarLink
             onClick={() => setActiveTab("folders")}
@@ -54,10 +47,10 @@ function TabBar({
             Icon={<FolderIcon />}
           />
           <BottomBarLink
-            onClick={() => setActiveTab("settings")}
-            title="Settings"
-            isActive={activeTab === "settings"}
-            Icon={<SettingsIcon className="p-0.5" />}
+            onClick={() => setActiveTab("events")}
+            title="Events"
+            isActive={activeTab === "events"}
+            Icon={<EventIcon />}
           />
         </div>
       </div>

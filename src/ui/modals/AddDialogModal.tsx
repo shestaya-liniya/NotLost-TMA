@@ -13,10 +13,21 @@ import { AnimatePresence, motion } from "framer-motion";
 import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazz-folder";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Button from "@/ui/Button";
+import TelegramIcon from "@/assets/icons/telegram.svg?react";
+import Tappable from "../Tappable";
+import { useAppStore } from "@/lib/store/store";
+import SearchIcon from "@/assets/icons/search.svg?react";
+import { getTelegramSession } from "@/helpers/telegram/getTelegramSession";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
+import DialogsSlider from "../dialog/DialogsSlider";
 
 export default function AddDialogModal() {
-  const { addDialogModalOpen, setAddDialogModalOpen, addDialogModalFolder } =
-    useModalStore();
+  const {
+    addDialogModalOpen,
+    setAddDialogModalOpen,
+    addDialogModalFolder,
+    setTelegramSignInModalOpen,
+  } = useModalStore();
   const { jazzProfile } = useJazzProfileContext();
 
   const [usernameValue, setUsernameValue] = useState("");
@@ -55,19 +66,39 @@ export default function AddDialogModal() {
     }
   };
 
+  if (getTelegramSession()) {
+    return <WithTelegramSync />;
+  }
+
   return (
     <Modal
       isOpen={addDialogModalOpen}
-      onClose={() => setAddDialogModalOpen(false)}
+      onClose={() => {
+        setAddDialogModalOpen(false);
+      }}
       title="Add dialog"
     >
-      <Input
-        label="username"
-        value={usernameValue}
-        onInput={setUsernameValue}
-        before={<div className="text-hint">@</div>}
-        className="bg-secondary"
-      />
+      <div className="flex gap-2">
+        <Input
+          label="username"
+          value={usernameValue}
+          onInput={setUsernameValue}
+          before={<div className="text-hint">@</div>}
+          className="bg-secondary"
+        />
+
+        <Tappable
+          className="flex items-center justify-center text-link bg-link/10 rounded-xl px-2 gap-2 font-semibold"
+          onClick={() => {
+            setAddDialogModalOpen(false);
+            setTelegramSignInModalOpen(true);
+          }}
+        >
+          <TelegramIcon className="h-5 w-5" />
+          Sync
+        </Tappable>
+      </div>
+
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
@@ -144,3 +175,89 @@ export default function AddDialogModal() {
     </Modal>
   );
 }
+
+const WithTelegramSync = () => {
+  const { addDialogModalOpen, setAddDialogModalOpen, addDialogModalFolder } =
+    useModalStore();
+
+  const { telegramDialogs } = useAppStore();
+  const { jazzProfile } = useJazzProfileContext();
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const [selectedChats, setSelectedChats] = useState<TelegramDialogInfo[]>([]);
+
+  const filteredDialogs = telegramDialogs.filter(
+    (d) =>
+      d.username.toLowerCase().includes(searchValue.toLowerCase()) ||
+      d.label.toLowerCase().includes(searchValue.toLowerCase())
+  );
+
+  useEffect(() => {
+    console.log("FILTERED", filteredDialogs);
+  }, [filteredDialogs]);
+
+  const handleAddChatsIntoFolder = () => {
+    if (selectedChats.length > 0 && addDialogModalFolder) {
+      selectedChats.forEach((chat) => {
+        jazzAddDialogToFolder(jazzProfile, addDialogModalFolder, {
+          name: chat.label,
+          username: chat.username,
+        });
+      });
+
+      setAddDialogModalOpen(false);
+      setSelectedChats([]);
+    }
+  };
+
+  return (
+    <Modal
+      isOpen={addDialogModalOpen}
+      onClose={() => {
+        setAddDialogModalOpen(false);
+        setSelectedChats([]);
+      }}
+      title="Add dialog"
+    >
+      <div className="flex gap-2">
+        <Input
+          label="Search"
+          value={searchValue}
+          onInput={setSearchValue}
+          className="bg-secondary"
+          before={<SearchIcon className="h-4 w-4 opacity-50" />}
+        />
+      </div>
+      {filteredDialogs.length > 0 ? (
+        <DialogsSlider
+          dialogs={filteredDialogs}
+          selectedDialogs={selectedChats}
+          setSelectedDialogs={setSelectedChats}
+          direction="vertical"
+        />
+      ) : (
+        <div className="text-center text-link p-4 font-semibold">
+          Nobody found
+        </div>
+      )}
+
+      {selectedChats.length > 0 ? (
+        <Tappable
+          className="h-12 flex items-center justify-center text-white bg-link
+      rounded-xl mb-4 font-semibold"
+          onClick={handleAddChatsIntoFolder}
+        >
+          Add {selectedChats.length} chats
+        </Tappable>
+      ) : (
+        <div
+          className="h-12 flex items-center justify-center text-link bg-link/10
+      rounded-xl mb-4"
+        >
+          Select chats
+        </div>
+      )}
+    </Modal>
+  );
+};

@@ -20,6 +20,12 @@ interface ModalState {
 
   telegramSignInModalOpen: boolean;
   setTelegramSignInModalOpen: (newState: boolean) => void;
+
+  settingsModalOpen: boolean;
+  setSettingsModalOpen: (newState: boolean) => void;
+
+  graphModalOpen: boolean;
+  setGraphModalOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -61,5 +67,17 @@ export const useModalStore = create<ModalState>((set) => ({
   setTelegramSignInModalOpen: (newState) =>
     set(() => ({
       telegramSignInModalOpen: newState,
+    })),
+
+  settingsModalOpen: false,
+  setSettingsModalOpen: (newState) =>
+    set(() => ({
+      settingsModalOpen: newState,
+    })),
+
+  graphModalOpen: false,
+  setGraphModalOpen: (newState) =>
+    set(() => ({
+      graphModalOpen: newState,
     })),
 }));

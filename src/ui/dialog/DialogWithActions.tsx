@@ -2,11 +2,13 @@ import { JazzDialog, JazzFolder, JazzTag } from "@/lib/jazz/schema";
 import { useState } from "react";
 import Tappable from "../Tappable";
 import { DialogTooltip } from "./DialogTooltip";
-import Tag from "../Tag";
+//import Tag from "../Tag";
+import { truncateWord } from "@/helpers/truncate-word";
 
 export default function DialogWithActions(props: {
   dialog: JazzDialog;
   folder: JazzFolder;
+  index: number;
 }) {
   const [dialogWithTooltip, setDialogWithTooltip] = useState<null | JazzDialog>(
     null
@@ -19,18 +21,18 @@ export default function DialogWithActions(props: {
   });
 
   return (
-    <div className={`relative`}>
-      <Tappable
-        onClick={() => {
-          window.open(`https://t.me/${props.dialog.username}`, "_blank");
-        }}
-        onLongPress={() => {
-          setDialogWithTooltip(props.dialog);
-        }}
-        className="flex flex-col items-center justify-left gap-1 rounded-xl p-2"
-      >
+    <div className={`relative p-2`}>
+      <div className="flex flex-col items-center justify-left gap-1 rounded-xl ">
         <div className="flex items-start">
-          <div className="flex flex-col gap-1 items-center">
+          <Tappable
+            onClick={() => {
+              window.open(`https://t.me/${props.dialog.username}`, "_blank");
+            }}
+            onLongPress={() => {
+              setDialogWithTooltip(props.dialog);
+            }}
+            className="flex flex-col gap-1 items-center"
+          >
             <img
               loading="lazy"
               src={`https://t.me/i/userpic/320/${props.dialog.username}.svg`}
@@ -41,11 +43,11 @@ export default function DialogWithActions(props: {
             <span
               className={`px-2 py-[0.5px] text-xs font-normal bg-link/10 text-link rounded-xl`}
             >
-              {props.dialog.name}
+              {truncateWord(props.dialog.name, 5)}
             </span>
-          </div>
+          </Tappable>
           <div className="-mt-1">
-            {tags.map((array) => {
+            {/* {tags.map((array) => {
               return (
                 <div
                   className="flex"
@@ -63,10 +65,10 @@ export default function DialogWithActions(props: {
                   })}
                 </div>
               );
-            })}
+            })} */}
           </div>
         </div>
-      </Tappable>
+      </div>
       <DialogTooltip
         dialog={props.dialog}
         folder={props.folder}
@@ -74,6 +76,7 @@ export default function DialogWithActions(props: {
         closeTooltip={() => {
           setDialogWithTooltip(null);
         }}
+        appearOnBottom={[0, 1, 2, 3, 4, 5].includes(props.index)}
       />
     </div>
   );

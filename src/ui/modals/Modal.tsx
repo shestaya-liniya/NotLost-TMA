@@ -80,3 +80,67 @@ const Modal = (props: ModalProps) => {
 };
 
 export default Modal;
+
+export class AlertModal {
+  private static instance: AlertModal | null = null;
+  private modalElement: HTMLDivElement;
+  private contentElement: HTMLDivElement;
+
+  private constructor() {
+    this.modalElement = document.createElement("div");
+    this.modalElement.id = "alert-modal"; // Unique ID to prevent duplicates
+    this.modalElement.style.position = "fixed";
+    this.modalElement.style.top = "0";
+    this.modalElement.style.left = "0";
+    this.modalElement.style.width = "100vw";
+    this.modalElement.style.height = "100vh";
+    this.modalElement.style.background = "rgba(0, 0, 0, 0.5)";
+    this.modalElement.style.display = "flex";
+    this.modalElement.style.justifyContent = "center";
+    this.modalElement.style.alignItems = "center";
+    this.modalElement.style.zIndex = "1000";
+    this.modalElement.style.opacity = "0";
+    this.modalElement.style.pointerEvents = "none";
+    this.modalElement.style.transition = "opacity 0.3s ease";
+
+    this.contentElement = document.createElement("div");
+    this.contentElement.style.background = "var(--color-primary)";
+    this.contentElement.style.padding = "20px";
+    this.contentElement.style.borderRadius = "8px";
+    this.contentElement.style.minWidth = "200px";
+    this.contentElement.style.textAlign = "center";
+    this.contentElement.style.transform = "scale(0.8)";
+    this.contentElement.style.transition = "transform 0.3s ease";
+
+    this.modalElement.addEventListener("click", (e) => {
+      if (e.target === this.modalElement) this.hide();
+    });
+
+    this.modalElement.appendChild(this.contentElement);
+    document.body.appendChild(this.modalElement);
+  }
+
+  static getInstance(): AlertModal {
+    if (!this.instance) {
+      this.instance = new AlertModal();
+    }
+    return this.instance;
+  }
+
+  set content(html: string) {
+    this.contentElement.innerHTML = html;
+  }
+
+  show(content: string) {
+    this.contentElement.innerHTML = content;
+    this.modalElement.style.opacity = "1";
+    this.modalElement.style.pointerEvents = "auto";
+    this.contentElement.style.transform = "scale(1)";
+  }
+
+  hide() {
+    this.modalElement.style.opacity = "0";
+    this.modalElement.style.pointerEvents = "none";
+    this.contentElement.style.transform = "scale(0.8)";
+  }
+}

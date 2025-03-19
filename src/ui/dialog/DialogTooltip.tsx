@@ -13,15 +13,16 @@ export const DialogTooltip = ({
   folder,
   showTooltip,
   closeTooltip,
+  appearOnBottom,
 }: {
   dialog: JazzDialog;
   folder: JazzFolder;
   showTooltip: boolean;
   closeTooltip: () => void;
+  appearOnBottom: boolean;
 }) => {
   const { jazzProfile } = useJazzProfileContext();
-  const { setDialogInfoModalOpen, setDialogInfoModalDialog } =
-    useModalStore();
+  const { setDialogInfoModalOpen, setDialogInfoModalDialog } = useModalStore();
 
   useEffect(() => {
     const handleTouchStart = (event: TouchEvent) => {
@@ -61,7 +62,7 @@ export const DialogTooltip = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className={`absolute left-1 -top-full -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
+          className={`absolute left-7 ${appearOnBottom ? "-bottom-full" : "-top-full"}  -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
           onTouchStart={(event) => {
             event.stopPropagation();
           }}

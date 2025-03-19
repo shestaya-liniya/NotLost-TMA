@@ -1,12 +1,12 @@
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import ChatIcon from "@/assets/icons/chat.svg?react";
-import { useEffect, useState } from "react";
-import { $getMyDialogs } from "@/actions/telegram";
-import axios from "axios";
-import Button from "@/ui/Button";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
+//import ChatIcon from "@/assets/icons/chat.svg?react";
+//import { useEffect, useState } from "react";
+//import { $getMyDialogs } from "@/actions/telegram";
+//import axios from "axios";
+//import Button from "@/ui/Button";
+//import SettingsIcon from "@/assets/icons/settings.svg?react";
 
-interface LastUnreadMessage {
+/* interface LastUnreadMessage {
   fromUsername: string;
   message: string;
 }
@@ -14,24 +14,24 @@ interface LastUnreadMessage {
 interface AiSummarizedChat {
   username: string;
   description: string;
-}
+} */
 
-interface ChatsSortedByPriority {
+/* interface ChatsSortedByPriority {
   "1": AiSummarizedChat[];
   "2": AiSummarizedChat[];
   "3": AiSummarizedChat[];
-}
+} */
 
 export default function Ai() {
   const lp = retrieveLaunchParams();
 
-  const [unreadMessages, setUnreadMessages] = useState<LastUnreadMessage[]>([]);
+  /* const [unreadMessages, setUnreadMessages] = useState<LastUnreadMessage[]>([]);
   const [prioritizedChats, setPrioritizedChats] = useState<
     ChatsSortedByPriority | undefined
   >(undefined);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (unreadMessages.length < 1) {
       $getMyDialogs().then((dialogs) => {
         const unreadMessagesTemp: LastUnreadMessage[] = [];
@@ -48,9 +48,9 @@ export default function Ai() {
         setUnreadMessages(unreadMessagesTemp);
       });
     }
-  }, []);
+  }, []); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log("UNREAD MESSAGES", unreadMessages);
   }, [unreadMessages]);
 
@@ -64,7 +64,7 @@ export default function Ai() {
     );
     setLoading(false);
     setPrioritizedChats(answer.data);
-  };
+  }; */
 
   return (
     <div
@@ -76,7 +76,7 @@ export default function Ai() {
       }}
     >
       <div className="text-center text-link text-xl font-semibold">AI</div>
-      <div
+      {/* <div
         className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 w-full font-semibold flex gap-4 mt-4`}
       >
         <ChatIcon className="w-6 h-6 text-link" />
@@ -185,6 +185,10 @@ export default function Ai() {
             </div>
           </div>
         )}
+      </div> */}
+
+      <div className="h-[98%] w-full grid place-content-center text-link text-2xl">
+        Coming soon
       </div>
     </div>
   );
