@@ -5,12 +5,13 @@ import {
   initData,
   setDebug,
   init as initSDK,
+  themeParams,
 } from "@telegram-apps/sdk-react";
 
 /**
  * Initializes the application and configures its dependencies.
  */
-export function init(debug: boolean): void {
+export async function init(debug: boolean): Promise<void> {
   // Set @telegram-apps/sdk-react debug mode.
   setDebug(debug);
 
@@ -29,26 +30,36 @@ export function init(debug: boolean): void {
   backButton.mount();
   initData.restore();
 
-  void viewport
-    .mount()
-    .catch((e) => {
-      console.error("Something went wrong mounting the viewport", e);
-    })
-    .then(async () => {
-      viewport.bindCssVars();
+  if (themeParams.bindCssVars.isAvailable()) {
+    themeParams.bindCssVars();
+  }
+
+  if (viewport.mount.isAvailable()) {
+    try {
+      const promise = viewport.mount();
+      await promise;
       if (viewport.requestFullscreen.isAvailable()) {
         await viewport.requestFullscreen();
       }
-    });
+      viewport.bindCssVars();
+    } catch (err) {
+      viewport.mountError(); // equals "err"
+      viewport.isMounting(); // false
+      viewport.isMounted(); // false
+    }
+  }
 
-  void miniApp
-    .mount()
-    .catch((e) => {
-      console.error("Something went wrong mounting the miniApp", e);
-    })
-    .then(async () => {
+  if (miniApp.mount.isAvailable()) {
+    try {
+      const promise = miniApp.mount();
+      await promise;
       miniApp.bindCssVars();
-    });
+    } catch (err) {
+      miniApp.mountError(); // equals "err"
+      miniApp.isMounting(); // false
+      miniApp.isMounted(); // false
+    }
+  }
 
   const webApp = (window as any)?.Telegram?.WebApp;
   if (webApp) {

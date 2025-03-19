@@ -19,6 +19,7 @@ import Ai from "./pages/Ai.tsx";
 import { $getMyDialogs } from "./actions/telegram.ts";
 import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
 import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
 export default function App() {
   const {
@@ -69,6 +70,7 @@ export default function App() {
   const { shadowInputValue, setShadowInputValue } = useAppStore();
 
   import("eruda").then((lib) => lib.default.init()).catch(console.error);
+  console.log(retrieveLaunchParams().tgWebAppThemeParams.bg_color);
 
   return (
     <div>
