@@ -2,6 +2,7 @@ import { NodeObject } from "react-force-graph-2d";
 import { getTopicRadius } from "./-draw-topic-node";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { truncateWord } from "@/helpers/truncate-word";
 
 export const drawContactNode = (
   node: NodeObject,
@@ -51,7 +52,7 @@ export const drawContactNode = (
   ); */
 
   // username
-  const textWidth = ctx.measureText(node.firstName).width;
+  const textWidth = ctx.measureText(truncateWord(node.firstName, 6)).width;
   const textHeight = usernameFontSize;
 
   // text background
@@ -78,7 +79,7 @@ export const drawContactNode = (
   ctx.stroke();
 
   drawText(
-    `${node.firstName!}`,
+    `${truncateWord(node.firstName, 6)}`,
     usernameFontSize,
     getCssVariable("--color-link"),
     platform === "ios" ? imgSize / 4 - 0.25 : imgSize / 4 + 1

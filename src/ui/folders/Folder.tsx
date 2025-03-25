@@ -29,15 +29,15 @@ function Folder(props: {
   nested?: boolean;
   setAsParentFolder?: () => void;
 }) {
-  const mainFolder = props.folder;
-
   const { jazzProfile } = useJazzProfileContext();
   const { draggableItem } = useDragStore();
   const { setAddDialogModalOpen, setAddDialogModalFolder } = useModalStore();
 
-  const [foldersTitleStack, setFoldersTitleStack] = useState(mainFolder.title);
+  const [foldersTitleStack, setFoldersTitleStack] = useState(
+    props.folder.title
+  );
   const [activeFolderStack, setActiveFolderStack] = useState<JazzFolder[]>([
-    mainFolder,
+    props.folder,
   ]);
 
   const activeFolder = activeFolderStack[activeFolderStack.length - 1];
@@ -52,7 +52,7 @@ function Folder(props: {
     if (ref.current) {
       props.setFolderHeight(ref.current.clientHeight);
     }
-  }, [expanded, mainFolder, activeFolder, ref.current?.clientHeight]);
+  }, [expanded, props.folder, activeFolder, ref.current?.clientHeight]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -134,7 +134,11 @@ function Folder(props: {
             }}
             editingTitle={editingTitle}
             onBlur={(title: string) => {
-              activeFolder.title = title;
+              if (/\p{L}/u.test(title)) {
+                activeFolder.title = title;
+              } else {
+                props.folder.title = "New Folder";
+              }
               updateLocalStorage(
                 "folders",
                 JSON.stringify(jazzProfile.folders)
@@ -157,6 +161,13 @@ function Folder(props: {
             handleDeleteFolder={() => {
               handleRemoveFolder();
             }}
+            dialogsTrio={
+              props.folder.dialogs
+                ? props.folder.dialogs
+                    .slice(0, 3)
+                    .map((d) => ({ username: d?.username as string }))
+                : []
+            }
           >
             <div className="flex flex-col gap-2 justify-center">
               {/* <div className="flex justify-center gap-2 flex-wrap">
@@ -270,7 +281,14 @@ function Folder(props: {
               <div className="w-32"></div>
               <InlineButton
                 title=""
-                onClick={handleAddNestedFolder}
+                onClick={() => {
+                  if (props.nested && props.setAsParentFolder) {
+                    props.setAsParentFolder();
+                    handleAddNestedFolder();
+                  } else {
+                    handleAddNestedFolder();
+                  }
+                }}
                 Icon={
                   <div className="flex gap-0.5 items-center">
                     <FolderIcon className="w-6 h-6" />

@@ -89,7 +89,6 @@ export default function App() {
   --tg-theme-button-color: ${tp.button_color};
   --tg-theme-text-color: ${tp.text_color};
    }`;
-  console.log(style);
 
   document.head.appendChild(style);
 

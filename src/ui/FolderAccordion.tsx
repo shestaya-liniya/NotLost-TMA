@@ -18,6 +18,7 @@ function FolderAccordion({
   returnToParentFolder,
   handleEditFolder,
   handleDeleteFolder,
+  dialogsTrio,
 }: {
   children: React.ReactNode;
   title: string;
@@ -29,6 +30,7 @@ function FolderAccordion({
   returnToParentFolder: () => void;
   handleEditFolder: () => void;
   handleDeleteFolder: () => void;
+  dialogsTrio: { username: string }[];
 }) {
   return (
     <div>
@@ -42,6 +44,7 @@ function FolderAccordion({
         returnToParentFolder={returnToParentFolder}
         handleEditFolder={handleEditFolder}
         handleDeleteFolder={handleDeleteFolder}
+        dialogsTrio={dialogsTrio}
       />
       <div
         className={`${expanded ? "animate-fadeIn" : "absolute w-full animate-fadeOutHidden -left-0 px-4"} `}
@@ -61,6 +64,7 @@ function AccordionHeader({
   returnToParentFolder,
   handleEditFolder,
   handleDeleteFolder,
+  dialogsTrio,
 }: {
   toggleExpanded: () => void;
   expanded: boolean;
@@ -71,6 +75,7 @@ function AccordionHeader({
   setExpanded: (val: boolean) => void;
   handleEditFolder: () => void;
   handleDeleteFolder: () => void;
+  dialogsTrio: { username: string }[];
 }) {
   const titleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -151,6 +156,20 @@ function AccordionHeader({
             className={`w-5 h-5 text-link transition-transform duration-300 ease-in-out ${expanded ? "-rotate-90" : "rotate-90"}`}
           />
         </div>
+        {dialogsTrio.length > 1 && expanded === false && (
+          <div className="flex justify-center relative left-4 mt-2">
+            {dialogsTrio.map((d, index) => (
+              <img
+                key={d.username}
+                loading="lazy"
+                src={`https://t.me/i/userpic/320/${d.username}.svg`}
+                className={`h-10 w-10 rounded-full ${index === 1 && "relative right-4"} ${index === 2 && "relative right-8"}`}
+                decoding="async"
+                alt=""
+              />
+            ))}
+          </div>
+        )}
       </div>
       {showTooltip && (
         <FolderTooltip
@@ -185,7 +204,6 @@ export const FolderTooltip = ({
   handleEditFolder: () => void;
   handleDeleteFolder: () => void;
 }) => {
-
   useEffect(() => {
     const handleTouchStart = (event: TouchEvent) => {
       if (showTooltip) {

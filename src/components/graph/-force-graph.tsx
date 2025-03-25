@@ -156,7 +156,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.5);
+          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.1);
           ctx.lineWidth = 0.25;
 
           ctx.beginPath();
@@ -179,20 +179,20 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
   const nodes: GraphNode[] = [];
   const links: GraphLink[] = [];
 
-  const centerNode = {
+  /* const centerNode = {
     id: "center",
     title: "My space",
     targets: [],
     type: GraphNodeType.TOPIC,
-  };
+  }; */
 
-  nodes.push(centerNode as GraphNode);
+  //nodes.push(centerNode as GraphNode);
 
   function processFolders(
     folders: JazzFolder[],
     nodes: GraphNode[],
-    links: GraphLink[],
-    nested: boolean
+    links: GraphLink[]
+    //nested: boolean
   ) {
     folders.forEach((folder) => {
       if (!folder) return;
@@ -203,12 +203,12 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
         targets: [],
         type: GraphNodeType.TOPIC,
       });
-      if (!nested) {
+      /* if (!nested) {
         links.push({
           source: folder.id,
           target: "center",
         });
-      }
+      } */
 
       folder?.dialogs?.forEach((dialog) => {
         if (!dialog) return;
@@ -231,8 +231,8 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
         processFolders(
           folder.nestedFolders as JazzFolder[],
           nodes,
-          links,
-          true
+          links
+          //true
         );
 
         folder.nestedFolders.forEach((subFolder) => {
@@ -246,7 +246,7 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
     });
   }
 
-  processFolders(folders as JazzFolder[], nodes, links, false);
+  processFolders(folders as JazzFolder[], nodes, links);
   return { nodes, links };
 };
 

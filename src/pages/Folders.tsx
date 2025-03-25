@@ -1,5 +1,4 @@
 import Tappable from "@/ui/Tappable";
-import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import SettingsIcon from "@/assets/icons/settings.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
@@ -15,6 +14,9 @@ import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getElementHeightById } from "@/helpers/css/get-element-height";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 
+import PlusIcon from "@/assets/icons/plus.svg?react";
+import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
+
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
 // To make smooth transition of all folders going down/up when some folder is expanded,
@@ -24,12 +26,8 @@ import { getCssVariable } from "@/helpers/css/get-css-variable";
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
 
-  const {
-    setManageDialogsModalOpen,
-    manageDialogsModalOpen,
-    setSettingsModalOpen,
-    setGraphModalOpen,
-  } = useModalStore();
+  const { manageDialogsModalOpen, setSettingsModalOpen, setGraphModalOpen } =
+    useModalStore();
   const { draggableItemType } = useDragStore();
 
   const lp = retrieveLaunchParams();
@@ -85,24 +83,23 @@ export default function Folders() {
         }}
         className="px-4 py-2 bg-secondary pb-4 border-b-2 border-primary/30"
       >
-        <div className="relative flex justify-between">
-          <Tappable
-            onClick={() => setGraphModalOpen(true)}
-            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 bg-link/10 rounded-xl"
-          >
-            <GraphIcon className="h-5 w-5 " />
-            <div className="text-xs text-link font-semibold">Visualize</div>
-          </Tappable>
+        <div className="relative flex justify-between mt-2">
           <Tappable
             onClick={() => setSettingsModalOpen(true)}
-            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 bg-link/10 rounded-xl"
+            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
           >
-            <SettingsIcon className="h-5 w-5 " />
-            <div className="text-xs text-link font-semibold">Settings</div>
+            <SettingsIcon className="h-7 w-7 " />
           </Tappable>
-          <div className="text-accent font-semibold text-center w-full absolute z-10 -top-8">
+          <Tappable
+            onClick={() => setGraphModalOpen(true)}
+            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
+          >
+            <GraphIcon className="h-8 w-8 " />
+          </Tappable>
+
+          {/* <div className="text-accent font-semibold text-center w-full absolute z-10 -top-8">
             NotLost
-          </div>
+          </div> */}
         </div>
 
         {/* <div className="flex items-center gap-2 mt-2">
@@ -141,6 +138,7 @@ export default function Folders() {
                 <div
                   className="absolute top-0 left-0 w-full transition-all duration-200 ease-in-out animate-fadeIn"
                   style={{
+                    zIndex: 99 - index,
                     transform:
                       index !== 0
                         ? `translateY(${getFolderTopInset(index)}px)`
@@ -162,11 +160,12 @@ export default function Folders() {
           })}
         </div>
       </div>
+
       <Tappable
         className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
-        onClick={() => setManageDialogsModalOpen(true)}
+        onClick={() => jazzCreateNewFolder(jazzProfile, "New folder")}
       >
-        <PencilIcon className="w-7 h-7 text-white" />
+        <PlusIcon className="w-7 h-7 text-white" />
       </Tappable>
     </div>
   );
