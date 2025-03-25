@@ -34,6 +34,7 @@ export default function Folders() {
 
   const dropFolderAppear = draggableItemType === "folder";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [foldersHeight, setFoldersHeight] = useState<
     {
       id: ID<JazzFolder>;
@@ -56,11 +57,11 @@ export default function Folders() {
     setFoldersHeight((prev) => prev.filter((folder) => folder.id !== id));
   };
 
-  const getFolderTopInset = (index: number) => {
+  /* const getFolderTopInset = (index: number) => {
     return foldersHeight
       .slice(0, index)
       .reduce((acc, folder) => acc + folder.height, 0);
-  };
+  }; */
 
   const tabBarHeight = getElementHeightById("tab-bar");
 
@@ -131,7 +132,7 @@ export default function Folders() {
             dropFolderAppear ? "translate-y-14" : "translate-y-0"
           }`}
         >
-          {jazzProfile.folders?.map((folder, index) => {
+          {jazzProfile.folders?.map((folder) => {
             if (!folder) return null;
             return (
               <div key={folder.id}>
