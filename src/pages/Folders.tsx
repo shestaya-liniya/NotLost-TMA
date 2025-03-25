@@ -34,7 +34,6 @@ export default function Folders() {
 
   const dropFolderAppear = draggableItemType === "folder";
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [foldersHeight, setFoldersHeight] = useState<
     {
       id: ID<JazzFolder>;
@@ -73,6 +72,8 @@ export default function Folders() {
       setManageDialogsModalHeight(modal.getBoundingClientRect().height);
     }
   }, [manageDialogsModalOpen]);
+
+  console.log(foldersHeight);
 
   return (
     <div className="h-full flex flex-col relative">
