@@ -135,7 +135,7 @@ function AccordionHeader({
                   {getFolderStack()}{" "}
                 </div>
               ) : (
-                <></>
+                <> </>
               )}
             </span>
             <span
