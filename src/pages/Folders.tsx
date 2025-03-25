@@ -1,5 +1,5 @@
 import Tappable from "@/ui/Tappable";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
+import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
