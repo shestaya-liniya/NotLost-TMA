@@ -115,7 +115,13 @@ function AccordionHeader({
     if (foldersStack.length === 1) {
       return;
     }
-    return foldersStack.slice(0, -1).map((folder) => folder.title + " / ");
+
+    if (foldersStack.length > 2) {
+      return (
+        "..." + foldersStack.slice(-2, -1).map((folder) => folder.title + " / ")
+      );
+    }
+    return foldersStack.slice(-2, -1).map((folder) => folder.title + " / ");
   };
 
   return (
@@ -138,7 +144,7 @@ function AccordionHeader({
 
           <span className="font-semibold flex items-center gap-1">
             <span className="text-hint">
-              {foldersStack.length > 1 ? (
+              {foldersStack.length > 1 && (
                 <div
                   className="flex items-center gap-1"
                   onClick={(e) => {
@@ -149,8 +155,6 @@ function AccordionHeader({
                   <ChevronRightIcon className="h-3 w-3 rotate-180" />
                   {getFolderStack()}{" "}
                 </div>
-              ) : (
-                <> </>
               )}
             </span>
             <span

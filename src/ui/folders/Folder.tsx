@@ -95,7 +95,7 @@ function Folder(props: {
   };
 
   const updateFoldersStack = (folder: JazzFolder) => {
-    setFoldersTitleStack((prev) => `${prev} / ${folder.title}`);
+    setFoldersTitleStack((prev) => `${prev} / hello`);
     setActiveFolderStack((prev) => [...prev, folder]);
   };
 
