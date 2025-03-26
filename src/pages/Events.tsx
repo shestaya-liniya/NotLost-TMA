@@ -43,7 +43,7 @@ export default function Events() {
             ? 40
             : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
-        className="px-4 py-2 bg-secondary border-b-2 border-primary/30"
+        className="px-4 py-2 bg-secondary border-b-2 border-primary/30 relative"
       >
         <div className="relative flex justify-between mt-2 items-center">
           <Tappable
@@ -65,7 +65,7 @@ export default function Events() {
             </div>
           </div>
         </div>
-        <div className="text-link font-semibold text-center absolute top-14 w-full pr-8 pointer-events-none">
+        <div className="text-link font-semibold text-center absolute bottom-4 w-full pr-8 pointer-events-none">
           Events
         </div>
       </div>
