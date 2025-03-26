@@ -7,6 +7,7 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import { JazzFolder } from "@/lib/jazz/schema";
 import Tappable from "./Tappable";
 import { AnimatePresence, motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
 function FolderAccordion({
   children,
@@ -79,6 +80,21 @@ function AccordionHeader({
 }) {
   const titleRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const handleMoreClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    const rect = event.currentTarget.getBoundingClientRect();
+    setTooltipPosition({
+      top: rect.bottom + window.scrollY,
+      left: rect.left + window.scrollX + 14,
+    });
+    setShowTooltip(true);
+  };
+
   useEffect(() => {
     if (editingTitle && titleRef.current) {
       const el = titleRef.current;
@@ -103,7 +119,7 @@ function AccordionHeader({
   };
 
   return (
-    <div>
+    <div className="relative">
       <div
         className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all relative ${
           expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
@@ -114,8 +130,7 @@ function AccordionHeader({
         <div className="flex justify-between items-center">
           <div
             onClick={(event) => {
-              event.stopPropagation();
-              setShowTooltip((prev) => !prev);
+              handleMoreClick(event);
             }}
           >
             <MoreIcon className="h-5 w-5 text-link" />
@@ -171,15 +186,18 @@ function AccordionHeader({
           </div>
         )}
       </div>
-      {showTooltip && (
-        <FolderTooltip
-          folder={foldersStack[-1]}
-          showTooltip={showTooltip}
-          closeTooltip={() => setShowTooltip(false)}
-          handleDeleteFolder={handleDeleteFolder}
-          handleEditFolder={handleEditFolder}
-        />
-      )}
+      {showTooltip &&
+        createPortal(
+          <FolderTooltip
+            folder={foldersStack[-1]}
+            showTooltip={showTooltip}
+            closeTooltip={() => setShowTooltip(false)}
+            handleDeleteFolder={handleDeleteFolder}
+            handleEditFolder={handleEditFolder}
+            position={tooltipPosition}
+          />,
+          document.body
+        )}
     </div>
   );
 }
@@ -197,12 +215,14 @@ export const FolderTooltip = ({
   closeTooltip,
   handleEditFolder,
   handleDeleteFolder,
+  position,
 }: {
   folder: JazzFolder;
   showTooltip: boolean;
   closeTooltip: () => void;
   handleEditFolder: () => void;
   handleDeleteFolder: () => void;
+  position: { top: number; left: number } | null;
 }) => {
   useEffect(() => {
     const handleTouchStart = (event: TouchEvent) => {
@@ -223,6 +243,8 @@ export const FolderTooltip = ({
     };
   }, [showTooltip, closeTooltip]);
 
+  if (!position) return;
+
   return (
     <AnimatePresence>
       {showTooltip && (
@@ -231,9 +253,13 @@ export const FolderTooltip = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
-          className={`absolute left-14 top-12  -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
+          className={`absolute -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
           onTouchStart={(event) => {
             event.stopPropagation();
+          }}
+          style={{
+            top: `${position.top}px`,
+            left: `${position.left}px`,
           }}
         >
           <FolderToolTipItem

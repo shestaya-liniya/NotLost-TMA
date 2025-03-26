@@ -139,13 +139,9 @@ export default function Folders() {
               <div key={folder.id}>
                 <div
                   className="w-full transition-all duration-200 ease-in-out animate-fadeIn"
-                  /* style={{
-                    zIndex: 99 - index,
-                    transform:
-                      index !== 0
-                        ? `translateY(${getFolderTopInset(index)}px)`
-                        : "translateY(0)",
-                  }} */
+                  style={{
+                    zIndex: -10,
+                  }}
                 >
                   <Folder
                     folder={folder}

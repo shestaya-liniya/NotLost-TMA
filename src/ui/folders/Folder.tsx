@@ -104,7 +104,7 @@ function Folder(props: {
       ref={ref}
       className={
         hidden
-          ? "transition-all duration-300 ease-in-out opacity-0"
+          ? "transition-all duration-300 ease-in-out opacity-0 -z-10"
           : "opacity-100"
       }
     >
