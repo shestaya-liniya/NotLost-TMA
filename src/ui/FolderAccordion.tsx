@@ -177,14 +177,14 @@ function AccordionHeader({
         </div>
         {expanded === false && (
           <div
-            className={`flex justify-center relative mt-2 ${dialogsTrio.length === 3 && "left-4"} ${dialogsTrio.length === 2 && "left-2"}`}
+            className={`flex justify-center relative ${dialogsTrio.length === 3 && "left-4"} ${dialogsTrio.length === 2 && "left-2"}`}
           >
             {dialogsTrio.map((d, index) => (
               <img
                 key={d.username}
                 loading="lazy"
                 src={`https://t.me/i/userpic/320/${d.username}.svg`}
-                className={`h-10 w-10 rounded-full ${index === 1 && "relative right-4"} ${index === 2 && "relative right-8"}`}
+                className={`h-10 w-10 rounded-full mt-2 ${index === 1 && "relative right-4"} ${index === 2 && "relative right-8"}`}
                 decoding="async"
                 alt=""
               />
