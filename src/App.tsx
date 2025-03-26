@@ -20,6 +20,7 @@ import { $getMyDialogs } from "./actions/telegram.ts";
 import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
 import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import Events from "./pages/Events.tsx";
 
 export default function App() {
   const {
@@ -105,7 +106,7 @@ export default function App() {
       />
       <Routes>
         <Route
-          path="/tab-bar"
+          path="/tab-bar/*"
           element={
             <div style={{ height: "var(--initial-height)" }}>
               <TabBarLayout activeTab={activeTab} setActiveTab={setActiveTab}>
@@ -126,11 +127,10 @@ export default function App() {
                     direction={"toRight"}
                     isActive={activeTab === "events"}
                   >
-                    Events
+                    <Events />
                   </TabTransition>
                 </div>
               </TabBarLayout>
-              <ManageDialogsModal />
               <EditTagsModal />
               <AddDialogModal />
               <SlidingPage

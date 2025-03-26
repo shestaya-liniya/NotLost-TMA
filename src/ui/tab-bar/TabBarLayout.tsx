@@ -1,7 +1,7 @@
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import SparklesIcon from "@/assets/icons/sparkles.svg?react";
-import EventIcon from "@/assets/icons/event.svg?react";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
+import StarIcon from "@/assets/icons/star.svg?react";
 
 export default function TabBarLayout({
   activeTab,
@@ -50,7 +50,7 @@ function TabBar({
             onClick={() => setActiveTab("events")}
             title="Events"
             isActive={activeTab === "events"}
-            Icon={<EventIcon />}
+            Icon={<StarIcon className="p-[1px]" />}
           />
         </div>
       </div>

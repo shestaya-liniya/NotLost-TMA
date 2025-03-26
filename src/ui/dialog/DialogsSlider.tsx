@@ -36,9 +36,8 @@ export default function DialogsSlider({
         clickable: true,
         dynamicBullets: true,
       }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
       direction={direction}
+      autoHeight={true}
     >
       {chunkedDialogs.map((group) => (
         <SwiperSlide key={Math.random()}>

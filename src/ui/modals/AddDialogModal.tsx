@@ -226,12 +226,14 @@ const WithTelegramSync = () => {
         />
       </div>
       {filteredDialogs.length > 0 ? (
-        <DialogsSlider
-          dialogs={filteredDialogs}
-          selectedDialogs={selectedChats}
-          setSelectedDialogs={setSelectedChats}
-          direction="vertical"
-        />
+        <div style={{ height: "288px !important" }}>
+          <DialogsSlider
+            dialogs={filteredDialogs}
+            selectedDialogs={selectedChats}
+            setSelectedDialogs={setSelectedChats}
+            direction="vertical"
+          />
+        </div>
       ) : (
         <div className="text-center text-link p-4 font-semibold">
           Nobody found

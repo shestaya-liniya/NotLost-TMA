@@ -3,6 +3,7 @@ import { useKeyboardState } from "@/helpers/use-keyboard-visible";
 import useViewportSize from "@/helpers/use-viewport-height";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface ModalProps {
   id: string;
@@ -10,6 +11,7 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   title: string;
+  className?: string;
 }
 
 const BottomModal = (props: ModalProps) => {
@@ -41,21 +43,47 @@ const BottomModal = (props: ModalProps) => {
     }
   }, [keyboardState]);
 
+  /* useEffect(() => {
+    const handleTouchStart = (event: TouchEvent) => {
+      if (props.isOpen) {
+        event.preventDefault();
+        props.onClose();
+      }
+    };
+
+    if (props.isOpen) {
+      window.addEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+    }
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+    };
+  }, [props.isOpen]); */
+
   return (
     <div
-      className={`absolute top-0 left-0 w-full z-50 pointer-events-none transition-transform duration-300 ease-in-out `}
+      className={`absolute top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
+        props.isOpen ? "bg-black/30 pointer-events-auto" : "pointer-events-none"
+      }`}
       style={{
         height: "100dvh",
-        transform: lp.tgWebAppPlatform === "ios" ? `translateY(-${translateY}px)` : "",
+        transform:
+          lp.tgWebAppPlatform === "ios" ? `translateY(-${translateY}px)` : "",
       }}
+      onClick={props.onClose}
     >
       <div
         id={props.id}
-        className={`bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
-          props.isOpen
-            ? "animate-slideUp  "
-            : "translate-y-full animate-slideDown"
-        }`}
+        className={twMerge(
+          `bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
+            props.isOpen
+              ? "animate-slideUp  "
+              : "translate-y-full animate-slideDown"
+          }`,
+          props.className
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-2xl font-semibold text-center mb-4">

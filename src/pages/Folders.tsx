@@ -83,15 +83,16 @@ export default function Folders() {
             ? 40
             : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
         }}
-        className="px-4 py-2 bg-secondary pb-4 border-b-2 border-primary/30"
+        className="px-4 py-2 bg-secondary border-b-2 border-primary/30"
       >
-        <div className="relative flex justify-between mt-2">
+        <div className="relative flex justify-between mt-2 items-center">
           <Tappable
             onClick={() => setSettingsModalOpen(true)}
             className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
           >
             <SettingsIcon className="h-7 w-7 " />
           </Tappable>
+          <div className="text-link font-semibold">Folders</div>
           <Tappable
             onClick={() => setGraphModalOpen(true)}
             className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
