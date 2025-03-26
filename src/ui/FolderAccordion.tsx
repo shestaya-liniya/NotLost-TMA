@@ -175,8 +175,10 @@ function AccordionHeader({
             className={`w-5 h-5 text-link transition-transform duration-300 ease-in-out ${expanded ? "-rotate-90" : "rotate-90"}`}
           />
         </div>
-        {dialogsTrio.length > 1 && expanded === false && (
-          <div className="flex justify-center relative left-4 mt-2">
+        {expanded === false && (
+          <div
+            className={`flex justify-center relative mt-2 ${dialogsTrio.length === 3 && "left-4"} ${dialogsTrio.length === 2 && "left-2"}`}
+          >
             {dialogsTrio.map((d, index) => (
               <img
                 key={d.username}
