@@ -156,8 +156,7 @@ const PeopleOnEvent = () => {
           <div>
             <Tappable
               onClick={() => {
-                setUsernameToRedirect("shestaya_liniya");
-                setShowModal(true);
+                window.open(`https://t.me/shestaya_liniya`);
               }}
               className="flex mt-4"
             >
