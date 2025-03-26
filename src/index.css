@@ -152,6 +152,10 @@ body {
   -webkit-overflow-scrolling: touch !important;
   overflow: hidden;
 }
+* {
+  -webkit-user-select: none; /* Disable text selection on iOS */
+  user-select: none; /* Standard property */
+}
 
 #app {
   z-index: 1;
