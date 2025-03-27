@@ -38,6 +38,7 @@ export default function DialogsSlider({
       }}
       direction={direction}
       autoHeight={true}
+      height={288}
     >
       {chunkedDialogs.map((group) => (
         <SwiperSlide key={Math.random()}>

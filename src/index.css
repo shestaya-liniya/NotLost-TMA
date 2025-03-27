@@ -237,5 +237,6 @@ input:focus {
   background: var(--color-accent) !important;
 }
 
-.swiper-wrapper {
+.dialogs-swiper .swiper {
+  height: 288px !important;
 }

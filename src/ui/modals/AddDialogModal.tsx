@@ -226,7 +226,7 @@ const WithTelegramSync = () => {
         />
       </div>
       {filteredDialogs.length > 0 ? (
-        <div style={{ height: "288px !important" }}>
+        <div className="dialogs-swiper">
           <DialogsSlider
             dialogs={filteredDialogs}
             selectedDialogs={selectedChats}
