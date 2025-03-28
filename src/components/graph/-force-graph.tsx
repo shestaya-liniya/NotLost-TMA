@@ -14,7 +14,10 @@ import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import Switch from "@/ui/Switch";
-import { getElementHeightById } from "@/helpers/css/get-element-height";
+import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
+import { createPortal } from "react-dom";
+import BottomModal from "@/ui/modals/BottomModal";
+import Tappable from "@/ui/Tappable";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [selectedContact, setSelectedContact] = useState<null | GraphNode>(
@@ -24,11 +27,27 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     null | number
   >(null);
 
+  const [topicFlags, setTopicFlags] = useState<
+    {
+      id: string;
+      title: string;
+      x: number;
+      y: number;
+      distance: number;
+      visible: boolean;
+    }[]
+  >([]);
+  const [cooldownTicks, setCooldownTicks] = useState<undefined | number>(0);
+  const [warmupTicks, setWarmupTicks] = useState<undefined | number>(30);
+
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
   const lp = retrieveLaunchParams();
 
   const graphData = useMemo(() => initializeGraphData(data), [data]);
 
   const [dragNodes, setDragNodes] = useState<boolean>(false);
+  const [showFlags, setShowFlags] = useState(false);
 
   const { imageCache, fetchImages } = useImageCache(graphData.nodes);
 
@@ -36,10 +55,62 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     fetchImages();
   }, [graphData.nodes, imageCache]);
 
+  const fgRef = React.useRef<
+    ForceGraphMethods<{ id: string | number }, {}> | undefined
+  >(undefined);
+
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!];
       setGlobalScale(globalScale);
+      if (fgRef && node.type === "topic") {
+        const W = window.innerWidth - 20;
+        const H =
+          Number(getCssVariable("--initial-height").replace("px", "")) - 20;
+
+        const nodeInfo = isNodeOnScreen(node, fgRef, H, W);
+        if (nodeInfo) {
+          const { x, y, isVisible } = nodeInfo;
+          const position = clampPosition(
+            x,
+            y,
+            W,
+            H,
+            -getTextWidth(node.title) - 10,
+            -20
+          );
+          setTopicFlags((prev) => {
+            const existingIndex = prev.findIndex((flag) => flag.id === node.id);
+
+            if (existingIndex !== -1) {
+              return prev.map((flag, index) =>
+                index === existingIndex
+                  ? {
+                      ...flag,
+                      id: String(node.id),
+                      x: position.x,
+                      y: position.y,
+                      distance: position.distance,
+                      visible: isVisible,
+                    }
+                  : flag
+              );
+            } else {
+              return [
+                ...prev,
+                {
+                  id: String(node.id),
+                  title: node.title,
+                  x: position.x,
+                  y: position.y,
+                  distance: position.distance,
+                  visible: isVisible,
+                },
+              ];
+            }
+          });
+        }
+      }
 
       switch (node.type) {
         case GraphNodeType.DIALOG:
@@ -53,14 +124,12 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     [imageCache]
   );
 
-  const fgRef = React.useRef<
-    ForceGraphMethods<{ id: string | number }, {}> | undefined
-  >(undefined);
-
   useEffect(() => {
-    fgRef?.current?.d3Force("charge")!.distanceMax(140);
+    fgRef?.current?.d3Force("charge")!.distanceMax(80);
     fgRef?.current?.centerAt(0, 0);
     fgRef?.current?.zoom(5);
+    fgRef?.current?.d3Force("center", null);
+
     fgRef?.current?.d3Force("link")!.distance(() => {
       return 20;
     });
@@ -68,12 +137,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const [globalScale, setGlobalScale] = useState<number | null>(null);
 
-  const tabBarHeight = getElementHeightById("tab-bar");
-
   return (
     <div
       style={{
-        height: `calc(var(--initial-height) - ${tabBarHeight}px)`,
+        height: `calc(var(--initial-height)`,
       }}
     >
       <div
@@ -89,23 +156,49 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-24 left-6 z-10 backdrop-blur-sm px-4 pt-2 pb-1 rounded-2xl border-2 border-primary/30">
-        <Switch
-          label="Drag mode"
-          checked={dragNodes}
-          onChange={(checked) => setDragNodes(checked)}
-        />
-      </div>
+      <Tappable
+        onClick={() => setShowSettingsModal(true)}
+        className="bg-primary/50 absolute right-4 top-12 backdrop-blur-xl p-2 rounded-2xl z-50"
+      >
+        <SettingsIcon className="h-8 w-8 text-link  " />
+      </Tappable>
+
+      {showFlags &&
+        topicFlags.map((flag) => {
+          return (
+            <Tappable
+              onClick={() => {
+                fgRef?.current?.zoomToFit(
+                  500,
+                  // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
+                  175,
+                  (filterNode) => filterNode.id === flag.id
+                );
+              }}
+              key={flag.id}
+              style={{
+                top: flag.y,
+                left: flag.x,
+                opacity: flag.visible ? 0 : 1,
+              }}
+              className={`text-[8px] bg-link/20 text-link px-2 py-1 rounded-xl absolute z-40 backdrop-blur-lg whitespace-nowrap transition-opacity duration-300 ease-in-out flex items-center gap-1`}
+            >
+              {flag.title}
+              <span className="text-hint">
+                {Math.floor(flag.distance / 100)}
+              </span>{" "}
+            </Tappable>
+          );
+        })}
 
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
-        height={
-          Number(getCssVariable("--initial-height").replace("px", "")) -
-          tabBarHeight!
-        }
+        height={Number(getCssVariable("--initial-height").replace("px", ""))}
         nodeAutoColorBy="group"
         enableNodeDrag={dragNodes}
+        cooldownTicks={cooldownTicks}
+        warmupTicks={warmupTicks}
         onBackgroundClick={() => {
           setSelectedContact(null);
         }}
@@ -171,6 +264,62 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.stroke();
         }}
       />
+      {createPortal(
+        <BottomModal
+          id=""
+          isOpen={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          title="Graph settings"
+        >
+          <div className="grid grid-cols-2 pb-6">
+            <div>
+              <div className="font-medium">Drag mode</div>
+              <div className="text-hint text-xs">
+                Move graph with your fingers
+              </div>
+            </div>
+            <div className="py-2 rounded-2xl flex justify-end">
+              <Switch
+                label=""
+                checked={dragNodes}
+                onChange={(checked) => {
+                  if (checked) {
+                    setCooldownTicks(undefined);
+                    setWarmupTicks(undefined);
+                  } else {
+                    setCooldownTicks(0);
+                    setWarmupTicks(60);
+                  }
+                  setDragNodes(checked);
+                }}
+              />
+            </div>
+            <div className="mt-4">
+              <div className="font-medium">Show flags</div>
+              <div className="text-hint text-xs">
+                Help with navigation between folders
+              </div>
+            </div>
+            <div className="py-2 rounded-2xl flex justify-end">
+              <Switch
+                label=""
+                checked={showFlags}
+                onChange={(checked) => {
+                  if (checked) {
+                    setCooldownTicks(undefined);
+                    setWarmupTicks(undefined);
+                  } else {
+                    setCooldownTicks(0);
+                    setWarmupTicks(60);
+                  }
+                  setShowFlags(checked);
+                }}
+              />
+            </div>
+          </div>
+        </BottomModal>,
+        document.body
+      )}
     </div>
   );
 };
@@ -248,6 +397,58 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
 
   processFolders(folders as JazzFolder[], nodes, links);
   return { nodes, links };
+};
+
+const isNodeOnScreen = (
+  node: NodeObject,
+  graphRef: React.MutableRefObject<
+    | ForceGraphMethods<
+        {
+          id: string | number;
+        },
+        {}
+      >
+    | undefined
+  >,
+  canvasHeight: number,
+  canvasWidth: number
+) => {
+  if (!node.x || !node.y || !graphRef.current) return;
+
+  const { x, y } = graphRef.current.graph2ScreenCoords(node.x, node.y);
+  const isVisible = x >= 0 && x <= canvasWidth && y >= 0 && y <= canvasHeight;
+
+  //console.log(node.title, "\nX: ", x, "\nY:", y, "\nIs visible: ", isVisible);
+
+  return { x, y, isVisible };
+};
+
+const clampPosition = (
+  x: number,
+  y: number,
+  W: number,
+  H: number,
+  wInset: number,
+  hInset: number
+) => {
+  let pointX = x;
+  let pointY = y;
+
+  if (x < 0) pointX = 0 + 10;
+  if (x > W) pointX = W + wInset;
+  if (y < 0) pointY = 0 + 10;
+  if (y > H) pointY = H + hInset;
+
+  const distance = Math.sqrt((pointX - x) ** 2 + (pointY - y) ** 2);
+
+  return { x: pointX, y: pointY, distance };
+};
+
+const getTextWidth = (text: string, font = "10px Arial") => {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  ctx!.font = font;
+  return ctx!.measureText(text).width;
 };
 
 export default memo(ForceGraph);

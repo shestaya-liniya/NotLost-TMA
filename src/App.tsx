@@ -20,6 +20,7 @@ import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
 import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import Events from "./pages/Events.tsx";
+import { createPortal } from "react-dom";
 
 export default function App() {
   const {
@@ -196,6 +197,7 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
+  const lp = retrieveLaunchParams();
   const handleClose = () => {
     onClose();
     if (backButton.isSupported()) {
@@ -233,19 +235,26 @@ function SlidingPage({
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
+        {lp.tgWebAppPlatform === "tdesktop" &&
+          createPortal(
+            <Tappable
+              onClick={handleClose}
+              className="top-5 left-5 absolute bg-link/10 rounded-2xl px-2 py-1 text-link z-[1000px]"
+            >
+              Back
+            </Tappable>,
+            document.body
+          )}
         <TelegramWallpaper />
         {children}
 
-        <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
+        {/* <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
           <div className="flex justify-center items-center w-full px-4 pb-4">
-            <Tappable
-              className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold"
-              onClick={handleClose}
-            >
+            <Tappable className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold">
               Go back
             </Tappable>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
