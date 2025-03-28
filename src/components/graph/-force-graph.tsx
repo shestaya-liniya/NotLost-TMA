@@ -158,7 +158,12 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
       <Tappable
         onClick={() => setShowSettingsModal(true)}
-        className="bg-primary/50 absolute right-4 top-12 backdrop-blur-xl p-2 rounded-2xl z-50"
+        className="bg-primary/50 absolute right-4 backdrop-blur-xl p-2 rounded-2xl z-50"
+        style={{
+          top: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
+            ? 40
+            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+        }}
       >
         <SettingsIcon className="h-8 w-8 text-link  " />
       </Tappable>

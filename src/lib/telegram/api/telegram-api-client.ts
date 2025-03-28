@@ -213,7 +213,6 @@ class TelegramApiClient {
   async getDialogs() {
     await this.initialize();
     const dialogs = await this.client.getDialogs({ archived: false });
-    console.log(dialogs);
 
     return dialogs;
   }

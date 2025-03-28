@@ -4,8 +4,8 @@ import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import { useModalStore } from "@/lib/store/modal-store";
 import { useDragStore } from "@/lib/store/drag-store";
 import { useEffect, useState } from "react";
-import { JazzFolder } from "@/lib/jazz/schema";
-import { ID } from "jazz-tools";
+//import { JazzFolder } from "@/lib/jazz/schema";
+//import { ID } from "jazz-tools";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Folder from "@/ui/folders/Folder";
 import NewFolder from "@/ui/folders/NewFolder";
@@ -34,14 +34,14 @@ export default function Folders() {
 
   const dropFolderAppear = draggableItemType === "folder";
 
-  const [foldersHeight, setFoldersHeight] = useState<
+  /* const [foldersHeight, setFoldersHeight] = useState<
     {
       id: ID<JazzFolder>;
       height: number;
     }[]
-  >([]);
+  >([]); */
 
-  const setFolderHeight = (id: ID<JazzFolder>, height: number) => {
+  /* const setFolderHeight = (id: ID<JazzFolder>, height: number) => {
     setFoldersHeight((prev) => {
       if (prev.find((folder) => folder.id === id)) {
         return prev.map((folder) =>
@@ -54,7 +54,7 @@ export default function Folders() {
 
   const removeFolderHeight = (id: ID<JazzFolder>) => {
     setFoldersHeight((prev) => prev.filter((folder) => folder.id !== id));
-  };
+  }; */
 
   /* const getFolderTopInset = (index: number) => {
     return foldersHeight
@@ -72,8 +72,6 @@ export default function Folders() {
       setManageDialogsModalHeight(modal.getBoundingClientRect().height);
     }
   }, [manageDialogsModalOpen]);
-
-  console.log(foldersHeight);
 
   return (
     <div className="h-full flex flex-col relative">
@@ -146,11 +144,11 @@ export default function Folders() {
                 >
                   <Folder
                     folder={folder}
-                    setFolderHeight={(height: number) =>
-                      setFolderHeight(folder.id, height)
-                    }
+                    setFolderHeight={() => {
+                      //setFolderHeight(folder.id, height)
+                    }}
                     onDeleteFolder={() => {
-                      removeFolderHeight(folder.id);
+                      //removeFolderHeight(folder.id);
                     }}
                   />
                 </div>

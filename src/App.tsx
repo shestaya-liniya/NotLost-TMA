@@ -101,7 +101,6 @@ export default function App() {
         className="hidden-input"
         id="shadow-input"
         value={shadowInputValue}
-        onFocus={() => console.log("focus")}
         onChange={(e) => setShadowInputValue(e.target.value)}
       />
       <Routes>
@@ -207,7 +206,6 @@ function SlidingPage({
   useEffect(() => {
     if (open) {
       if (backButton.isSupported()) {
-        console.log(backButton.isSupported());
         try {
           backButton.show();
           backButton.onClick(handleClose);
