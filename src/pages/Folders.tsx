@@ -160,12 +160,26 @@ export default function Folders() {
         </div>
       </div>
 
-      <Tappable
-        className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
-        onClick={() => jazzCreateNewFolder(jazzProfile, "New folder")}
-      >
-        <PlusIcon className="w-7 h-7 text-white" />
-      </Tappable>
+      {jazzProfile.folders && jazzProfile.folders.length > 0 ? (
+        <Tappable
+          className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50"
+          onClick={() => jazzCreateNewFolder(jazzProfile, "New folder")}
+        >
+          <PlusIcon className="w-7 h-7 text-white" />
+        </Tappable>
+      ) : (
+        <div>
+          <div className="fixed bottom-26 right-8 bg-link/10 text-link px-2 py-1 rounded-xl">
+            Start by adding a new folder
+          </div>
+          <Tappable
+            className="p-3 rounded-full bg-link fixed bottom-10 right-8 z-50 animate-pulse shadow-link shadow-[0_4px_15px_rgba(0,0,0,0.3)]"
+            onClick={() => jazzCreateNewFolder(jazzProfile, "New folder")}
+          >
+            <PlusIcon className="w-7 h-7 text-white" />
+          </Tappable>
+        </div>
+      )}
     </div>
   );
 }
