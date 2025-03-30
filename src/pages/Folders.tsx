@@ -3,7 +3,7 @@ import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
-import Folder from "@/ui/folders/Folder-refactor.tsx";
+import Folder from "@/ui/folders/Folder";
 import Tappable from "@/ui/Tappable";
 
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
@@ -66,7 +66,7 @@ export default function Folders() {
                     zIndex: -10,
                   }}
                 >
-                  <Folder folder={folder} nested={false} />
+                  <Folder folder={folder} />
                 </div>
               </div>
             );

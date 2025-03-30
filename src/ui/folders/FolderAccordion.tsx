@@ -85,7 +85,7 @@ function FolderAccordionHeader(props: {
   };
 
   return (
-    <div className="relative">
+    <div>
       <div
         className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all relative ${
           props.expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
