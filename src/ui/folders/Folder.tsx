@@ -24,8 +24,6 @@ import { v4 as uuidv4 } from "uuid";
 
 function Folder(props: {
   folder: JazzFolder;
-  setFolderHeight: (height: number) => void;
-  onDeleteFolder: () => void;
   nested?: boolean;
   setAsParentFolder?: () => void;
 }) {
@@ -303,24 +301,6 @@ function Folder(props: {
     </div>
   );
 }
-
-/* function NestedFolder({
-  updateFoldersStack,
-  title,
-}: {
-  updateFoldersStack: () => void;
-  title: string;
-}) {
-  return (
-    <Tappable
-      className={` rounded-full px-4 py-2 flex items-center gap-2 animate-fadeIn bg-link/20 text-link`}
-      onClick={updateFoldersStack}
-    >
-      <FolderIcon className="w-4 h-4" />
-      <span className="text-sm font-medium">{title}</span>
-    </Tappable>
-  );
-} */
 
 export default memo(Folder);
 

@@ -213,7 +213,7 @@ class TelegramApiClient {
   async getDialogs() {
     await this.initialize();
     const dialogs = await this.client.getDialogs({ archived: false });
-    console.log(dialogs);
+    console.log("dialogs recieved");
 
     return dialogs;
   }
@@ -225,7 +225,7 @@ class TelegramApiClient {
         channel: channelUsername,
       })
     );
-    console.log(channelInfo);
+
     return channelInfo;
   }
 
