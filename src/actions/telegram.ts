@@ -50,7 +50,12 @@ export const $getFullChannel = async (channelUsername: string) => {
 export const $getTelegramEntityByUsername = async (
   username: string
 ): Promise<ApiTelegramChannel | ApiTelegramUser> => {
-  return (await axiosInstance.get(`getUserByUsername/${username}`)).data;
+  return await axiosInstance
+    .get(`getUserByUsername/${username}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch(() => null);
 };
 
 export interface ApiTelegramUser {

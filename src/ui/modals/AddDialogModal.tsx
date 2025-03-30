@@ -47,7 +47,8 @@ export default function AddDialogModal() {
       setIsLoading(true);
       $getTelegramEntityByUsername(usernameValue).then((res) => {
         setIsLoading(false);
-        setEntity(res);
+        //@ts-ignore
+        setEntity(res[0]);
       });
     }, 300);
 
@@ -131,12 +132,8 @@ export default function AddDialogModal() {
             />
             <div className="flex flex-col ml-4">
               <div className="text-sm font-medium">
-                {truncateWord(
-                  entity.type === "User"
-                    ? entity.firstName || "No firstname"
-                    : entity.title,
-                  20
-                )}
+                {/*@ts-ignore*/}
+                {truncateWord(entity.firstName, 20)}
               </div>
               <div className="text-xs text-link">@{entity.username}</div>
             </div>
