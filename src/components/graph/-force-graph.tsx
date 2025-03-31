@@ -160,9 +160,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         onClick={() => setShowSettingsModal(true)}
         className="bg-primary/50 absolute right-4 backdrop-blur-xl p-2 rounded-2xl z-50"
         style={{
-          top: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
-            ? 40
-            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+          top: `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`,
         }}
       >
         <SettingsIcon className="h-8 w-8 text-link  " />
@@ -423,8 +421,6 @@ const isNodeOnScreen = (
   const { x, y } = graphRef.current.graph2ScreenCoords(node.x, node.y);
   const isVisible = x >= 0 && x <= canvasWidth && y >= 0 && y <= canvasHeight;
 
-  //console.log(node.title, "\nX: ", x, "\nY:", y, "\nIs visible: ", isVisible);
-
   return { x, y, isVisible };
 };
 
@@ -446,7 +442,8 @@ const clampPosition = (
         ""
       )
     ) +
-    20;
+    48 + // settings button height
+    8; // additional margin
   let pointX = x;
   let pointY = y;
 
@@ -455,7 +452,6 @@ const clampPosition = (
   if (y < topInset) pointY = topInset;
 
   if (y > H) pointY = H + hInset;
-  console.log(pointY);
 
   const distance = Math.sqrt((pointX - x) ** 2 + (pointY - y) ** 2);
 

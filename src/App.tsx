@@ -71,15 +71,9 @@ export default function App() {
   const { shadowInputValue, setShadowInputValue } = useAppStore();
 
   import("eruda").then((lib) => lib.default.init()).catch(console.error);
-  const tp = retrieveLaunchParams().tgWebAppThemeParams;
-  /* --color-primary: var(--tg-bg-color);
-  --color-secondary: var(--tg-theme-secondary-bg-color);
+  const lp = retrieveLaunchParams();
+  const tp = lp.tgWebAppThemeParams;
 
-  --color-link: var(--tg-theme-link-color);
-  --color-accent: var(--tg-theme-accent-text-color);
-  --color-hint: var(--tg-theme-hint-color);
-  --color-button: var(--tg-theme-button-color);
-  --color-default: var(--tg-theme-text-color); */
   const style = document.createElement("style");
   style.innerHTML = `:root { 
   --tg-bg-color: ${tp.bg_color};
@@ -89,8 +83,8 @@ export default function App() {
   --tg-theme-hint-color: ${tp.hint_color};
   --tg-theme-button-color: ${tp.button_color};
   --tg-theme-text-color: ${tp.text_color};
+  ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 20px; --tg-viewport-content-safe-area-inset-top: 20px"}
    }`;
-
   document.head.appendChild(style);
 
   return (
