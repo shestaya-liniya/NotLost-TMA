@@ -186,7 +186,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
                 left: flag.x,
                 opacity: flag.visible ? 0 : 1,
               }}
-              className={`text-[8px] bg-link/20 text-link px-2 py-1 rounded-xl absolute z-40 backdrop-blur-lg whitespace-nowrap transition-opacity duration-300 ease-in-out flex items-center gap-1`}
+              className={`text-xs bg-link/20 text-link px-2 py-1 rounded-xl absolute z-40 backdrop-blur-lg whitespace-nowrap transition-opacity duration-300 ease-in-out flex items-center gap-1`}
             >
               {flag.title}
               <span className="text-hint">
@@ -436,20 +436,33 @@ const clampPosition = (
   wInset: number,
   hInset: number
 ) => {
+  const topInset =
+    Number(
+      getCssVariable("--tg-viewport-safe-area-inset-top").replace("px", "")
+    ) +
+    Number(
+      getCssVariable("--tg-viewport-content-safe-area-inset-top").replace(
+        "px",
+        ""
+      )
+    ) +
+    20;
   let pointX = x;
   let pointY = y;
 
   if (x < 0) pointX = 0 + 10;
   if (x > W) pointX = W + wInset;
-  if (y < 0) pointY = 0 + 10;
+  if (y < topInset) pointY = topInset;
+
   if (y > H) pointY = H + hInset;
+  console.log(pointY);
 
   const distance = Math.sqrt((pointX - x) ** 2 + (pointY - y) ** 2);
 
   return { x: pointX, y: pointY, distance };
 };
 
-const getTextWidth = (text: string, font = "10px Arial") => {
+const getTextWidth = (text: string, font = "14px Arial") => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   ctx!.font = font;

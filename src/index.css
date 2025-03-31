@@ -147,6 +147,11 @@
   --color-default: #000;
 }
 
+:root {
+  --tg-viewport-content-safe-area-inset-top: 40px;
+  --tg-viewport-safe-area-inset-top: 40px;
+}
+
 html,
 body {
   -webkit-overflow-scrolling: touch !important;
