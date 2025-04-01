@@ -18,6 +18,7 @@ export interface GraphNodeTopic {
   title: string;
   targets: (GraphNodeDialog | GraphNodeTag)[]; // as topic can links to tag or to contact
   type: GraphNodeType.TOPIC;
+  nested?: boolean;
 }
 
 export type GraphNodeTag = {

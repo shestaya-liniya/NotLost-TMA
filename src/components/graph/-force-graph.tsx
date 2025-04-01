@@ -63,7 +63,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!];
       setGlobalScale(globalScale);
-      if (fgRef && node.type === "topic") {
+      if (fgRef && node.type === "topic" && !node.nested) {
         const W = window.innerWidth - 20;
         const H =
           Number(getCssVariable("--initial-height").replace("px", "")) - 20;
@@ -343,18 +343,29 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
   function processFolders(
     folders: JazzFolder[],
     nodes: GraphNode[],
-    links: GraphLink[]
-    //nested: boolean
+    links: GraphLink[],
+    nested: boolean
   ) {
     folders.forEach((folder) => {
       if (!folder) return;
 
-      nodes.push({
-        id: folder.id,
-        title: folder.title,
-        targets: [],
-        type: GraphNodeType.TOPIC,
-      });
+      if (nested) {
+        nodes.push({
+          id: folder.id,
+          title: folder.title,
+          targets: [],
+          type: GraphNodeType.TOPIC,
+          nested: true,
+        });
+      } else {
+        nodes.push({
+          id: folder.id,
+          title: folder.title,
+          targets: [],
+          type: GraphNodeType.TOPIC,
+        });
+      }
+
       /* if (!nested) {
         links.push({
           source: folder.id,
@@ -383,8 +394,8 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
         processFolders(
           folder.nestedFolders as JazzFolder[],
           nodes,
-          links
-          //true
+          links,
+          true
         );
 
         folder.nestedFolders.forEach((subFolder) => {
@@ -398,7 +409,7 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
     });
   }
 
-  processFolders(folders as JazzFolder[], nodes, links);
+  processFolders(folders as JazzFolder[], nodes, links, false);
   return { nodes, links };
 };
 
