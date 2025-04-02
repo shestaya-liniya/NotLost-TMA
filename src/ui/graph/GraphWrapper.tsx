@@ -1,13 +1,11 @@
-import ForceGraph from "./-force-graph";
 import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
-import { memo, useEffect, useMemo } from "react";
+import Graph from "./Graph";
+import { GraphContextProvider } from "./GraphContext";
 import { useLocalStorageListener } from "@/helpers/use-localstorage-listener";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
+import { useEffect, useMemo } from "react";
 
-// As jazz folders are updated one by one on init, graph is updated very frequently that cause chaos
-// Getting folders from local storage is the only way to avoid this
-
-const Graph = () => {
+export default function GraphWrapper() {
   const { jazzProfile } = useJazzProfileContext();
 
   const [folders, setFolders] = useLocalStorageListener("folders");
@@ -25,7 +23,9 @@ const Graph = () => {
 
   if (!parsedFolders) return null;
 
-  return <ForceGraph data={parsedFolders} />;
-};
-
-export default memo(Graph);
+  return (
+    <GraphContextProvider>
+      <Graph data={parsedFolders} />
+    </GraphContextProvider>
+  );
+}

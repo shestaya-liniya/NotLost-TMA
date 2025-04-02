@@ -1,20 +1,20 @@
 import { NodeObject } from "react-force-graph-2d";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
-export const drawTopicNode = (
+export const graphDrawFolder = (
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
-  //globalScale: number,
-  img: HTMLImageElement,
-  platform: string
+  img: HTMLImageElement
 ) => {
-  const titleText = node.title!.toString();
+  const FONT_SIZE = 5;
+
+  const lp = retrieveLaunchParams();
+  const title = node.title;
 
   // circle
   const radius = 5;
-
-  const usernameFontSize = radius;
 
   ctx.beginPath();
   ctx.arc(node.x!, node.y!, radius, 0, 2 * Math.PI, false);
@@ -29,10 +29,10 @@ export const drawTopicNode = (
   // topic title
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.font = `400 ${usernameFontSize}px Sans-Serif`;
+  ctx.font = `400 ${FONT_SIZE}px Sans-Serif`;
 
-  const textWidth = ctx.measureText(titleText).width;
-  const textHeight = usernameFontSize;
+  const textWidth = ctx.measureText(title).width;
+  const textHeight = FONT_SIZE;
 
   // text background
   const padding = 1;
@@ -52,25 +52,21 @@ export const drawTopicNode = (
   ctx.arcTo(x, y, x + width, y, cornerRadius);
   ctx.closePath();
   ctx.fill();
-  // border
-  ctx.lineWidth = 0.5; // Set the border width
-  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
+
+  // text background border
+  ctx.lineWidth = 0.5;
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1);
   ctx.stroke();
 
   ctx.fillStyle = hexToRgba(getCssVariable("--color-link"), 1);
 
   // on ios / mac os text is lower than should be
-  if (["macos", "ios"].includes(platform)) {
-    ctx.fillText(titleText, node.x!, node.y! + radius + 1);
+  if (["macos", "ios"].includes(lp.tgWebAppPlatform)) {
+    ctx.fillText(title, node.x!, node.y! + radius + 1);
   } else {
-    ctx.fillText(titleText, node.x!, node.y! + radius + 2);
+    ctx.fillText(title, node.x!, node.y! + radius + 2);
   }
 
-  // text outline
-  /* ctx.strokeStyle = hexToRgba("#ffffff", 0.2)
-  ctx.lineWidth = 0.5
-  ctx.strokeText(titleText, node.x!, node.y! + 8)
- */
   // icon
   if (img) {
     const imgSize = radius;
@@ -85,23 +81,4 @@ export const drawTopicNode = (
     );
     ctx.restore();
   }
-};
-
-export const getTopicRadius = (globalScale: number): number => {
-  const minScale = 0.5; // Smallest global scale (e.g., zoomed out)
-  const maxScale = 1.0; // Largest global scale (e.g., zoomed in)
-  const minRadius = 8; // Radius when global scale is small
-  const maxRadius = 8; // Radius when global scale is large
-
-  const radius = Math.max(
-    maxRadius,
-    Math.min(
-      minRadius,
-      maxRadius +
-        ((maxScale - globalScale) / (maxScale - minScale)) *
-          (minRadius - maxRadius)
-    )
-  );
-
-  return radius;
 };

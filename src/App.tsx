@@ -2,7 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import TabBarLayout from "./ui/tab-bar/TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
-import Graph from "./components/graph/index.tsx";
+import Graph from "./ui/graph/GraphWrapper.tsx";
 import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";

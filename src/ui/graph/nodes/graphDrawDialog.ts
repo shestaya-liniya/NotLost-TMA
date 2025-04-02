@@ -1,24 +1,21 @@
 import { NodeObject } from "react-force-graph-2d";
-import { getTopicRadius } from "./-draw-topic-node";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { truncateWord } from "@/helpers/truncate-word";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
-export const drawContactNode = (
+export const graphDrawDialog = (
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
   globalScale: number,
-  img: HTMLImageElement | null,
-  platform: string
+  img: HTMLImageElement | null
 ) => {
-  const imgSize = 10;
+  const IMG_SIZE = 10;
+  const FONT_SIZE = 2;
 
-  if (getTopicRadius(globalScale) >= 36) return;
+  const lp = retrieveLaunchParams();
 
-  //const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
-  const usernameFontSize = Math.min(2, (12 * globalScale) / 8);
-
-  ctx.font = `400 ${usernameFontSize}px Sans-Serif`;
+  ctx.font = `400 ${FONT_SIZE}px Sans-Serif`;
 
   let textOpacity = Math.min(globalScale / 4, 1);
 
@@ -44,25 +41,18 @@ export const drawContactNode = (
   };
 
   // first name
-  /* drawText(
-    node.firstName.toString(),
-    firstNameFontSize,
-    getCssVariable("--tg-theme-text-color"),
-    imgSize / 4 + 1
-  ); */
-
-  // username
   const textWidth = ctx.measureText(truncateWord(node.firstName, 6)).width;
-  const textHeight = usernameFontSize;
+  const textHeight = FONT_SIZE;
 
   // text background
   const padding = 0.6;
   const cornerRadius = 1.6;
-  ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), textOpacity);
 
+  ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), textOpacity);
   ctx.beginPath();
+
   const x = node.x! - textWidth / 2 - padding * 2;
-  const y = node.y! + imgSize - padding - 6.5;
+  const y = node.y! + IMG_SIZE - padding - 6.5;
   const width = textWidth + padding * 4;
   const height = textHeight + padding * 2;
 
@@ -73,52 +63,39 @@ export const drawContactNode = (
   ctx.arcTo(x, y, x + width, y, cornerRadius);
   ctx.closePath();
   ctx.fill();
-  // border
-  ctx.lineWidth = 0.25; // Set the border width
-  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
+
+  // text background border
+  ctx.lineWidth = 0.25;
+  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1);
   ctx.stroke();
 
   drawText(
     `${truncateWord(node.firstName, 6)}`,
-    usernameFontSize,
+    FONT_SIZE,
     getCssVariable("--color-link"),
-    platform === "ios" ? imgSize / 4 - 0.25 : imgSize / 4 + 1
+    lp.tgWebAppPlatform === "ios" ? IMG_SIZE / 4 - 0.25 : IMG_SIZE / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
     ctx.save();
     ctx.beginPath();
-    ctx.arc(node.x!, node.y!, imgSize / 4, 0, Math.PI * 2, false);
+    ctx.arc(node.x!, node.y!, IMG_SIZE / 4, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.clip();
 
     if (image) {
       ctx.drawImage(
         image,
-        node.x! - imgSize / 4,
-        node.y! - imgSize / 4,
-        imgSize / 2,
-        imgSize / 2
+        node.x! - IMG_SIZE / 4,
+        node.y! - IMG_SIZE / 4,
+        IMG_SIZE / 2,
+        IMG_SIZE / 2
       );
-    } /* else {
-      // acronym
-      const acronymFontSize = Math.min(4, (12 * globalScale) / 8);
-      const acronym = node.firstName[0];
-
-      ctx.font = `600 ${acronymFontSize}px Sans-Serif`;
-      ctx.fillStyle = hexToRgba(getCssVariable("--tg-theme-link-color"), 1);
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(acronym, node.x!, node.y!);
-
-      // acronym bg
-      ctx.fillStyle = "rgba(41, 144, 255, .15)";
-      ctx.fill();
-    } */
+    }
 
     // blue border around node
     ctx.beginPath();
-    ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false);
+    ctx.arc(node.x!, node.y!, IMG_SIZE / 4, 0, 2 * Math.PI, false);
     ctx.lineWidth = 0.5;
     ctx.strokeStyle = getCssVariable("--color-link");
     ctx.stroke();
