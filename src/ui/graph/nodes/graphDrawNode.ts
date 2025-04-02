@@ -1,8 +1,8 @@
-import { NodeObject } from "react-force-graph-2d";
 import {
   IGraphNodeType,
   IGraphNodeImageCache,
   IGraphRef,
+  IGraphNode,
 } from "../Graph.interface";
 import graphUpdateFolderFlag from "../helpers/graphUpdateFolderFlag";
 import { graphDrawDialog } from "./graphDrawDialog";
@@ -11,7 +11,7 @@ import { graphDrawFolder } from "./graphDrawFolder";
 export default function graphDrawNode(
   imageCache: IGraphNodeImageCache,
   graphRef: IGraphRef,
-  node: NodeObject,
+  node: IGraphNode,
   ctx: CanvasRenderingContext2D,
   globalScale: number
 ) {

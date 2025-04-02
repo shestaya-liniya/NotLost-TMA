@@ -1,14 +1,9 @@
-import { useEffect, useMemo, memo } from "react";
-import ForceGraph2D from "react-force-graph-2d";
-import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
+import { useEffect, useMemo, memo, useCallback } from "react";
+import ForceGraph2D, { NodeObject } from "react-force-graph-2d";
+import { JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/get-css-variable";
 import { hexToRgba } from "@/helpers/css/hex-to-rgba";
-import {
-  IGraphData,
-  IGraphLink,
-  IGraphNode,
-  IGraphNodeType,
-} from "./Graph.interface";
+import { IGraphNode } from "./Graph.interface";
 import { useNodeImageCache } from "./hooks/useNodeImageCache";
 import GraphSelectedDialog from "./components/GraphSelectedDialog";
 import GraphSettings from "./components/GraphSettings";
@@ -17,8 +12,11 @@ import { AnimatePresence } from "framer-motion";
 import graphSelectDialog from "./helpers/graphSelectDialog";
 import graphDrawNode from "./nodes/graphDrawNode";
 import { useGraphStore } from "./GraphStore";
+import { graphFoldersInit } from "./helpers/graphFoldersInit";
 
-const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
+const Graph = ({ data }: { data: JazzListOfFolders }) => {
+  const graphData = useMemo(() => graphFoldersInit(data), [data]);
+
   const {
     graphRef,
     selectedDialog,
@@ -29,8 +27,6 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     showFolderFlags,
     folderFlags,
   } = useGraphStore();
-
-  const graphData = useMemo(() => initializeGraphData(data), [data]);
 
   const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
 
@@ -49,6 +45,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     });
   }, []);
 
+  const selectDialog = useCallback((node: NodeObject) => {
+    graphSelectDialog(node as IGraphNode, selectedDialog, setSelectedDialog);
+  }, []);
+
   return (
     <div>
       <AnimatePresence>
@@ -65,25 +65,17 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         enableNodeDrag={graphDragMode}
         cooldownTicks={graphCooldownTicks}
         warmupTicks={graphWarmupTicks}
-        onBackgroundClick={() => {
-          setSelectedDialog(null);
-        }}
-        onNodeClick={(node) => {
-          graphSelectDialog(
-            node as IGraphNode,
-            selectedDialog,
-            setSelectedDialog
-          );
-        }}
-        onNodeDrag={(node) => {
-          graphSelectDialog(
-            node as IGraphNode,
-            selectedDialog,
-            setSelectedDialog
-          );
-        }}
+        onBackgroundClick={() => setSelectedDialog(null)}
+        onNodeClick={selectDialog}
+        onNodeDrag={selectDialog}
         nodeCanvasObject={(node, ctx, globalScale) =>
-          graphDrawNode(imageCache, graphRef, node, ctx, globalScale)
+          graphDrawNode(
+            imageCache,
+            graphRef,
+            node as IGraphNode,
+            ctx,
+            globalScale
+          )
         }
         nodePointerAreaPaint={(node, color, ctx) => {
           // clickable node zone, make little bit bigger
@@ -114,90 +106,4 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   );
 };
 
-const initializeGraphData = (folders: JazzListOfFolders): IGraphData => {
-  const nodes: IGraphNode[] = [];
-  const links: IGraphLink[] = [];
-
-  /* const centerNode = {
-    id: "center",
-    title: "My space",
-    targets: [],
-    type: GraphNodeType.TOPIC,
-  }; */
-
-  //nodes.push(centerNode as GraphNode);
-
-  function processFolders(
-    folders: JazzFolder[],
-    nodes: IGraphNode[],
-    links: IGraphLink[],
-    nested: boolean
-  ) {
-    folders.forEach((folder) => {
-      if (!folder) return;
-
-      if (nested) {
-        nodes.push({
-          id: folder.id,
-          title: folder.title,
-          targets: [],
-          type: IGraphNodeType.FOLDER,
-          nested: true,
-        });
-      } else {
-        nodes.push({
-          id: folder.id,
-          title: folder.title,
-          targets: [],
-          type: IGraphNodeType.FOLDER,
-        });
-      }
-
-      /* if (!nested) {
-        links.push({
-          source: folder.id,
-          target: "center",
-        });
-      } */
-
-      folder?.dialogs?.forEach((dialog) => {
-        if (!dialog) return;
-
-        nodes.push({
-          id: dialog.id,
-          username: dialog.username,
-          firstName: dialog.name,
-          tags: [],
-          type: IGraphNodeType.DIALOG,
-        });
-
-        links.push({
-          source: folder.id,
-          target: dialog.id,
-        });
-      });
-
-      if (folder.nestedFolders?.length) {
-        processFolders(
-          folder.nestedFolders as JazzFolder[],
-          nodes,
-          links,
-          true
-        );
-
-        folder.nestedFolders.forEach((subFolder) => {
-          if (!subFolder) return;
-          links.push({
-            source: folder.id,
-            target: subFolder.id,
-          });
-        });
-      }
-    });
-  }
-
-  processFolders(folders as JazzFolder[], nodes, links, false);
-  return { nodes, links };
-};
-
-export default memo(ForceGraph);
+export default memo(Graph);
