@@ -1,8 +1,8 @@
-import { createContext, ReactNode, useContext, useRef, useState } from "react";
+import { create } from "zustand";
 import { IGraphFolderFlag, IGraphNodeDialog } from "./Graph.interface";
 import { ForceGraphMethods } from "react-force-graph-2d";
 
-interface GraphContextType {
+interface GraphStore {
   graphRef: React.MutableRefObject<
     ForceGraphMethods<{ id: string | number }> | undefined
   >;
@@ -26,59 +26,35 @@ interface GraphContextType {
   setShowFolderFlags: (val: boolean) => void;
 
   folderFlags: IGraphFolderFlag[];
-  setFolderFlags: React.Dispatch<React.SetStateAction<IGraphFolderFlag[]>>;
+  setFolderFlags: (flags: IGraphFolderFlag[]) => void;
 }
 
-const GraphContext = createContext<GraphContextType | undefined>(undefined);
-
-export const GraphContextProvider = ({ children }: { children: ReactNode }) => {
-  const graphRef = useRef<
+export const useGraphStore = create<GraphStore>((set) => {
+  const graphRef = { current: undefined } as React.MutableRefObject<
     ForceGraphMethods<{ id: string | number }> | undefined
-  >(undefined);
+  >;
 
-  const [graphDragMode, setGraphDragMode] = useState(false);
-  const [graphCooldownTicks, setGraphCooldownTicks] = useState<
-    number | undefined
-  >(0);
-  const [graphWarmupTicks, setGraphWarmupTicks] = useState<number | undefined>(
-    30
-  );
-  const [selectedDialog, setSelectedDialog] = useState<IGraphNodeDialog | null>(
-    null
-  );
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [showFolderFlags, setShowFolderFlags] = useState(false);
-  const [folderFlags, setFolderFlags] = useState<IGraphFolderFlag[]>([]);
+  return {
+    graphRef,
+    graphDragMode: false,
+    setGraphDragMode: (val) => set({ graphDragMode: val }),
 
-  return (
-    <GraphContext.Provider
-      value={{
-        graphRef,
-        graphDragMode,
-        setGraphDragMode,
-        graphCooldownTicks,
-        setGraphCooldownTicks,
-        graphWarmupTicks,
-        setGraphWarmupTicks,
-        selectedDialog,
-        setSelectedDialog,
-        isSettingsModalOpen,
-        setIsSettingsModalOpen,
-        showFolderFlags,
-        setShowFolderFlags,
-        folderFlags,
-        setFolderFlags,
-      }}
-    >
-      {children}
-    </GraphContext.Provider>
-  );
-};
+    graphCooldownTicks: 0,
+    setGraphCooldownTicks: (val) => set({ graphCooldownTicks: val }),
 
-export const useGraphContext = () =>
-  useContext(GraphContext) ??
-  (() => {
-    throw new Error(
-      "useGraphContext must be used within a GraphContextProvider"
-    );
-  })();
+    graphWarmupTicks: 30,
+    setGraphWarmupTicks: (val) => set({ graphWarmupTicks: val }),
+
+    selectedDialog: null,
+    setSelectedDialog: (dialog) => set({ selectedDialog: dialog }),
+
+    isSettingsModalOpen: false,
+    setIsSettingsModalOpen: (val) => set({ isSettingsModalOpen: val }),
+
+    showFolderFlags: false,
+    setShowFolderFlags: (val) => set({ showFolderFlags: val }),
+
+    folderFlags: [],
+    setFolderFlags: (val) => set({ folderFlags: val }),
+  };
+});

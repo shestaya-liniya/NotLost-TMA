@@ -11,12 +11,12 @@ import {
 } from "./Graph.interface";
 import { useNodeImageCache } from "./hooks/useNodeImageCache";
 import GraphSelectedDialog from "./components/GraphSelectedDialog";
-import { useGraphContext } from "./GraphContext";
 import GraphSettings from "./components/GraphSettings";
 import { GraphFolderFlags } from "./components/GraphFoldersFlag";
 import { AnimatePresence } from "framer-motion";
 import graphSelectDialog from "./helpers/graphSelectDialog";
 import graphDrawNode from "./nodes/graphDrawNode";
+import { useGraphStore } from "./GraphContext";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const {
@@ -28,8 +28,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     graphDragMode,
     showFolderFlags,
     folderFlags,
-    setFolderFlags,
-  } = useGraphContext();
+  } = useGraphStore();
 
   const graphData = useMemo(() => initializeGraphData(data), [data]);
 
@@ -84,14 +83,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           );
         }}
         nodeCanvasObject={(node, ctx, globalScale) =>
-          graphDrawNode(
-            imageCache,
-            graphRef,
-            setFolderFlags,
-            node,
-            ctx,
-            globalScale
-          )
+          graphDrawNode(imageCache, graphRef, node, ctx, globalScale)
         }
         nodePointerAreaPaint={(node, color, ctx) => {
           // clickable node zone, make little bit bigger

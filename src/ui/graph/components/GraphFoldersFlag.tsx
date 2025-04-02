@@ -1,11 +1,11 @@
 import Tappable from "@/ui/Tappable";
 import { IGraphFolderFlag } from "../Graph.interface";
-import { useGraphContext } from "../GraphContext";
 import { graphZoomToNode } from "../helpers/graphZoomToNode";
 import { getUniqueKey } from "@/helpers/getUniqueKey";
+import { useGraphStore } from "../GraphContext";
 
 export function GraphFolderFlag(props: { flag: IGraphFolderFlag }) {
-  const { graphRef } = useGraphContext();
+  const { graphRef } = useGraphStore();
   const { flag } = props;
   return (
     <Tappable

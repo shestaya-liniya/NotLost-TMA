@@ -3,7 +3,6 @@ import {
   IGraphNodeType,
   IGraphNodeImageCache,
   IGraphRef,
-  IGraphFolderFlag,
 } from "../Graph.interface";
 import graphCalcFlagPosition from "../helpers/graphCalcFlagPosition";
 import { graphDrawDialog } from "./graphDrawDialog";
@@ -12,14 +11,13 @@ import { graphDrawFolder } from "./graphDrawFolder";
 export default function graphDrawNode(
   imageCache: IGraphNodeImageCache,
   graphRef: IGraphRef,
-  setFolderFlags: React.Dispatch<React.SetStateAction<IGraphFolderFlag[]>>,
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
   globalScale: number
 ) {
   const img = imageCache[node.id!];
 
-  graphCalcFlagPosition(graphRef, node, setFolderFlags);
+  graphCalcFlagPosition(graphRef, node);
 
   switch (node.type) {
     case IGraphNodeType.DIALOG:

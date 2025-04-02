@@ -1,10 +1,10 @@
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
 import Tappable from "@/ui/Tappable";
-import { useGraphContext } from "../GraphContext";
 import { createPortal } from "react-dom";
 import BottomModal from "@/ui/modals/BottomModal";
 import Switch from "@/ui/Switch";
+import { useGraphStore } from "../GraphContext";
 
 export default function GraphSettings() {
   const {
@@ -16,7 +16,7 @@ export default function GraphSettings() {
     setGraphWarmupTicks,
     showFolderFlags,
     setShowFolderFlags,
-  } = useGraphContext();
+  } = useGraphStore();
   return (
     <div>
       <Tappable

@@ -1,19 +1,17 @@
 import { getCssVariable } from "@/helpers/css/get-css-variable";
-import {
-  IGraphNodeType,
-  IGraphFolderFlag,
-  IGraphRef,
-} from "../Graph.interface";
+import { IGraphNodeType, IGraphRef } from "../Graph.interface";
 import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
 import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
+import { useGraphStore } from "../GraphContext";
 
 export default function graphCalcFlagPosition(
   graphRef: IGraphRef,
-  node: NodeObject,
-  setFolderFlags: React.Dispatch<React.SetStateAction<IGraphFolderFlag[]>>
+  node: NodeObject
 ) {
+  const { setFolderFlags, folderFlags } = useGraphStore.getState();
+
   if (graphRef && node.type === IGraphNodeType.FOLDER && !node.nested) {
     const MARGIN = 0;
     const SCREEN_WIDTH = window.innerWidth - MARGIN;
@@ -36,12 +34,15 @@ export default function graphCalcFlagPosition(
         -getTextWidth(node.title) - 10,
         -MARGIN
       );
-      setFolderFlags((prev: IGraphFolderFlag[]) => {
-        const existingIndex = prev.findIndex((flag) => flag.id === node.id);
 
-        if (existingIndex !== -1) {
-          return prev.map((flag, index) =>
-            index === existingIndex
+      const existingFlagIndex = folderFlags.findIndex(
+        (flag) => flag.id === node.id
+      );
+
+      if (existingFlagIndex !== -1) {
+        setFolderFlags(
+          folderFlags.map((flag, index) =>
+            index === existingFlagIndex
               ? {
                   ...flag,
                   id: String(node.id),
@@ -51,21 +52,21 @@ export default function graphCalcFlagPosition(
                   visible: isVisible,
                 }
               : flag
-          );
-        } else {
-          return [
-            ...prev,
-            {
-              id: String(node.id),
-              title: node.title as string,
-              x: position.x,
-              y: position.y,
-              distance: position.distance,
-              visible: isVisible,
-            },
-          ];
-        }
-      });
+          )
+        );
+      } else {
+        setFolderFlags([
+          ...folderFlags,
+          {
+            id: String(node.id),
+            title: node.title as string,
+            x: position.x,
+            y: position.y,
+            distance: position.distance,
+            visible: isVisible,
+          },
+        ]);
+      }
     }
   }
 }
