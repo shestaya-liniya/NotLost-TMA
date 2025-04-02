@@ -4,7 +4,7 @@ import Tappable from "@/ui/Tappable";
 import { createPortal } from "react-dom";
 import BottomModal from "@/ui/modals/BottomModal";
 import Switch from "@/ui/Switch";
-import { useGraphStore } from "../GraphContext";
+import { useGraphStore } from "../GraphStore";
 
 export default function GraphSettings() {
   const {

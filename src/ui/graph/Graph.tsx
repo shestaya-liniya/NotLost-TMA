@@ -16,7 +16,7 @@ import { GraphFolderFlags } from "./components/GraphFoldersFlag";
 import { AnimatePresence } from "framer-motion";
 import graphSelectDialog from "./helpers/graphSelectDialog";
 import graphDrawNode from "./nodes/graphDrawNode";
-import { useGraphStore } from "./GraphContext";
+import { useGraphStore } from "./GraphStore";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const {

@@ -4,9 +4,9 @@ import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
 import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
-import { useGraphStore } from "../GraphContext";
+import { useGraphStore } from "../GraphStore";
 
-export default function graphCalcFlagPosition(
+export default function graphUpdateFolderFlag(
   graphRef: IGraphRef,
   node: NodeObject
 ) {

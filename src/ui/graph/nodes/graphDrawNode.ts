@@ -4,7 +4,7 @@ import {
   IGraphNodeImageCache,
   IGraphRef,
 } from "../Graph.interface";
-import graphCalcFlagPosition from "../helpers/graphCalcFlagPosition";
+import graphUpdateFolderFlag from "../helpers/graphUpdateFolderFlag";
 import { graphDrawDialog } from "./graphDrawDialog";
 import { graphDrawFolder } from "./graphDrawFolder";
 
@@ -17,7 +17,7 @@ export default function graphDrawNode(
 ) {
   const img = imageCache[node.id!];
 
-  graphCalcFlagPosition(graphRef, node);
+  graphUpdateFolderFlag(graphRef, node);
 
   switch (node.type) {
     case IGraphNodeType.DIALOG:
