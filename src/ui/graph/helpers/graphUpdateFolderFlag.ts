@@ -1,5 +1,5 @@
 import { getCssVariable } from "@/helpers/css/get-css-variable";
-import { IGraphNodeType, IGraphRef } from "../Graph.interface";
+import { IGraphNode, IGraphNodeType, IGraphRef } from "../Graph.interface";
 import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
@@ -8,15 +8,15 @@ import { useGraphStore } from "../GraphStore";
 
 export default function graphUpdateFolderFlag(
   graphRef: IGraphRef,
-  node: NodeObject
+  node: IGraphNode
 ) {
   const { setFolderFlags, folderFlags } = useGraphStore.getState();
 
   if (graphRef && node.type === IGraphNodeType.FOLDER && !node.nested) {
-    const MARGIN = 0;
-    const SCREEN_WIDTH = window.innerWidth - MARGIN;
-    const SCREEN_HEIGHT =
-      Number(getCssVariable("--initial-height").replace("px", "")) - MARGIN;
+    const SCREEN_WIDTH = window.innerWidth;
+    const SCREEN_HEIGHT = Number(
+      getCssVariable("--initial-height").replace("px", "")
+    );
 
     const nodeInfo = isNodeOnScreen(
       node,
@@ -31,8 +31,7 @@ export default function graphUpdateFolderFlag(
         y,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        -getTextWidth(node.title) - 10,
-        -MARGIN
+        getTextWidth(node.title)
       );
 
       const existingFlagIndex = folderFlags.findIndex(
@@ -90,22 +89,26 @@ const clampPosition = (
   y: number,
   W: number,
   H: number,
-  wInset: number,
-  hInset: number
+  textWidth: number
 ) => {
-  const SETTINGS_BUTTON_HEIGHT = 48;
-  const MARGIN = 8;
+  // total wtf here
 
-  const topInset = getMiniAppTopInset() + SETTINGS_BUTTON_HEIGHT + MARGIN;
+  const SETTINGS_BUTTON_HEIGHT = 48;
+  const BOTTOM_MARGIN = 48;
+  const TOP_MARGIN = 16;
+  const LEFT_MARGIN = 24;
+  const RIGHT_MARGIN = 48;
+
+  const topInset = getMiniAppTopInset() + SETTINGS_BUTTON_HEIGHT + TOP_MARGIN;
 
   let pointX = x;
   let pointY = y;
 
-  if (x < 0) pointX = 0 + 10;
-  if (x > W) pointX = W + wInset;
+  if (x < LEFT_MARGIN) pointX = LEFT_MARGIN;
+  if (x + textWidth > W) pointX = W - textWidth - RIGHT_MARGIN;
   if (y < topInset) pointY = topInset;
 
-  if (y > H) pointY = H + hInset;
+  if (y + BOTTOM_MARGIN > H) pointY = H - BOTTOM_MARGIN;
 
   const distance = Math.sqrt((pointX - x) ** 2 + (pointY - y) ** 2);
 
