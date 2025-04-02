@@ -59,15 +59,8 @@ export default function Folders() {
           {jazzProfile.folders?.map((folder) => {
             if (!folder) return null;
             return (
-              <div key={folder.id}>
-                <div
-                  className="w-full transition-all duration-200 ease-in-out animate-fadeIn"
-                  style={{
-                    zIndex: -10,
-                  }}
-                >
-                  <Folder folder={folder} />
-                </div>
+              <div key={folder.id} className="w-full transition-all duration-200 ease-in-out animate-fadeIn">
+                <Folder folder={folder} />
               </div>
             );
           })}

@@ -5,6 +5,7 @@ function Tappable(props: {
   className?: string;
   onClick?: () => void;
   onLongPress?: () => void;
+  style?: object;
 }) {
   const timerRef = useRef<number | null>(null);
   const isLongPress = useRef(false);
@@ -34,6 +35,7 @@ function Tappable(props: {
 
   return (
     <div
+      style={props.style}
       className={`transition duration-150 active:opacity-85 active:scale-98 ${props.className}`}
       onPointerDown={() => {
         if (props.onLongPress) {
