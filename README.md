@@ -1,3 +1,1 @@
 ### NotLost Telegram mini-app
-
-.

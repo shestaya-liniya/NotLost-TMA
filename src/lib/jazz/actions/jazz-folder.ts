@@ -92,14 +92,13 @@ export const jazzRemoveDialogFromFolder = (
 
 export const jazzAddNestedFolderToFolder = (
   jazzProfile: RootUserProfile,
-  folder: JazzFolder,
-  title: string
+  folder: JazzFolder
 ) => {
   if (jazzProfile) {
     folder.nestedFolders?.push(
       JazzFolder.create(
         {
-          title,
+          title: "New folder",
           dialogs: JazzListOfDialogs.create([], { owner: jazzProfile._owner }),
           nestedFolders: JazzListOfFolders.create([], {
             owner: jazzProfile._owner,

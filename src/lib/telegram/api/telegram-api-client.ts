@@ -224,7 +224,7 @@ class TelegramApiClient {
         channel: channelUsername,
       })
     );
-    console.log(channelInfo);
+
     return channelInfo;
   }
 

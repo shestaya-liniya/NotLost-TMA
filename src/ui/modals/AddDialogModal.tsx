@@ -132,7 +132,7 @@ export default function AddDialogModal() {
             />
             <div className="flex flex-col ml-4">
               <div className="text-sm font-medium">
-                {/*@ts-ignore*/}
+                {/* @ts-ignore */}
                 {truncateWord(entity.firstName, 20)}
               </div>
               <div className="text-xs text-link">@{entity.username}</div>
