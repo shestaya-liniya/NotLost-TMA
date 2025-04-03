@@ -15,8 +15,8 @@ import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 import TelegramSignIn from "./pages/TelegramSignIn.tsx";
 import Ai from "./pages/Ai.tsx";
-import { $getMyDialogs } from "./actions/telegram.ts";
-import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
+import { telegramActionGetDialogs } from "./lib/telegram/api/telegramActions.ts";
+import { TelegramDialogInfo } from "./lib/telegram/api/telegramApiClient.ts";
 import { getTelegramSession } from "./helpers/telegram/telegramSession.ts";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import Events from "./pages/Events.tsx";
@@ -252,7 +252,7 @@ export const getTelegramDialogsAndSetToStore = async () => {
 
   const tempDialogs: TelegramDialogInfo[] = [];
 
-  await $getMyDialogs().then((dialogs) => {
+  await telegramActionGetDialogs().then((dialogs) => {
     dialogs.forEach((d) => {
       if (d.entity?.className === "User") {
         if (!d.entity.username) return;

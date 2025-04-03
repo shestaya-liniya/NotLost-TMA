@@ -1,4 +1,8 @@
-import { $sendCode, $signIn, $signInWithPassword } from "@/actions/telegram";
+import {
+  telegramActionSendCode,
+  telegramActionSignIn,
+  telegramActionSignInWithPassword,
+} from "@/lib/telegram/api/telegramActions";
 import Input from "@/ui/Input";
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
@@ -47,7 +51,7 @@ export default function TelegramSignIn() {
   }, [step]);
 
   const handleSignIn = () => {
-    $signIn(
+    telegramActionSignIn(
       phoneNumber.replace("+", ""),
       phoneCode,
       password,
@@ -67,14 +71,16 @@ export default function TelegramSignIn() {
   };
 
   const handleSignInWithPassword = () => {
-    $signInWithPassword(password, saveTelegramSession).then((res) => {
-      if (res instanceof Error) {
-        alertModal.show("<div>Invalid password</div>");
-      } else {
-        setStep("success");
-        jazzProfile.telegramSync = true;
+    telegramActionSignInWithPassword(password, saveTelegramSession).then(
+      (res) => {
+        if (res instanceof Error) {
+          alertModal.show("<div>Invalid password</div>");
+        } else {
+          setStep("success");
+          jazzProfile.telegramSync = true;
+        }
       }
-    });
+    );
   };
 
   return (
@@ -112,7 +118,7 @@ export default function TelegramSignIn() {
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold"
               onClick={() => {
-                $sendCode(phoneNumber).then((res) => {
+                telegramActionSendCode(phoneNumber).then((res) => {
                   if (res) {
                     setStep("code");
                   } else {

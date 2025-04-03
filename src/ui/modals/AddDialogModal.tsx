@@ -1,8 +1,8 @@
 import {
-  $getTelegramEntityByUsername,
+  telegramActionGetEntityByUsername,
   ApiTelegramChannel,
   ApiTelegramUser,
-} from "@/actions/telegram";
+} from "@/lib/telegram/api/telegramActions";
 import { truncateWord } from "@/helpers/truncate-word";
 import { useModalStore } from "@/lib/store/modal-store";
 import Input from "@/ui/Input";
@@ -18,7 +18,7 @@ import Tappable from "../Tappable";
 import { useAppStore } from "@/lib/store/store";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { getTelegramSession } from "@/helpers/telegram/telegramSession";
-import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 import DialogsSlider from "../dialog/DialogsSlider";
 
 export default function AddDialogModal() {
@@ -45,7 +45,7 @@ export default function AddDialogModal() {
 
     const handler = setTimeout(() => {
       setIsLoading(true);
-      $getTelegramEntityByUsername(usernameValue).then((res) => {
+      telegramActionGetEntityByUsername(usernameValue).then((res) => {
         setIsLoading(false);
         //@ts-ignore
         setEntity(res[0]);

@@ -1,5 +1,5 @@
 import { getTelegramSession } from "@/helpers/telegram/telegramSession";
-import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
+import TelegramApiClient from "@/lib/telegram/api/telegramApiClient";
 import axios from "axios";
 import { TotalList } from "telegram/Helpers";
 import { Dialog } from "telegram/tl/custom/dialog";
@@ -15,11 +15,11 @@ const client = TelegramApiClient.getInstance(
   getTelegramSession() ? JSON.parse(getTelegramSession()!) : ""
 );
 
-export const $sendCode = async (phoneNumber: string) => {
+export const telegramActionSendCode = async (phoneNumber: string) => {
   return await client.sendSignInCode(phoneNumber);
 };
 
-export const $signIn = async (
+export const telegramActionSignIn = async (
   phoneNumber: string,
   phoneCode: string,
   password: string,
@@ -28,30 +28,28 @@ export const $signIn = async (
   return await client.signIn(phoneNumber, password, phoneCode, onSuccess);
 };
 
-export const $signInWithPassword = async (
+export const telegramActionSignInWithPassword = async (
   password: string,
   onSuccess: (session: string) => void
 ) => {
   return await client.signInWithPassword(password, onSuccess);
 };
 
-export const $getLoginByQrLink = async () => {
-  return client.generateQrLink();
-};
-
-export const $getUserByUsername = async (username: string) => {
+export const telegramActionGetUserByUsername = async (username: string) => {
   return await client.getUserByUsername(username);
 };
 
-export const $getMyDialogs = async (): Promise<TotalList<Dialog>> => {
+export const telegramActionGetDialogs = async (): Promise<
+  TotalList<Dialog>
+> => {
   return await client.getDialogs();
 };
 
-export const $getFullChannel = async (channelUsername: string) => {
+export const telegramActionGetFullChannel = async (channelUsername: string) => {
   return await client.getFullChannel(channelUsername);
 };
 
-export const $getTelegramEntityByUsername = async (
+export const telegramActionGetEntityByUsername = async (
   username: string
 ): Promise<ApiTelegramChannel | ApiTelegramUser> => {
   return await axiosInstance

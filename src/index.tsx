@@ -6,12 +6,12 @@ import "./index.css";
 
 // --- Telegram env ---
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { EnvUnsupported } from "@/lib/telegram/env/env-unsupported.tsx";
+import { EnvUnsupported } from "@/lib/telegram/env/envUnsupported.tsx";
 import { init } from "@/lib/telegram/env/init.ts";
-import "./lib/telegram/env/mock-env.ts";
+import "./lib/telegram/env/mockEnv.ts";
 // ------
 
-import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
+import TelegramProvider from "./lib/telegram/telegramProvider.tsx";
 import App from "./App.tsx";
 import { JazzAndAuth } from "./lib/jazz/jazzProvider.tsx";
 

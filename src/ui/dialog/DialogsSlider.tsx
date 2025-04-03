@@ -5,7 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 import Tappable from "../Tappable";
 import { truncateWord } from "@/helpers/truncate-word";
 import { v4 as uuidv4 } from "uuid";
