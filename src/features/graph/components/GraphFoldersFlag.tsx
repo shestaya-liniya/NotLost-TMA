@@ -1,7 +1,7 @@
 import Tappable from "@/ui/Tappable";
 import { IGraphFolderFlag } from "../Graph.interface";
-import { graphZoomToNode } from "../helpers/graph-zoom-to-node";
-import { getUniqueKey } from "@/helpers/get-unique-key";
+import { graphZoomToNode } from "../helpers/graphZoomToNode";
+import { getUniqueKey } from "@/helpers/getUniqueKey";
 import { useGraphStore } from "../GraphStore";
 
 export function GraphFolderFlag(props: { flag: IGraphFolderFlag }) {

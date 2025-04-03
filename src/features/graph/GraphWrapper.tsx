@@ -1,4 +1,4 @@
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import Graph from "./Graph";
 
 export default function GraphWrapper() {

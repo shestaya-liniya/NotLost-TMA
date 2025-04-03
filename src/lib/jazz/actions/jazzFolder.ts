@@ -7,7 +7,7 @@ import {
   JazzListOfTags,
   RootUserProfile,
 } from "../schema";
-import { updateLocalStorage } from "@/helpers/use-local-storage-listener";
+import { updateLocalStorage } from "@/helpers/useLocalStorageListener";
 
 export const jazzCreateNewFolder = (
   jazzProfile: RootUserProfile,

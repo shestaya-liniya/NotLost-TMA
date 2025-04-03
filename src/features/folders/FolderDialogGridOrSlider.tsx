@@ -1,4 +1,4 @@
-import { chunkArray } from "@/helpers/chunk-array";
+import { chunkArray } from "@/helpers/chunkArray";
 import { JazzFolder } from "@/lib/jazz/schema";
 import { SwiperSlider } from "@/ui/dialog/DialogsSlider";
 import DialogWithActions from "@/ui/dialog/DialogWithActions";

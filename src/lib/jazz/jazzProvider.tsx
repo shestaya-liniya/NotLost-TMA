@@ -1,6 +1,6 @@
 import { JazzAccount, RootUserProfile } from "./schema";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useJazzProfile } from "./hooks/use-jazz-profile";
+import { useJazzProfile } from "./hooks/useJazzProfile";
 import { JazzProvider, usePassphraseAuth } from "jazz-react";
 import { cloudStorage } from "@telegram-apps/sdk-react";
 import { wordlist } from "./wordlist";

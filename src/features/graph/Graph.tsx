@@ -1,18 +1,18 @@
 import { useEffect, useMemo, memo, useCallback } from "react";
 import ForceGraph2D, { NodeObject } from "react-force-graph-2d";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
-import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
+import { hexToRgba } from "@/helpers/css/hexToRgba";
 import { IGraphNode } from "./Graph.interface";
-import { useNodeImageCache } from "./hooks/use-node-image-cache";
+import { useNodeImageCache } from "./hooks/useNodeImageCache";
 import GraphSelectedDialog from "./components/GraphSelectedDialog";
 import GraphSettings from "./components/GraphSettings";
 import { GraphFolderFlags } from "./components/GraphFoldersFlag";
 import { AnimatePresence } from "framer-motion";
-import graphSelectDialog from "./helpers/graph-select-dialog";
-import graphDrawNode from "./helpers/nodes/graph-draw-node";
+import graphSelectDialog from "./helpers/graphSelectDialog";
+import graphDrawNode from "./helpers/nodes/graphDrawNode";
 import { useGraphStore } from "./GraphStore";
-import { graphFoldersInit } from "./helpers/graph-folder-init";
+import { graphFoldersInit } from "./helpers/graphFolderInit";
 
 const Graph = ({ data }: { data: JazzListOfFolders }) => {
   const graphData = useMemo(() => graphFoldersInit(data), [data]);

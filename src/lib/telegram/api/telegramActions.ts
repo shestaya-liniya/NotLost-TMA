@@ -1,5 +1,5 @@
-import { getTelegramSession } from "@/helpers/telegram/telegram-session";
-import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
+import { getTelegramSession } from "@/helpers/telegram/telegramSession";
+import TelegramApiClient from "@/lib/telegram/api/telegramApiClient";
 import axios from "axios";
 import { TotalList } from "telegram/Helpers";
 import { Dialog } from "telegram/tl/custom/dialog";

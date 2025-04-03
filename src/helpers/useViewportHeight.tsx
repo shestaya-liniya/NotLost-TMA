@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useLayoutEffect } from "react";
-import { useKeyboardState } from "./use-keyboard-height";
+import { useKeyboardState } from "./useKeyboardHeight";
 
 const useBrowserLayoutEffect =
   typeof window !== "undefined"

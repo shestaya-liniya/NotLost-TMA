@@ -1,4 +1,4 @@
-import { truncateWord } from "@/helpers/truncate-word.js";
+import { truncateWord } from "@/helpers/truncateWord.js";
 import Tappable from "../Tappable.js";
 
 export default function Dialog(props: { name: string; username: string }) {

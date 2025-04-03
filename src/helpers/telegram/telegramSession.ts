@@ -1,4 +1,4 @@
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 
 export const getTelegramSession = () => localStorage.getItem("session");
 

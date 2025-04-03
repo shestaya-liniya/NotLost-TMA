@@ -1,6 +1,6 @@
-import { useModalStore } from "@/lib/store/modal-store";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
-import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
+import { useModalStore } from "@/lib/store/modalStore";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
 import Tappable from "@/ui/Tappable";

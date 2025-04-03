@@ -1,4 +1,4 @@
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import SettingsSection from "./SettingsSection";
 import ColorPaletteIcon from "@/assets/icons/color-palette.svg?react";
 import ColorCircle from "../../ui/ColorCircle";

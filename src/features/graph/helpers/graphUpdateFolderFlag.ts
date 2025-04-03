@@ -1,9 +1,9 @@
-import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { IGraphNode, IGraphNodeType, IGraphRef } from "../Graph.interface";
-import getTextWidth from "@/helpers/get-text-width";
+import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
-import { getMiniAppTopInset } from "@/helpers/css/get-mini-app-top-inset";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useGraphStore } from "../GraphStore";
 
 export default function graphUpdateFolderFlag(

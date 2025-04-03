@@ -1,5 +1,5 @@
 import { JazzFolder } from "@/lib/jazz/schema";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import PeopleIcon from "@/assets/icons/people.svg?react";
 import FolderIcon from "@/assets/icons/folder.svg?react";

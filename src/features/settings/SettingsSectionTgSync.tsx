@@ -1,5 +1,5 @@
-import { useTelegramSession } from "@/helpers/telegram/telegram-session";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useTelegramSession } from "@/helpers/telegram/telegramSession";
+import { useModalStore } from "@/lib/store/modalStore";
 import Tappable from "../../ui/Tappable";
 import SettingsOneLineSection from "./SettingsOneLineSection";
 import TelegramIcon from "@/assets/icons/telegram.svg?react";

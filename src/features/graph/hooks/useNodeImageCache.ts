@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { NodeObject } from "react-force-graph-2d";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
 import {
   IGraphNode,
   IGraphNodeImageCache,
   IGraphNodeType,
 } from "../Graph.interface";
-import getTelegramAvatarLink from "@/helpers/telegram/get-telegram-avatar-link";
+import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
 
 export const useNodeImageCache = (nodes: IGraphNode[]) => {
   const [imageCache, setImageCache] = useState<IGraphNodeImageCache>({});

@@ -4,9 +4,9 @@ import {
   IGraphRef,
   IGraphNode,
 } from "../../Graph.interface";
-import graphUpdateFolderFlag from "../graph-update-folder-flag";
-import { graphDrawDialog } from "./graph-draw-dialog";
-import { graphDrawFolder } from "./graph-draw-folder";
+import graphUpdateFolderFlag from "../graphUpdateFolderFlag";
+import { graphDrawDialog } from "./graphDrawDialog";
+import { graphDrawFolder } from "./graphDrawFolder";
 
 export default function graphDrawNode(
   imageCache: IGraphNodeImageCache,

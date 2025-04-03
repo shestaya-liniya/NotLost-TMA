@@ -1,10 +1,10 @@
-import { getMiniAppTopInset } from "@/helpers/css/get-mini-app-top-inset";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { IGraphNodeDialog } from "../Graph.interface";
 import { motion } from "framer-motion";
 import Tappable from "@/ui/Tappable";
-import getTelegramAvatarLink from "@/helpers/telegram/get-telegram-avatar-link";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
-import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
+import { hexToRgba } from "@/helpers/css/hexToRgba";
 import { ReactElement } from "react";
 
 export default function Graphdialog(props: { dialog: IGraphNodeDialog }) {
