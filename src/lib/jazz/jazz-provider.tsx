@@ -56,24 +56,16 @@ export function JazzProfileProvider({ children }: { children: ReactNode }) {
         auth.registerNewAccount(generatedPassphrase, "My account");
       }
     } else {
-      console.log(
-        "CLOUD STORAGE AVAILABLE",
-        cloudStorage.getItem.isAvailable()
-      );
-
       cloudStorage.getItem("passkey").then((val) => {
-        console.log("CLOUD STORAGE PASSKEY", val);
-
         if (val.length > 0) {
-          try {
-            auth.logIn(val).then(() => {
-              setLogged(true);
-            });
-          } catch (e) {
-            const generatedPassphrase = auth.generateRandomPassphrase();
-            cloudStorage.setItem("passkey", generatedPassphrase);
-            auth.registerNewAccount(generatedPassphrase, "My account");
-          }
+          auth.logIn(val).then(() => {
+            setLogged(true);
+          });
+        } else {
+          const generatedPassphrase = auth.generateRandomPassphrase();
+          cloudStorage.setItem("passkey", generatedPassphrase);
+          auth.registerNewAccount(generatedPassphrase, "My account");
+          setLogged(true);
         }
       });
     }
