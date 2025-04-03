@@ -2,7 +2,7 @@ import {
   telegramActionSendCode,
   telegramActionSignIn,
   telegramActionSignInWithPassword,
-} from "@/lib/telegram/api/telegramActions";
+} from "@/lib/telegram/api/telegram-actions";
 import Input from "@/ui/Input";
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
@@ -17,10 +17,10 @@ import Pencil from "@/assets/icons/pencil-icon.svg?react";
 import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
-import { useModalStore } from "@/lib/store/modalStore";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useModalStore } from "@/lib/store/modal-store";
 import { getTelegramDialogsAndSetToStore } from "@/App";
-import { useTelegramSession } from "@/helpers/telegram/telegramSession";
+import { useTelegramSession } from "@/helpers/telegram/telegram-session";
 
 export default function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();

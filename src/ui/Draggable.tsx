@@ -1,4 +1,4 @@
-import { DraggableItem, useDragStore } from "@/lib/store/dragStore";
+import { DraggableItem, useDragStore } from "@/lib/store/drag-store";
 import { memo, useRef } from "react";
 
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener

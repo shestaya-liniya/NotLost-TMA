@@ -1,14 +1,14 @@
-import { useModalStore } from "@/lib/store/modalStore";
-import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
-import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
+import { useModalStore } from "@/lib/store/modal-store";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
-import Folder from "@/ui/folders/Folder";
 import Tappable from "@/ui/Tappable";
 
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
+import Folder from "@/features/folders/Folder";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();

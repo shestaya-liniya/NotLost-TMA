@@ -1,12 +1,12 @@
 import BottomModal from "@/ui/modals/BottomModal";
-import { useModalStore } from "@/lib/store/modalStore";
+import { useModalStore } from "@/lib/store/modal-store";
 import { useEffect, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import {
   jazzAddTag,
   jazzRemoveTagFromDialog,
-} from "@/lib/jazz/actions/jazzDialog";
-import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+} from "@/lib/jazz/actions/jazz-dialog";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Tag from "@/ui/Tag";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { JazzFolder } from "../jazz/schema";
-import { TelegramDialogInfo } from "../telegram/api/telegramApiClient";
+import { TelegramDialogInfo } from "../telegram/api/telegram-api-client";
 
 interface AppState {
   expandedFolder: JazzFolder | null;

@@ -2,23 +2,23 @@ import {
   telegramActionGetEntityByUsername,
   ApiTelegramChannel,
   ApiTelegramUser,
-} from "@/lib/telegram/api/telegramActions";
-import { truncateWord } from "@/helpers/truncateWord";
-import { useModalStore } from "@/lib/store/modalStore";
+} from "@/lib/telegram/api/telegram-actions";
+import { truncateWord } from "@/helpers/truncate-word";
+import { useModalStore } from "@/lib/store/modal-store";
 import Input from "@/ui/Input";
 import Modal from "@/ui/modals/Modal";
 import { useState, useEffect } from "react";
 import Settings from "@/assets/icons/settings.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
-import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazzFolder";
-import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazz-folder";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import Button from "@/ui/Button";
 import TelegramIcon from "@/assets/icons/telegram.svg?react";
 import Tappable from "../Tappable";
 import { useAppStore } from "@/lib/store/store";
 import SearchIcon from "@/assets/icons/search.svg?react";
-import { getTelegramSession } from "@/helpers/telegram/telegramSession";
-import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
+import { getTelegramSession } from "@/helpers/telegram/telegram-session";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
 import DialogsSlider from "../dialog/DialogsSlider";
 
 export default function AddDialogModal() {

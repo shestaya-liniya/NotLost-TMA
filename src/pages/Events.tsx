@@ -2,7 +2,7 @@ import Tappable from "@/ui/Tappable";
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import FavIcon from "@/assets/icons/favorite.svg?react";
 import NavigationIcon from "@/assets/icons/navigation.svg?react";
-import { useModalStore } from "@/lib/store/modalStore";
+import { useModalStore } from "@/lib/store/modal-store";
 import { useEffect, useState } from "react";
 
 import { backButton, retrieveLaunchParams } from "@telegram-apps/sdk-react";

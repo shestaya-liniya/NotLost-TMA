@@ -1,12 +1,12 @@
-import { jazzRemoveDialog } from "@/lib/jazz/actions/jazzDialog";
-import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+import { jazzRemoveDialog } from "@/lib/jazz/actions/jazz-dialog";
+import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
 import { JazzDialog, JazzFolder } from "@/lib/jazz/schema";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import MoreIcon from "@/assets/icons/more.svg?react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import Tappable from "../Tappable";
-import { useModalStore } from "@/lib/store/modalStore";
+import { useModalStore } from "@/lib/store/modal-store";
 
 export const DialogTooltip = ({
   dialog,
