@@ -9,11 +9,10 @@ import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { EnvUnsupported } from "@/lib/telegram/env/envUnsupported.tsx";
 import { init } from "@/lib/telegram/env/init.ts";
 import "./lib/telegram/env/mockEnv.ts";
+import { JazzAndAuth } from "@/lib/jazz/jazzProvider.tsx";
+import TelegramProvider from "@/lib/telegram/telegramProvider.tsx";
+import App from "@/app/App.tsx";
 // ------
-
-import TelegramProvider from "./lib/telegram/telegramProvider.tsx";
-import App from "./App.tsx";
-import { JazzAndAuth } from "./lib/jazz/jazzProvider.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 

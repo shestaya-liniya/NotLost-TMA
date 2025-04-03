@@ -9,10 +9,12 @@ import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import Folder from "@/features/folders/Folder";
+import { useNavigate } from "react-router-dom";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
-  const { setSettingsModalOpen, setGraphModalOpen } = useModalStore();
+  const { setSettingsModalOpen } = useModalStore();
+  const navigate = useNavigate();
 
   const lp = retrieveLaunchParams();
 
@@ -35,7 +37,7 @@ export default function Folders() {
           </Tappable>
           <div className="text-link font-semibold">Folders</div>
           <Tappable
-            onClick={() => setGraphModalOpen(true)}
+            onClick={() => navigate(`/graph`)}
             className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
           >
             <GraphIcon className="h-8 w-8 " />
