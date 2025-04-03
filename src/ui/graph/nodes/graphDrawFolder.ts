@@ -1,6 +1,6 @@
 import { NodeObject } from "react-force-graph-2d";
-import { hexToRgba } from "@/helpers/css/hex-to-rgba";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { hexToRgba } from "@/helpers/css/hexToRgba";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
 export const graphDrawFolder = (

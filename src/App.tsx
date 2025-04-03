@@ -6,7 +6,7 @@ import Graph from "./ui/graph/GraphWrapper.tsx";
 import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
-import { useModalStore } from "@/lib/store/modal-store.tsx";
+import { useModalStore } from "@/lib/store/modalStore.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./ui/modals/EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";

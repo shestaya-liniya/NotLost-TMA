@@ -1,4 +1,4 @@
-import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import SettingsSectionColorScheme from "@/ui/settings/SettingsSectionColorScheme";
 import SettingsSectionSupport from "@/ui/settings/SettingsSectionSupport";
 import SettingsSectionTgSync from "@/ui/settings/SettingsSectionTgSync";

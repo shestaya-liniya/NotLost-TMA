@@ -18,7 +18,7 @@ import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import { getTelegramDialogsAndSetToStore } from "@/App";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
 

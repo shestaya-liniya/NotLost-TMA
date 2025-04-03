@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import MoreIcon from "@/assets/icons/more.svg?react";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import Tappable from "../Tappable";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 
 export const DialogTooltip = ({
   dialog,

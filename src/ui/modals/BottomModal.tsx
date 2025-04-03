@@ -1,6 +1,6 @@
 import RemoveIcon from "@/assets/icons/remove.svg?react";
-import { useKeyboardState } from "@/helpers/use-keyboard-visible";
-import useViewportSize from "@/helpers/use-viewport-height";
+import { useKeyboardState } from "@/helpers/useKeyboardState";
+import useViewportSize from "@/helpers/useViewportHeight";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";

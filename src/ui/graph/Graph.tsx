@@ -1,8 +1,8 @@
 import { useEffect, useMemo, memo, useCallback } from "react";
 import ForceGraph2D, { NodeObject } from "react-force-graph-2d";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
-import { hexToRgba } from "@/helpers/css/hex-to-rgba";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
+import { hexToRgba } from "@/helpers/css/hexToRgba";
 import { IGraphNode } from "./Graph.interface";
 import { useNodeImageCache } from "./hooks/useNodeImageCache";
 import GraphSelectedDialog from "./components/GraphSelectedDialog";

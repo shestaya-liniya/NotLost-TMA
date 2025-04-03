@@ -1,5 +1,5 @@
 import BottomModal from "@/ui/modals/BottomModal";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import { useEffect, useState } from "react";
 import Tappable from "@/ui/Tappable";
 import {

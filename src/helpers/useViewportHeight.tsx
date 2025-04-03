@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useLayoutEffect } from "react";
-import { useKeyboardState } from "./use-keyboard-visible";
+import { useKeyboardState } from "./useKeyboardState";
 
 const useBrowserLayoutEffect =
   typeof window !== "undefined"

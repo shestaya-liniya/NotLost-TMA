@@ -7,7 +7,7 @@ import "swiper/css/scrollbar";
 
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 import Tappable from "../Tappable";
-import { truncateWord } from "@/helpers/truncate-word";
+import { truncateWord } from "@/helpers/truncateWord";
 import { v4 as uuidv4 } from "uuid";
 
 export default function DialogsSlider({

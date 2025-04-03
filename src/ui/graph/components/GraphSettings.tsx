@@ -1,5 +1,5 @@
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
-import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import Tappable from "@/ui/Tappable";
 import { createPortal } from "react-dom";
 import BottomModal from "@/ui/modals/BottomModal";

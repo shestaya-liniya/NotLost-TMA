@@ -1,4 +1,4 @@
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";

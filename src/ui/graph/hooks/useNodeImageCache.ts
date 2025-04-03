@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NodeObject } from "react-force-graph-2d";
-import { getCssVariable } from "@/helpers/css/get-css-variable";
+import { getCssVariable } from "@/helpers/css/getCssVariable";
 import {
   IGraphNode,
   IGraphNodeImageCache,

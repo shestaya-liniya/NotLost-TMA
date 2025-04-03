@@ -3,8 +3,8 @@ import {
   ApiTelegramChannel,
   ApiTelegramUser,
 } from "@/lib/telegram/api/telegramActions";
-import { truncateWord } from "@/helpers/truncate-word";
-import { useModalStore } from "@/lib/store/modal-store";
+import { truncateWord } from "@/helpers/truncateWord";
+import { useModalStore } from "@/lib/store/modalStore";
 import Input from "@/ui/Input";
 import Modal from "@/ui/modals/Modal";
 import { useState, useEffect } from "react";

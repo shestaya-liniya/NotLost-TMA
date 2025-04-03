@@ -1,5 +1,5 @@
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { getCssVariable } from "./get-css-variable";
+import { getCssVariable } from "./getCssVariable";
 
 export const getMiniAppTopInset = () => {
   const lp = retrieveLaunchParams();
