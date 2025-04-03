@@ -19,6 +19,7 @@ const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
   init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV);
+  import("eruda").then((lib) => lib.default.init()).catch(console.error);
 
   root.render(
     <StrictMode>
