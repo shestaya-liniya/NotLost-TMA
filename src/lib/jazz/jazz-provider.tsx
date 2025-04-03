@@ -57,9 +57,13 @@ export function JazzProfileProvider({ children }: { children: ReactNode }) {
       }
     } else {
       cloudStorage.getItem("passkey").then((val) => {
+        console.log("CLOUD STORAGE PASSKEY", val);
+
         if (val.length > 0) {
           try {
-            auth.logIn(val);
+            auth.logIn(val).then(() => {
+              setLogged(true);
+            });
           } catch (e) {
             const generatedPassphrase = auth.generateRandomPassphrase();
             cloudStorage.setItem("passkey", generatedPassphrase);
