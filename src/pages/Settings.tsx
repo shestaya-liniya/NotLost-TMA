@@ -1,27 +1,32 @@
-import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import ColorPaletteIcon from "@/assets/icons/color-palette.svg?react";
+import TelegramIcon from "@/assets/icons/telegram.svg?react";
 import ColorCircle from "@/ui/ColorCircle";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+import { useTelegramSession } from "@/helpers/telegram/telegramSession";
+import Tappable from "@/ui/Tappable";
+import { useModalStore } from "@/lib/store/modal-store";
+import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
 
 export default function Settings() {
-  const lp = retrieveLaunchParams();
   const { jazzProfile } = useJazzProfileContext();
+  const { setTelegramSignInModalOpen, setSettingsModalOpen } = useModalStore();
+  const { deleteSession, signedIn } = useTelegramSession();
 
-  const changeColorScheme = (colorScheme: string) => {
+  const setColorScheme = (colorScheme: string) => {
     jazzProfile.colorScheme = colorScheme;
     document.documentElement.setAttribute("data-theme", colorScheme);
   };
   const activeColor = jazzProfile.colorScheme;
   const activeColorScheme = jazzProfile.colorScheme + "-500";
 
+  const handleLogout = () => {
+    deleteSession();
+  };
+
   return (
     <div
       className="flex flex-col items-center justify-center w-full px-4"
-      style={{
-        paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
-          ? 40
-          : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
-      }}
+      style={{ paddingTop: getMiniAppTopInset() }}
     >
       <div className="text-xl font-semibold mt-1 text-link">Settings</div>
       <div
@@ -31,33 +36,13 @@ export default function Settings() {
         Color scheme
       </div>
       <div className="bg-secondary border-l-2 border-r-2 border-b-2 rounded-bl-2xl rounded-br-2xl border-primary/30 p-4 w-full flex justify-center items-center gap-4 flex-wrap">
-        <ColorCircleWithTitle
-          title="Cold blue"
-          color="blue-500"
-          activeColor={activeColorScheme}
-          onClick={() => changeColorScheme("blue")}
-        />
-        <ColorCircleWithTitle
-          title="Forest green"
-          color="green-500"
-          activeColor={activeColorScheme}
-          onClick={() => changeColorScheme("green")}
-        />
-        <ColorCircleWithTitle
-          title="Peach pink"
-          color="pink-500"
-          activeColor={activeColorScheme}
-          onClick={() => changeColorScheme("pink")}
-        />
-        <ColorCircleWithTitle
-          title="Night purple"
-          color="purple-500"
-          activeColor={activeColorScheme}
-          onClick={() => changeColorScheme("purple")}
+        <ColorCircles
+          activeColorScheme={activeColorScheme}
+          setColorScheme={(color: string) => setColorScheme(color)}
         />
         <div
           className="flex flex-col items-center justify-center gap-1"
-          onClick={() => changeColorScheme("white")}
+          onClick={() => setColorScheme("white")}
         >
           <div
             style={{
@@ -73,7 +58,7 @@ export default function Settings() {
         </div>
         <div
           className="flex flex-col items-center justify-center gap-1"
-          onClick={() => changeColorScheme("none")}
+          onClick={() => setColorScheme("none")}
         >
           <div
             style={{
@@ -86,6 +71,36 @@ export default function Settings() {
           >
             Telegram
           </div>
+        </div>
+      </div>
+      <div
+        className={`rounded-2xl items-center bg-primary px-6 py-4 w-full font-semibold flex mt-4`}
+      >
+        <div className="flex gap-4 flex-1">
+          <TelegramIcon className="w-6 h-6 text-link" />
+          Telegram Sync
+        </div>
+        <div>
+          {signedIn ? (
+            <Tappable
+              className="bg-link/10 rounded-xl px-4 py-1 text-link"
+              onClick={handleLogout}
+            >
+              Log out
+            </Tappable>
+          ) : (
+            <Tappable
+              className="bg-link/10 rounded-xl px-4 py-1 text-link"
+              onClick={() => {
+                setSettingsModalOpen(false);
+                setTimeout(() => {
+                  setTelegramSignInModalOpen(true);
+                }, 300);
+              }}
+            >
+              Sync
+            </Tappable>
+          )}
         </div>
       </div>
     </div>
@@ -120,5 +135,39 @@ const ColorCircleWithTitle = ({
         {title}
       </div>
     </div>
+  );
+};
+
+const ColorCircles = (props: {
+  activeColorScheme: string;
+  setColorScheme: (color: string) => void;
+}) => {
+  return (
+    <>
+      <ColorCircleWithTitle
+        title="Cold blue"
+        color="blue-500"
+        activeColor={props.activeColorScheme}
+        onClick={() => props.setColorScheme("blue")}
+      />
+      <ColorCircleWithTitle
+        title="Forest green"
+        color="green-500"
+        activeColor={props.activeColorScheme}
+        onClick={() => props.setColorScheme("green")}
+      />
+      <ColorCircleWithTitle
+        title="Peach pink"
+        color="pink-500"
+        activeColor={props.activeColorScheme}
+        onClick={() => props.setColorScheme("pink")}
+      />
+      <ColorCircleWithTitle
+        title="Night purple"
+        color="purple-500"
+        activeColor={props.activeColorScheme}
+        onClick={() => props.setColorScheme("purple")}
+      />
+    </>
   );
 };

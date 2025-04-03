@@ -17,10 +17,9 @@ import TelegramSignIn from "./pages/TelegramSignIn.tsx";
 import Ai from "./pages/Ai.tsx";
 import { $getMyDialogs } from "./actions/telegram.ts";
 import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
-import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
+import { getTelegramSession } from "./helpers/telegram/telegramSession.ts";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import Events from "./pages/Events.tsx";
-import { createPortal } from "react-dom";
 
 export default function App() {
   const {
@@ -189,7 +188,6 @@ function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
-  const lp = retrieveLaunchParams();
   const handleClose = () => {
     onClose();
     if (backButton.isSupported()) {
@@ -226,16 +224,14 @@ function SlidingPage({
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {lp.tgWebAppPlatform === "tdesktop" &&
-          createPortal(
-            <Tappable
-              onClick={handleClose}
-              className="top-5 left-5 absolute bg-link/10 rounded-2xl px-2 py-1 text-link z-[1000px]"
-            >
-              Back
-            </Tappable>,
-            document.body
-          )}
+        {import.meta.env.MODE === "development" && (
+          <Tappable
+            onClick={handleClose}
+            className="top-5 left-5 absolute bg-link/10 rounded-2xl px-2 py-1 text-link z-[1000px]"
+          >
+            Back
+          </Tappable>
+        )}
         <TelegramWallpaper />
         {children}
 

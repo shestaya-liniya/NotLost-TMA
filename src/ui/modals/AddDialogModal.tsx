@@ -17,7 +17,7 @@ import TelegramIcon from "@/assets/icons/telegram.svg?react";
 import Tappable from "../Tappable";
 import { useAppStore } from "@/lib/store/store";
 import SearchIcon from "@/assets/icons/search.svg?react";
-import { getTelegramSession } from "@/helpers/telegram/getTelegramSession";
+import { getTelegramSession } from "@/helpers/telegram/telegramSession";
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
 import DialogsSlider from "../dialog/DialogsSlider";
 

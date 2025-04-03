@@ -91,7 +91,8 @@ class TelegramApiClient {
   public async signIn(
     phoneNumber: string,
     password: string,
-    phoneCode: string
+    phoneCode: string,
+    onSuccess: (session: string) => void
   ): Promise<string | void | Error> {
     try {
       await this.client.start({
@@ -103,15 +104,22 @@ class TelegramApiClient {
         },
       });
 
-      localStorage.setItem("session", this.getSession());
+      onSuccess(this.getSession());
     } catch (e) {
       console.log(e);
-      //@ts-ignore
-      return e;
+
+      if (e instanceof Error) {
+        return e;
+      } else {
+        return new Error("Unknown error occurred");
+      }
     }
   }
 
-  public async signInWithPassword(password: string) {
+  public async signInWithPassword(
+    password: string,
+    onSuccess: (session: string) => void
+  ) {
     try {
       await this.client.signInWithPassword(
         {
@@ -126,11 +134,15 @@ class TelegramApiClient {
         }
       );
 
-      localStorage.setItem("session", this.getSession());
+      onSuccess(this.getSession());
     } catch (e) {
       console.log(e);
-      //@ts-ignore
-      return e;
+
+      if (e instanceof Error) {
+        return e;
+      } else {
+        return new Error("Unknown error occurred");
+      }
     }
   }
 
