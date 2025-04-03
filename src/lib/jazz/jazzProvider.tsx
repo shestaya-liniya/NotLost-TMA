@@ -36,7 +36,6 @@ const JazzProfileContext = createContext<JazzProfileContextType | undefined>(
 // Context Provider Component
 export function JazzProfileProvider({ children }: { children: ReactNode }) {
   const jazzProfile = useJazzProfile();
-
   const auth = usePassphraseAuth({
     wordlist: wordlist,
   });
