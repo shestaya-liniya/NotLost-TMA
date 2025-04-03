@@ -1,5 +1,6 @@
 import { getMiniAppTopInset } from "@/helpers/css/get-top-tg-inset";
 import SettingsSectionColorScheme from "@/ui/settings/SettingsSectionColorScheme";
+import SettingsSectionSupport from "@/ui/settings/SettingsSectionSupport";
 import SettingsSectionTgSync from "@/ui/settings/SettingsSectionTgSync";
 
 export default function Settings() {
@@ -11,6 +12,7 @@ export default function Settings() {
       <div className="text-xl font-semibold mt-1 text-link">Settings</div>
       <SettingsSectionColorScheme />
       <SettingsSectionTgSync />
+      <SettingsSectionSupport />
     </div>
   );
 }
