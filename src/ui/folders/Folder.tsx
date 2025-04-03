@@ -4,8 +4,8 @@ import FolderAccordion from "./FolderAccordion.tsx";
 import {
   jazzAddNestedFolderToFolder,
   jazzDeleteFolder,
-} from "@/lib/jazz/actions/jazz-folder.ts";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
+} from "@/lib/jazz/actions/jazzFolder.ts";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider.tsx";
 import FolderFooter from "./FolderFooter.tsx";
 import FolderDialogGridOrSlider from "./FolderDialogGridOrSlider.tsx";
 import FolderNestedAccordion from "./FolderNestedAccordion.tsx";

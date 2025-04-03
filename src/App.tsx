@@ -10,7 +10,7 @@ import { useModalStore } from "@/lib/store/modal-store.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./ui/modals/EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 import TelegramSignIn from "./pages/TelegramSignIn.tsx";
@@ -70,7 +70,6 @@ export default function App() {
 
   const { shadowInputValue, setShadowInputValue } = useAppStore();
 
-  import("eruda").then((lib) => lib.default.init()).catch(console.error);
   const lp = retrieveLaunchParams();
   const tp = lp.tgWebAppThemeParams;
 

@@ -1,7 +1,7 @@
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import ColorPaletteIcon from "@/assets/icons/color-palette.svg?react";
 import ColorCircle from "@/ui/ColorCircle";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 
 export default function Settings() {
   const lp = retrieveLaunchParams();

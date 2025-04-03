@@ -5,8 +5,8 @@ import Tappable from "@/ui/Tappable";
 import {
   jazzAddTag,
   jazzRemoveTagFromDialog,
-} from "@/lib/jazz/actions/jazz-dialog";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+} from "@/lib/jazz/actions/jazzDialog";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import Tag from "@/ui/Tag";
 import RemoveIcon from "@/assets/icons/remove.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
