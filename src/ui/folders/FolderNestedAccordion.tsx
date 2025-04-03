@@ -1,8 +1,8 @@
 import {
   jazzDeleteFolder,
   jazzAddNestedFolderToFolder,
-} from "@/lib/jazz/actions/jazz-folder";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+} from "@/lib/jazz/actions/jazzFolder";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { JazzFolder } from "@/lib/jazz/schema";
 import FolderFooter from "./FolderFooter";
 import FolderAccordion from "./FolderAccordion";

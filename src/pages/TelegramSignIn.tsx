@@ -13,7 +13,7 @@ import Pencil from "@/assets/icons/pencil-icon.svg?react";
 import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { useModalStore } from "@/lib/store/modal-store";
 import { getTelegramDialogsAndSetToStore } from "@/App";
 

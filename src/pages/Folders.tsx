@@ -1,6 +1,6 @@
 import { useModalStore } from "@/lib/store/modal-store";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
-import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazz-folder";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
+import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
 import Folder from "@/ui/folders/Folder";
@@ -59,7 +59,10 @@ export default function Folders() {
           {jazzProfile.folders?.map((folder) => {
             if (!folder) return null;
             return (
-              <div key={folder.id} className="w-full transition-all duration-200 ease-in-out animate-fadeIn">
+              <div
+                key={folder.id}
+                className="w-full transition-all duration-200 ease-in-out animate-fadeIn"
+              >
                 <Folder folder={folder} />
               </div>
             );
