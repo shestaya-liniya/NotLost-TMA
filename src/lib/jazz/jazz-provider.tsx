@@ -1,26 +1,27 @@
-import { createJazzReactApp, useDemoAuth } from "jazz-react";
 import { JazzAccount, RootUserProfile } from "./schema";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useJazzProfile } from "./hooks/use-jazz-profile";
-import { AutoSignIn } from "./auto-sign-in-jazz";
-
-const Jazz = createJazzReactApp({
-  AccountSchema: JazzAccount,
-});
-
-export const { useAccount, useCoState } = Jazz;
+import { JazzProvider, usePassphraseAuth } from "jazz-react";
+import { cloudStorage } from "@telegram-apps/sdk-react";
+import { wordlist } from "./wordlist";
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
-  const [auth, state] = useDemoAuth();
-
   return (
     <>
-      <Jazz.Provider auth={auth} peer={import.meta.env.VITE_JAZZ_PEER_URL}>
+      <JazzProvider
+        AccountSchema={JazzAccount}
+        sync={{ peer: import.meta.env.VITE_JAZZ_PEER_URL }}
+      >
         <JazzProfileProvider>{children}</JazzProfileProvider>
-      </Jazz.Provider>
-      {state.state !== "signedIn" && <AutoSignIn state={state} />}
+      </JazzProvider>
     </>
   );
+}
+
+declare module "jazz-react" {
+  interface Register {
+    Account: JazzAccount;
+  }
 }
 
 export interface JazzProfileContextType {
@@ -36,7 +37,42 @@ const JazzProfileContext = createContext<JazzProfileContextType | undefined>(
 export function JazzProfileProvider({ children }: { children: ReactNode }) {
   const jazzProfile = useJazzProfile();
 
+  const auth = usePassphraseAuth({
+    wordlist: wordlist,
+  });
+
+  const [logged, setLogged] = useState(false);
+
+  if (!logged) {
+    if (import.meta.env.MODE === "development") {
+      const passkey = localStorage.getItem("passkey");
+      if (passkey) {
+        auth.logIn(passkey).then(() => {
+          setLogged(true);
+        });
+      } else {
+        const generatedPassphrase = auth.generateRandomPassphrase();
+        localStorage.setItem("passkey", generatedPassphrase);
+        auth.registerNewAccount(generatedPassphrase, "My account");
+      }
+    } else {
+      cloudStorage.getItem("passkey").then((val) => {
+        if (val.length > 0) {
+          try {
+            auth.logIn(val);
+          } catch (e) {
+            const generatedPassphrase = auth.generateRandomPassphrase();
+            cloudStorage.setItem("passkey", generatedPassphrase);
+            auth.registerNewAccount(generatedPassphrase, "My account");
+          }
+        }
+      });
+    }
+  }
+
+  if (!logged) return <div>Loadinggg...</div>;
   if (!jazzProfile) return null;
+
   return (
     <JazzProfileContext.Provider value={{ jazzProfile }}>
       {jazzProfile ? children : null}

@@ -1,4 +1,4 @@
-import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
+import { CoMap, co, Account, Profile, CoList } from "jazz-tools";
 
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
@@ -44,18 +44,17 @@ export class RootUserProfile extends Profile {
 }
 
 export class JazzAccount extends Account {
-  profile = co.ref(RootUserProfile);
+  profile = co.ref(Profile);
+  root = co.ref(RootUserProfile);
 
   /** The account migration is run on account creation and on every log-in.
    *  You can use it to set up the account root and any other initial CoValues you need.
    */
-  async migrate(creationProps?: { name: string }) {
+  /*   async migrate(creationProps?: { name: string }) {
     super.migrate(creationProps);
 
     const profile = await RootUserProfile.load(
-      this._refs.profile!.id as ID<RootUserProfile>,
-      this,
-      {}
+      this._refs.profile!.id as ID<RootUserProfile>
     );
 
     if (!profile) {
@@ -69,6 +68,23 @@ export class JazzAccount extends Account {
     if (!profile._refs.folders) {
       profile.folders = JazzListOfFolders.create([], {
         owner: this.profile!._owner,
+      });
+    }
+  } */
+
+  migrate() {
+    if (this.root === undefined) {
+      const folders = JazzListOfFolders.create([]);
+
+      this.root = RootUserProfile.create({
+        telegramId: 0,
+        username: "",
+        firstName: "",
+        lastName: "",
+        telegramSync: false,
+        colorScheme: "",
+        folders,
+        name: "",
       });
     }
   }

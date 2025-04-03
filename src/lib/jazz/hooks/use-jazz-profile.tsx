@@ -1,11 +1,11 @@
-import { useAccount, useCoState } from "../jazz-provider";
-import { JazzAccount, RootUserProfile } from "../schema";
+import { useAccount } from "jazz-react";
 
 export const useJazzProfile = () => {
-  const { me } = useAccount();
+  const { me } = useAccount({
+    resolve: { root: { folders: { $each: true } } },
+  });
 
-  const user = useCoState(JazzAccount, me?.id);
-  const profile = useCoState(RootUserProfile, user?.profile?.id);
+  if (!me) return;
 
-  return profile;
+  return me.root;
 };
