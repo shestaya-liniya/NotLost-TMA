@@ -1,7 +1,7 @@
 import { $sendCode, $signIn, $signInWithPassword } from "@/actions/telegram";
 import Input from "@/ui/Input";
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import utyaSendCode from "@/assets/lottie/utya-send-code.json";
 import utyaSuccess from "@/assets/lottie/utya-success.json";
@@ -13,13 +13,20 @@ import Pencil from "@/assets/icons/pencil-icon.svg?react";
 import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { useModalStore } from "@/lib/store/modal-store";
 import { getTelegramDialogsAndSetToStore } from "@/App";
+import { useTelegramSession } from "@/helpers/telegram/telegramSession";
 
 export default function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();
   const { setTelegramSignInModalOpen } = useModalStore();
+  const { setSession } = useTelegramSession();
+
+  const saveTelegramSession = useCallback((session: string) => {
+    setSession(session);
+  }, []);
+
   const [step, setStep] = useState<"phone" | "code" | "password" | "success">(
     "phone"
   );
@@ -38,6 +45,37 @@ export default function TelegramSignIn() {
       }, 2500);
     }
   }, [step]);
+
+  const handleSignIn = () => {
+    $signIn(
+      phoneNumber.replace("+", ""),
+      phoneCode,
+      password,
+      saveTelegramSession
+    ).then((res) => {
+      if (res instanceof Error) {
+        if (res.message.includes("Password is empty")) {
+          setStep("password");
+        } else {
+          alertModal.show("<div>Invalid code</div>");
+        }
+      } else {
+        setStep("success");
+        jazzProfile.telegramSync = true;
+      }
+    });
+  };
+
+  const handleSignInWithPassword = () => {
+    $signInWithPassword(password, saveTelegramSession).then((res) => {
+      if (res instanceof Error) {
+        alertModal.show("<div>Invalid password</div>");
+      } else {
+        setStep("success");
+        jazzProfile.telegramSync = true;
+      }
+    });
+  };
 
   return (
     <div className="flex flex-col h-full items-center">
@@ -109,22 +147,7 @@ export default function TelegramSignIn() {
             />
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold mt-4"
-              onClick={() => {
-                $signIn(phoneNumber.replace("+", ""), phoneCode, password).then(
-                  (res) => {
-                    if (res instanceof Error) {
-                      if (res.message.includes("Password is empty")) {
-                        setStep("password");
-                      } else {
-                        alertModal.show("<div>Invalid code</div>");
-                      }
-                    } else {
-                      setStep("success");
-                      jazzProfile.telegramSync = true;
-                    }
-                  }
-                );
-              }}
+              onClick={handleSignIn}
             >
               Enter
             </Tappable>
@@ -141,16 +164,7 @@ export default function TelegramSignIn() {
             />
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold mt-4"
-              onClick={() => {
-                $signInWithPassword(password).then((res) => {
-                  if (res instanceof Error) {
-                    alertModal.show("<div>Invalid password</div>");
-                  } else {
-                    setStep("success");
-                    jazzProfile.telegramSync = true;
-                  }
-                });
-              }}
+              onClick={handleSignInWithPassword}
             >
               Enter
             </Tappable>

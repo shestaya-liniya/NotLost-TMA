@@ -2,7 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import TabBarLayout from "./ui/tab-bar/TabBarLayout.tsx";
 import Folders from "@/pages/Folders.tsx";
-import Graph from "./components/graph/index.tsx";
+import Graph from "./ui/graph/GraphWrapper.tsx";
 import TelegramWallpaper from "@/ui/TelegramWallpaper.tsx";
 import Tappable from "@/ui/Tappable.tsx";
 import DialogInfo from "@/pages/DialogInfo.tsx";
@@ -10,14 +10,14 @@ import { useModalStore } from "@/lib/store/modal-store.tsx";
 import { backButton } from "@telegram-apps/sdk-react";
 import EditTagsModal from "./ui/modals/EditTagsModal.tsx";
 import Settings from "@/pages/Settings.tsx";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider.tsx";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider.tsx";
 import { useAppStore } from "@/lib/store/store.ts";
 import AddDialogModal from "./ui/modals/AddDialogModal.tsx";
 import TelegramSignIn from "./pages/TelegramSignIn.tsx";
 import Ai from "./pages/Ai.tsx";
 import { $getMyDialogs } from "./actions/telegram.ts";
 import { TelegramDialogInfo } from "./lib/telegram/api/telegram-api-client.ts";
-import { getTelegramSession } from "./helpers/telegram/getTelegramSession.ts";
+import { getTelegramSession } from "./helpers/telegram/telegramSession.ts";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import Events from "./pages/Events.tsx";
 
@@ -69,16 +69,9 @@ export default function App() {
 
   const { shadowInputValue, setShadowInputValue } = useAppStore();
 
-  import("eruda").then((lib) => lib.default.init()).catch(console.error);
-  const tp = retrieveLaunchParams().tgWebAppThemeParams;
-  /* --color-primary: var(--tg-bg-color);
-  --color-secondary: var(--tg-theme-secondary-bg-color);
+  const lp = retrieveLaunchParams();
+  const tp = lp.tgWebAppThemeParams;
 
-  --color-link: var(--tg-theme-link-color);
-  --color-accent: var(--tg-theme-accent-text-color);
-  --color-hint: var(--tg-theme-hint-color);
-  --color-button: var(--tg-theme-button-color);
-  --color-default: var(--tg-theme-text-color); */
   const style = document.createElement("style");
   style.innerHTML = `:root { 
   --tg-bg-color: ${tp.bg_color};
@@ -88,8 +81,8 @@ export default function App() {
   --tg-theme-hint-color: ${tp.hint_color};
   --tg-theme-button-color: ${tp.button_color};
   --tg-theme-text-color: ${tp.text_color};
+  ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 20px; --tg-viewport-content-safe-area-inset-top: 20px"}
    }`;
-
   document.head.appendChild(style);
 
   return (
@@ -100,7 +93,6 @@ export default function App() {
         className="hidden-input"
         id="shadow-input"
         value={shadowInputValue}
-        onFocus={() => console.log("focus")}
         onChange={(e) => setShadowInputValue(e.target.value)}
       />
       <Routes>
@@ -205,7 +197,6 @@ function SlidingPage({
   useEffect(() => {
     if (open) {
       if (backButton.isSupported()) {
-        console.log(backButton.isSupported());
         try {
           backButton.show();
           backButton.onClick(handleClose);
@@ -233,19 +224,24 @@ function SlidingPage({
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
+        {import.meta.env.MODE === "development" && (
+          <Tappable
+            onClick={handleClose}
+            className="top-5 left-5 absolute bg-link/10 rounded-2xl px-2 py-1 text-link z-[1000px]"
+          >
+            Back
+          </Tappable>
+        )}
         <TelegramWallpaper />
         {children}
 
-        <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
+        {/* <div className="absolute bottom-0 left-0 w-screen h-16 bg-secondary flex justify-center items-center">
           <div className="flex justify-center items-center w-full px-4 pb-4">
-            <Tappable
-              className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold"
-              onClick={handleClose}
-            >
+            <Tappable className="bg-button text-center py-3 text-white rounded-2xl w-full font-semibold">
               Go back
             </Tappable>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,12 +1,24 @@
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getCssVariable } from "./get-css-variable";
 
-export const getTopTgInset = () => {
+export const getMiniAppTopInset = () => {
   const lp = retrieveLaunchParams();
 
   if (["macos", "tdesktop"].includes(lp.tgWebAppPlatform)) {
-    return 40;
+    return 20;
   } else {
-    return `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`;
+    const safeTop =
+      Number(
+        getCssVariable("--tg-viewport-safe-area-inset-top")?.replace("px", "")
+      ) || 0;
+    const safeContentTop =
+      Number(
+        getCssVariable("--tg-viewport-content-safe-area-inset-top")?.replace(
+          "px",
+          ""
+        )
+      ) || 0;
+
+    return safeTop + safeContentTop;
   }
 };

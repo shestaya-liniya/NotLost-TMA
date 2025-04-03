@@ -10,14 +10,14 @@ import Modal from "@/ui/modals/Modal";
 import { useState, useEffect } from "react";
 import Settings from "@/assets/icons/settings.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
-import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazz-folder";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { jazzAddDialogToFolder } from "@/lib/jazz/actions/jazzFolder";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import Button from "@/ui/Button";
 import TelegramIcon from "@/assets/icons/telegram.svg?react";
 import Tappable from "../Tappable";
 import { useAppStore } from "@/lib/store/store";
 import SearchIcon from "@/assets/icons/search.svg?react";
-import { getTelegramSession } from "@/helpers/telegram/getTelegramSession";
+import { getTelegramSession } from "@/helpers/telegram/telegramSession";
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
 import DialogsSlider from "../dialog/DialogsSlider";
 

@@ -1,4 +1,4 @@
-import { getTelegramSession } from "@/helpers/telegram/getTelegramSession";
+import { getTelegramSession } from "@/helpers/telegram/telegramSession";
 import TelegramApiClient from "@/lib/telegram/api/telegram-api-client";
 import axios from "axios";
 import { TotalList } from "telegram/Helpers";
@@ -22,13 +22,17 @@ export const $sendCode = async (phoneNumber: string) => {
 export const $signIn = async (
   phoneNumber: string,
   phoneCode: string,
-  password: string
+  password: string,
+  onSuccess: (session: string) => void
 ) => {
-  return await client.signIn(phoneNumber, password, phoneCode);
+  return await client.signIn(phoneNumber, password, phoneCode, onSuccess);
 };
 
-export const $signInWithPassword = async (password: string) => {
-  return await client.signInWithPassword(password);
+export const $signInWithPassword = async (
+  password: string,
+  onSuccess: (session: string) => void
+) => {
+  return await client.signInWithPassword(password, onSuccess);
 };
 
 export const $getLoginByQrLink = async () => {

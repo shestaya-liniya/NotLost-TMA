@@ -1,5 +1,5 @@
-import { jazzRemoveDialog } from "@/lib/jazz/actions/jazz-dialog";
-import { useJazzProfileContext } from "@/lib/jazz/jazz-provider";
+import { jazzRemoveDialog } from "@/lib/jazz/actions/jazzDialog";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { JazzDialog, JazzFolder } from "@/lib/jazz/schema";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
