@@ -23,6 +23,7 @@ import BottomModal from "@/ui/modals/BottomModal";
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 import Modal from "@/ui/modals/Modal";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -33,15 +34,12 @@ import Modal from "@/ui/modals/Modal";
 export default function Events() {
   const location = useLocation();
   const { setSettingsModalOpen } = useModalStore();
-  const lp = retrieveLaunchParams();
 
   return (
     <div className="h-full flex flex-col relative">
       <div
         style={{
-          paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
-            ? 40
-            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+          paddingTop: getMiniAppTopInset(),
         }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30 relative"
       >

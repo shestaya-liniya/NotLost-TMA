@@ -25,10 +25,16 @@ function FolderAccordion(props: {
   shouldSetAsMainFolder?: boolean | null;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [expandAnimated, setExpandAnimated] = useState(false);
   const [prevExpanded, setPrevExpanded] = useState<boolean | null>(null);
 
   useEffect(() => {
     setPrevExpanded(!expanded);
+    if (expanded) {
+      setTimeout(() => {
+        setExpandAnimated(true);
+      }, 300);
+    }
   }, [expanded]);
   return (
     <>
@@ -49,7 +55,9 @@ function FolderAccordion(props: {
         deleteFolder={props.deleteFolder}
       />
       {prevExpanded !== null && (
-        <div className={`${expanded ? "animate-fadeIn" : "hidden"} `}>
+        <div
+          className={`${expanded && !expandAnimated ? "animate-fadeIn" : expanded ? "transition-none opacity-100" : "hidden"} `}
+        >
           <AccordionContent>{props.children}</AccordionContent>
         </div>
       )}
@@ -175,7 +183,7 @@ function FolderAccordionHeader(props: {
 
 function AccordionContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="pt-4 px-4 pb-2 bg-secondary rounded-b-2xl animate-fadeIn border-l-2 border-r-2 border-b-2 border-primary/30">
+    <div className="pt-4 px-4 pb-2 bg-secondary rounded-b-2xl border-l-2 border-r-2 border-b-2 border-primary/30">
       {children}
     </div>
   );

@@ -1,7 +1,6 @@
 import { useModalStore } from "@/lib/store/modalStore";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
-import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
 import Tappable from "@/ui/Tappable";
 
@@ -10,22 +9,17 @@ import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import Folder from "@/features/folders/Folder";
 import { useNavigate } from "react-router";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
   const { setSettingsModalOpen } = useModalStore();
   const navigate = useNavigate();
 
-  const lp = retrieveLaunchParams();
-
   return (
     <div className="h-full flex flex-col relative">
       <div
-        style={{
-          paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
-            ? 40
-            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
-        }}
+        style={{ paddingTop: getMiniAppTopInset() }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30"
       >
         <div className="relative flex justify-between mt-2 items-center">
@@ -61,10 +55,7 @@ export default function Folders() {
           {jazzProfile.folders?.map((folder) => {
             if (!folder) return null;
             return (
-              <div
-                key={folder.id}
-                className="w-full transition-all duration-200 ease-in-out animate-fadeIn"
-              >
+              <div key={folder.id} className="w-full">
                 <Folder folder={folder} />
               </div>
             );

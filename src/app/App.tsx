@@ -56,14 +56,11 @@ export default function App() {
         onChange={(e) => setShadowInputValue(e.target.value)}
       />
 
-      {/* Main content */}
       <TabViewContainer />
 
-      {/* Modals */}
       <EditTagsModal />
       <AddDialogModal />
 
-      {/* Overlay Routes with Sliding Animation */}
       <OverlayRouter location={location} />
     </div>
   );
