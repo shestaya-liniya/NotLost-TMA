@@ -18,6 +18,10 @@ interface ModalState {
   addDialogModalFolder: JazzFolder | null;
   setAddDialogModalFolder: (newState: JazzFolder | null) => void;
 
+  // Sliding modals
+  isSlidingModalOpen: boolean;
+  setIsSlidingModalOpen: (newState: boolean) => void;
+
   telegramSignInModalOpen: boolean;
   setTelegramSignInModalOpen: (newState: boolean) => void;
 
@@ -61,6 +65,12 @@ export const useModalStore = create<ModalState>((set) => ({
   setAddDialogModalFolder: (newState) =>
     set(() => ({
       addDialogModalFolder: newState,
+    })),
+
+  isSlidingModalOpen: false,
+  setIsSlidingModalOpen: (newState) =>
+    set(() => ({
+      isSlidingModalOpen: newState,
     })),
 
   telegramSignInModalOpen: false,

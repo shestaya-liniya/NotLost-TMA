@@ -6,6 +6,7 @@ import KeepAlive from "react-activation";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar, A11y } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
+import { DelayedUnmount } from "@/ui/DelayedUnmount";
 
 const SLIDE_ANIMATION = 300;
 
@@ -65,7 +66,7 @@ const TabViewContainer = () => {
             </KeepAlive>
           </SwiperSlide>
           <SwiperSlide>
-            <DelayedUnmount active={tabIndex === 1}>
+            <DelayedUnmount mounted={tabIndex === 1} delay={SLIDE_ANIMATION}>
               <KeepAlive>
                 <Folders />
               </KeepAlive>
@@ -81,33 +82,5 @@ const TabViewContainer = () => {
     </TabBarLayout>
   );
 };
-
-function DelayedUnmount({
-  active,
-  delay = SLIDE_ANIMATION + 50, // 50 as a buffer
-  children,
-}: {
-  active: boolean;
-  delay?: number;
-  children: React.ReactNode;
-}) {
-  const [shouldRender, setShouldRender] = useState(active);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    if (active) {
-      setShouldRender(true);
-    } else {
-      timeout = setTimeout(() => setShouldRender(false), delay);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [active, delay]);
-
-  if (shouldRender) {
-    return <>{children}</>;
-  } else null;
-}
 
 export default TabViewContainer;

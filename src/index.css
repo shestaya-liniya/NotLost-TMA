@@ -245,3 +245,16 @@ input:focus {
 .dialogs-swiper .swiper {
   height: 288px !important;
 }
+
+.swiper,
+.swiper-container {
+  z-index: 0 !important;
+}
+
+.ka-wrapper {
+  height: 100%;
+}
+
+.ka-content {
+  height: 100%;
+}
