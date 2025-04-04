@@ -1,4 +1,4 @@
-import { useNavigate, Routes, Route, Location } from "react-router-dom";
+import { useNavigate, Routes, Route, Location } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import GraphWrapper from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";

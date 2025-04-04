@@ -4,7 +4,7 @@ import { useAppStore } from "@/lib/store/store";
 import AddDialogModal from "@/ui/modals/AddDialogModal";
 import EditTagsModal from "@/ui/modals/EditTagsModal";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { OverlayRouter } from "./OverlayRouter";
 import TabViewContainer from "./TabBar";
 import { getTelegramDialogsAndSetToStore, setupTelegramTheme } from "./tg";

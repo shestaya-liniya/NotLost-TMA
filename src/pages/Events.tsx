@@ -12,7 +12,7 @@ import winzavodSlider from "@/assets/winzavod-slider.png";
 import reflection from "@/assets/relfection.png";
 import EventIcon from "@/assets/icons/calendar-2.svg?react";
 import MapPointIcon from "@/assets/icons/map-point.svg?react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { SwiperSlider } from "@/ui/dialog/DialogsSlider";

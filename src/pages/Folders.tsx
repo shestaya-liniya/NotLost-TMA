@@ -9,7 +9,7 @@ import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import Folder from "@/features/folders/Folder";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
