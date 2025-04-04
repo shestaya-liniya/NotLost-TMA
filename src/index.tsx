@@ -14,6 +14,8 @@ import TelegramProvider from "@/lib/telegram/telegramProvider.tsx";
 import App from "@/app/App.tsx";
 // ------
 
+import { AliveScope } from "react-activation";
+
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
@@ -25,7 +27,9 @@ try {
       <TelegramProvider>
         <Router>
           <JazzAndAuth>
-            <App />
+            <AliveScope>
+              <App />
+            </AliveScope>
           </JazzAndAuth>
         </Router>
       </TelegramProvider>
