@@ -13,13 +13,10 @@ import TelegramSignIn from "@/pages/TelegramSignIn";
 import SlidingPage from "@/ui/SlidingPage";
 import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
-import { DelayedUnmount } from "@/ui/DelayedUnmount";
-import KeepAlive from "react-activation";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
   const { shadowInputValue, setShadowInputValue } = useAppStore();
-  const { isSlidingModalOpen } = useModalStore();
 
   // Setup Telegram theme
   useEffect(() => {
@@ -64,17 +61,18 @@ export default function App() {
         onChange={(e) => setShadowInputValue(e.target.value)}
       />
 
+      {/* Didn't work, retry after whil */}
       {/* Unmount tab bar on any slider page appearing to free up ressources, especially for graph sliding page */}
-      <DelayedUnmount
+      {/* <DelayedUnmount
         mounted={!isSlidingModalOpen}
         Wrapper={({ children }) => (
           <div className="h-full flex flex-col">{children}</div>
         )}
       >
-        <KeepAlive cacheKey="tab-bar">
-          <TabViewContainer />
-        </KeepAlive>
-      </DelayedUnmount>
+        <KeepAlive cacheKey="tab-bar"> */}
+      <TabViewContainer />
+      {/* </KeepAlive>
+      </DelayedUnmount> */}
     </div>
   );
 }
