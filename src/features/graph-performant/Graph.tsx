@@ -4,6 +4,7 @@ import ForceGraph2D, {
   NodeObject,
 } from "react-force-graph-2d";
 import {
+  IGraphFolderFlag,
   IGraphNode,
   IGraphNodeDialog,
   IGraphNodeType,
@@ -11,15 +12,17 @@ import {
 import { drawContactNode } from "./helpers/graphDrawDialog";
 import { drawTopicNode } from "./helpers/graphDrawFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { GraphSelectedDialog } from "./GraphSelectedDialog";
 import { AnimatePresence } from "framer-motion";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
-import Switch from "@/ui/Switch";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
 import graphSelectDialog from "./helpers/graphSelectDialog";
 import { useNodeImageCache } from "./helpers/useNodeImageCache";
 import graphInitNodes from "./helpers/graphInitNodes";
+import GraphSettings from "./components/GraphSettings";
+import { GraphFolderFlags } from "./components/GraphFoldersFlag";
+import GraphSelectedDialog from "./components/GraphSelectedDialog";
+import graphUpdateFolderFlag from "./helpers/graphUpdateFolderFlag";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const graphData = useMemo(() => graphInitNodes(data), [data]);
@@ -31,11 +34,23 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const lp = retrieveLaunchParams();
   const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
 
+  // Graph State
   const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
     null
   );
 
-  const [dragNodes, setDragNodes] = useState<boolean>(false);
+  const [graphDragModeEnabled, setGraphDragModeEnabled] =
+    useState<boolean>(false);
+  const [showFolderFlags, setShowFolderFlags] = useState<boolean>(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] =
+    useState<boolean>(false);
+  const [folderFlags, setFolderFlags] = useState<IGraphFolderFlag[]>([]);
+  const [graphCooldownTicks, setGraphCooldownTicks] = useState<
+    number | undefined
+  >(0);
+  const [graphWarmupTicks, setGraphWarmupTicks] = useState<number | undefined>(
+    30
+  );
 
   useEffect(() => {
     fetchImages();
@@ -44,6 +59,14 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!];
+
+      if (showFolderFlags)
+        graphUpdateFolderFlag(
+          graphRef,
+          node as IGraphNode,
+          folderFlags,
+          setFolderFlags
+        );
 
       switch (node.type) {
         case IGraphNodeType.DIALOG:
@@ -71,38 +94,33 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        height: `calc(var(--initial-height)`,
-      }}
-    >
-      <div
-        style={{
-          top: `calc(${getCssVariable("--tg-viewport-safe-area-inset-top") || "0px"} + ${getCssVariable("--tg-viewport-content-safe-area-inset-top")})`,
-        }}
-        className="absolute left-0 z-10 w-full"
-      >
-        <AnimatePresence>
-          {selectedDialog && (
-            <GraphSelectedDialog selectedDialog={selectedDialog} />
-          )}
-        </AnimatePresence>
-      </div>
+    <div>
+      <AnimatePresence>
+        {selectedDialog && <GraphSelectedDialog dialog={selectedDialog} />}
+        {showFolderFlags && (
+          <GraphFolderFlags folderFlags={folderFlags} graphRef={graphRef} />
+        )}
+      </AnimatePresence>
 
-      <div className="absolute bottom-8 left-6 z-10 backdrop-blur-sm px-4 pt-2 pb-1 rounded-2xl border-2 border-primary/30">
-        <Switch
-          label="Drag mode"
-          checked={dragNodes}
-          onChange={(checked) => setDragNodes(checked)}
-        />
-      </div>
+      <GraphSettings
+        isSettingsModalOpen={isSettingsModalOpen}
+        setIsSettingsModalOpen={(val) => setIsSettingsModalOpen(val)}
+        graphDragModeEnabled={graphDragModeEnabled}
+        setGraphDragMode={(val) => setGraphDragModeEnabled(val)}
+        setGraphCooldownTicks={(val) => setGraphCooldownTicks(val)}
+        setGraphWarmupTicks={(val) => setGraphWarmupTicks(val)}
+        showFolderFlags={showFolderFlags}
+        setShowFolderFlags={(val) => setShowFolderFlags(val)}
+      />
 
       <ForceGraph2D
         ref={graphRef}
         graphData={graphData}
         height={Number(getCssVariable("--initial-height").replace("px", ""))}
         nodeAutoColorBy="group"
-        enableNodeDrag={true}
+        enableNodeDrag={graphDragModeEnabled}
+        cooldownTicks={graphCooldownTicks}
+        warmupTicks={graphWarmupTicks}
         onBackgroundClick={() => {
           setSelectedDialog(null);
         }}

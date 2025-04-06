@@ -1,42 +1,41 @@
-import { ReactElement } from "react";
-import { IGraphNodeDialog } from "./Graph.interface";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
+import { IGraphNodeDialog } from "../Graph.interface";
 import { motion } from "framer-motion";
 import Tappable from "@/ui/Tappable";
+import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
+import { ReactElement } from "react";
 
-export const GraphSelectedDialog = ({
-  selectedDialog,
-}: {
-  selectedDialog: IGraphNodeDialog;
-}) => {
+export default function Graphdialog(props: { dialog: IGraphNodeDialog }) {
+  const { dialog } = props;
   return (
     <Wrapper>
       <Tappable
         className="flex items-center py-2 px-4 gap-4"
         onClick={() => {
-          window.open(`https://t.me/${selectedDialog.username}`);
+          window.open(`https://t.me/${dialog.username}`);
         }}
       >
         <img
           loading="lazy"
-          src={`https://t.me/i/userpic/320/${selectedDialog.username}.svg`}
+          src={getTelegramAvatarLink(dialog.username)}
           className="h-12 w-12 rounded-full"
           decoding="async"
           alt=""
         />
         <div className="flex flex-col">
           <span className="text-white text-sm font-medium">
-            {selectedDialog.firstName}
+            {dialog.firstName}
           </span>
           <span className="text-link text-xs font-normal">
-            @{selectedDialog.username}
+            @{dialog.username}
           </span>
         </div>
       </Tappable>
     </Wrapper>
   );
-};
+}
 
 const Wrapper = ({ children }: { children: ReactElement }) => {
   return (
@@ -45,6 +44,10 @@ const Wrapper = ({ children }: { children: ReactElement }) => {
       animate={{ opacity: 1, y: 0, filter: "unset" }}
       exit={{ opacity: 0, y: 10, filter: "blur(2px)" }}
       transition={{ duration: 0.15 }}
+      style={{
+        top: getMiniAppTopInset(),
+      }}
+      className="absolute left-0 z-10 w-full"
     >
       <div>
         <div className="p-4 pt-2">

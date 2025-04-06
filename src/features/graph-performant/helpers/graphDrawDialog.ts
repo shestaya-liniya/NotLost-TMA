@@ -1,6 +1,7 @@
 import { NodeObject } from "react-force-graph-2d";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
+import { truncateWord } from "@/helpers/truncateWord";
 
 export const drawContactNode = (
   node: NodeObject,
@@ -42,7 +43,7 @@ export const drawContactNode = (
   };
 
   // firstName
-  const textWidth = ctx.measureText(node.firstName).width;
+  const textWidth = ctx.measureText(truncateWord(node.firstName, 6)).width;
   const textHeight = firstNameFontSize;
 
   // text background
@@ -70,7 +71,7 @@ export const drawContactNode = (
   ctx.stroke();
 
   drawText(
-    `${node.firstName!}`,
+    `${truncateWord(node.firstName!, 6)}`,
     firstNameFontSize,
     linkColor,
     isIos ? AVATAR_SIZE / 4 - 0.25 : AVATAR_SIZE / 4 + 1
