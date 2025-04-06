@@ -22,23 +22,24 @@ import { useNodeImageCache } from "./helpers/useNodeImageCache";
 import graphInitNodes from "./helpers/graphInitNodes";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
+  const graphData = useMemo(() => graphInitNodes(data), [data]);
+  const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
+  const graphRef = React.useRef<
+    ForceGraphMethods<{ id: string | number }> | undefined
+  >(undefined);
+
+  const lp = retrieveLaunchParams();
+  const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
+
   const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
     null
   );
 
-  const lp = retrieveLaunchParams();
-
-  const graphData = useMemo(() => graphInitNodes(data), [data]);
-
   const [dragNodes, setDragNodes] = useState<boolean>(false);
-
-  const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
 
   useEffect(() => {
     fetchImages();
   }, [graphData.nodes, imageCache]);
-
-  const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
 
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
@@ -56,15 +57,11 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     [imageCache]
   );
 
-  const fgRef = React.useRef<
-    ForceGraphMethods<{ id: string | number }> | undefined
-  >(undefined);
-
   useEffect(() => {
-    fgRef?.current?.d3Force("charge")!.distanceMax(140);
-    fgRef?.current?.centerAt(0, 0);
-    fgRef?.current?.zoom(5);
-    fgRef?.current?.d3Force("link")!.distance(() => {
+    graphRef?.current?.d3Force("charge")!.distanceMax(140);
+    graphRef?.current?.centerAt(0, 0);
+    graphRef?.current?.zoom(5);
+    graphRef?.current?.d3Force("link")!.distance(() => {
       return 20;
     });
   }, []);
@@ -101,11 +98,11 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       </div>
 
       <ForceGraph2D
-        ref={fgRef}
+        ref={graphRef}
         graphData={graphData}
         height={Number(getCssVariable("--initial-height").replace("px", ""))}
         nodeAutoColorBy="group"
-        enableNodeDrag={dragNodes}
+        enableNodeDrag={true}
         onBackgroundClick={() => {
           setSelectedDialog(null);
         }}
