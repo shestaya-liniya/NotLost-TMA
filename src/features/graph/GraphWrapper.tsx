@@ -1,9 +1,13 @@
+import ForceGraph from "./Graph";
+import { memo } from "react";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
-import Graph from "./Graph";
 
-export default function GraphWrapper() {
+const Graph = () => {
   const { jazzProfile } = useJazzProfileContext();
 
   if (!jazzProfile.folders) return;
-  return <Graph data={jazzProfile.folders} />;
-}
+
+  return <ForceGraph data={jazzProfile.folders} />;
+};
+
+export default memo(Graph);

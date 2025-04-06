@@ -1,17 +1,21 @@
 import { getCssVariable } from "@/helpers/css/getCssVariable";
-import { IGraphNode, IGraphNodeType, IGraphRef } from "../Graph.interface";
+import {
+  IGraphFolderFlag,
+  IGraphNode,
+  IGraphNodeType,
+  IGraphRef,
+} from "../Graph.interface";
 import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
-import { useGraphStore } from "../GraphStore";
 
 export default function graphUpdateFolderFlag(
   graphRef: IGraphRef,
-  node: IGraphNode
+  node: IGraphNode,
+  folderFlags: IGraphFolderFlag[],
+  setFolderFlags: (flags: IGraphFolderFlag[]) => void
 ) {
-  const { setFolderFlags, folderFlags } = useGraphStore.getState();
-
   if (graphRef && node.type === IGraphNodeType.FOLDER && !node.nested) {
     const SCREEN_WIDTH = window.innerWidth;
     const SCREEN_HEIGHT = Number(

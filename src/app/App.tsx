@@ -8,12 +8,11 @@ import TabViewContainer from "./TabBar";
 import { getTelegramDialogsAndSetToStore, setupTelegramTheme } from "./tg";
 import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
-//import Settings from "@/pages/Settings";
+import Settings from "@/pages/Settings";
 import TelegramSignIn from "@/pages/TelegramSignIn";
 import SlidingPage from "@/ui/SlidingPage";
 import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
-import ForceGraph from "@/features/graph-performant/GraphWrapper";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -114,7 +113,7 @@ const ModalsAndSlidingPages = () => {
         open={settingsModalOpen}
         onClose={() => setSettingsModalOpen(false)}
       >
-        <ForceGraph />
+        <Settings />
       </SlidingPage>
       <SlidingPage
         open={graphModalOpen}

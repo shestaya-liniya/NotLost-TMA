@@ -4,23 +4,21 @@ import Tappable from "@/ui/Tappable";
 import { createPortal } from "react-dom";
 import BottomModal from "@/ui/modals/BottomModal";
 import Switch from "@/ui/Switch";
-import { useGraphStore } from "../GraphStore";
 
-export default function GraphSettings() {
-  const {
-    isSettingsModalOpen,
-    setIsSettingsModalOpen,
-    graphDragMode,
-    setGraphDragMode,
-    setGraphCooldownTicks,
-    setGraphWarmupTicks,
-    showFolderFlags,
-    setShowFolderFlags,
-  } = useGraphStore();
+export default function GraphSettings(props: {
+  isSettingsModalOpen: boolean;
+  setIsSettingsModalOpen: (val: boolean) => void;
+  graphDragModeEnabled: boolean;
+  setGraphCooldownTicks: (val: number | undefined) => void;
+  setGraphWarmupTicks: (val: number | undefined) => void;
+  setGraphDragMode: (val: boolean) => void;
+  showFolderFlags: boolean;
+  setShowFolderFlags: (val: boolean) => void;
+}) {
   return (
     <div>
       <Tappable
-        onClick={() => setIsSettingsModalOpen(true)}
+        onClick={() => props.setIsSettingsModalOpen(true)}
         className="bg-primary/50 absolute right-4 backdrop-blur-xl p-2 rounded-2xl z-50 mt-2"
         style={{
           top: getMiniAppTopInset(),
@@ -31,8 +29,8 @@ export default function GraphSettings() {
       {createPortal(
         <BottomModal
           id=""
-          isOpen={isSettingsModalOpen}
-          onClose={() => setIsSettingsModalOpen(false)}
+          isOpen={props.isSettingsModalOpen}
+          onClose={() => props.setIsSettingsModalOpen(false)}
           title="Graph settings"
         >
           <div className="grid grid-cols-2 pb-6">
@@ -45,16 +43,16 @@ export default function GraphSettings() {
             <div className="py-2 rounded-2xl flex justify-end">
               <Switch
                 label=""
-                checked={graphDragMode}
+                checked={props.graphDragModeEnabled}
                 onChange={(checked) => {
                   if (checked) {
-                    setGraphCooldownTicks(undefined);
-                    setGraphWarmupTicks(undefined);
+                    props.setGraphCooldownTicks(undefined);
+                    props.setGraphWarmupTicks(undefined);
                   } else {
-                    setGraphCooldownTicks(0);
-                    setGraphWarmupTicks(30);
+                    props.setGraphCooldownTicks(0);
+                    props.setGraphWarmupTicks(30);
                   }
-                  setGraphDragMode(checked);
+                  props.setGraphDragMode(checked);
                 }}
               />
             </div>
@@ -67,9 +65,9 @@ export default function GraphSettings() {
             <div className="py-2 rounded-2xl flex justify-end">
               <Switch
                 label=""
-                checked={showFolderFlags}
+                checked={props.showFolderFlags}
                 onChange={(checked) => {
-                  setShowFolderFlags(checked);
+                  props.setShowFolderFlags(checked);
                 }}
               />
             </div>

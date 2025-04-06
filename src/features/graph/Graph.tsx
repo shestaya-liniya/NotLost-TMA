@@ -1,45 +1,89 @@
-import { useEffect, useMemo, memo, useCallback } from "react";
-import ForceGraph2D, { NodeObject } from "react-force-graph-2d";
+import React, { useEffect, useState, useCallback, useMemo, memo } from "react";
+import ForceGraph2D, {
+  ForceGraphMethods,
+  NodeObject,
+} from "react-force-graph-2d";
+import {
+  IGraphFolderFlag,
+  IGraphNode,
+  IGraphNodeDialog,
+  IGraphNodeType,
+} from "./Graph.interface";
+import { drawContactNode } from "./helpers/graphDrawDialog";
+import { drawTopicNode } from "./helpers/graphDrawFolder";
+import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { AnimatePresence } from "framer-motion";
 import { JazzListOfFolders } from "@/lib/jazz/schema";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
-import { IGraphNode } from "./Graph.interface";
-import { useNodeImageCache } from "./hooks/useNodeImageCache";
-import GraphSelectedDialog from "./components/GraphSelectedDialog";
+import graphSelectDialog from "./helpers/graphSelectDialog";
+import { useNodeImageCache } from "./helpers/useNodeImageCache";
+import graphInitNodes from "./helpers/graphInitNodes";
 import GraphSettings from "./components/GraphSettings";
 import { GraphFolderFlags } from "./components/GraphFoldersFlag";
-import { AnimatePresence } from "framer-motion";
-import graphSelectDialog from "./helpers/graphSelectDialog";
-import graphDrawNode from "./helpers/nodes/graphDrawNode";
-import { useGraphStore } from "./GraphStore";
-import { graphFoldersInit } from "./helpers/graphFolderInit";
+import GraphSelectedDialog from "./components/GraphSelectedDialog";
+import graphUpdateFolderFlag from "./helpers/graphUpdateFolderFlag";
 
-const Graph = ({ data }: { data: JazzListOfFolders }) => {
-  const graphData = useMemo(() => graphFoldersInit(data), [data]);
-
-  const {
-    graphRef,
-    selectedDialog,
-    setSelectedDialog,
-    graphCooldownTicks,
-    graphWarmupTicks,
-    graphDragMode,
-    showFolderFlags,
-    folderFlags,
-  } = useGraphStore();
-
+const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
+  const graphData = useMemo(() => graphInitNodes(data), [data]);
   const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
+  const graphRef = React.useRef<
+    ForceGraphMethods<{ id: string | number }> | undefined
+  >(undefined);
+
+  const lp = retrieveLaunchParams();
+  const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
+
+  // Graph State
+  const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
+    null
+  );
+
+  const [graphDragModeEnabled, setGraphDragModeEnabled] =
+    useState<boolean>(false);
+  const [showFolderFlags, setShowFolderFlags] = useState<boolean>(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] =
+    useState<boolean>(false);
+  const [folderFlags, setFolderFlags] = useState<IGraphFolderFlag[]>([]);
+  const [graphCooldownTicks, setGraphCooldownTicks] = useState<
+    number | undefined
+  >(0);
+  const [graphWarmupTicks, setGraphWarmupTicks] = useState<number | undefined>(
+    30
+  );
 
   useEffect(() => {
     fetchImages();
   }, [graphData.nodes, imageCache]);
 
+  const drawNode = useCallback(
+    (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
+      const img = imageCache[node.id!];
+
+      if (showFolderFlags)
+        graphUpdateFolderFlag(
+          graphRef,
+          node as IGraphNode,
+          folderFlags,
+          setFolderFlags
+        );
+
+      switch (node.type) {
+        case IGraphNodeType.DIALOG:
+          drawContactNode(node, ctx, globalScale, img, isMacOrIos);
+          break;
+        case IGraphNodeType.FOLDER:
+          drawTopicNode(node, ctx, img, isMacOrIos);
+          break;
+      }
+    },
+    [imageCache]
+  );
+
   useEffect(() => {
-    graphRef?.current?.d3Force("charge")!.distanceMax(80);
+    graphRef?.current?.d3Force("charge")!.distanceMax(140);
     graphRef?.current?.centerAt(0, 0);
     graphRef?.current?.zoom(5);
-    graphRef?.current?.d3Force("center", null);
-
     graphRef?.current?.d3Force("link")!.distance(() => {
       return 20;
     });
@@ -53,33 +97,38 @@ const Graph = ({ data }: { data: JazzListOfFolders }) => {
     <div>
       <AnimatePresence>
         {selectedDialog && <GraphSelectedDialog dialog={selectedDialog} />}
-        {showFolderFlags && <GraphFolderFlags folderFlags={folderFlags} />}
+        {showFolderFlags && (
+          <GraphFolderFlags folderFlags={folderFlags} graphRef={graphRef} />
+        )}
       </AnimatePresence>
 
-      <GraphSettings />
+      <GraphSettings
+        isSettingsModalOpen={isSettingsModalOpen}
+        setIsSettingsModalOpen={(val) => setIsSettingsModalOpen(val)}
+        graphDragModeEnabled={graphDragModeEnabled}
+        setGraphDragMode={(val) => setGraphDragModeEnabled(val)}
+        setGraphCooldownTicks={(val) => setGraphCooldownTicks(val)}
+        setGraphWarmupTicks={(val) => setGraphWarmupTicks(val)}
+        showFolderFlags={showFolderFlags}
+        setShowFolderFlags={(val) => setShowFolderFlags(val)}
+      />
 
       <ForceGraph2D
         ref={graphRef}
         graphData={graphData}
         height={Number(getCssVariable("--initial-height").replace("px", ""))}
-        enableNodeDrag={graphDragMode}
+        nodeAutoColorBy="group"
+        enableNodeDrag={graphDragModeEnabled}
         cooldownTicks={graphCooldownTicks}
         warmupTicks={graphWarmupTicks}
-        onBackgroundClick={() => setSelectedDialog(null)}
+        onBackgroundClick={() => {
+          setSelectedDialog(null);
+        }}
         onNodeClick={selectDialog}
         onNodeDrag={selectDialog}
-        nodeCanvasObject={(node, ctx, globalScale) =>
-          graphDrawNode(
-            imageCache,
-            graphRef,
-            node as IGraphNode,
-            ctx,
-            globalScale
-          )
-        }
+        nodeCanvasObject={drawNode}
         nodePointerAreaPaint={(node, color, ctx) => {
-          // clickable node zone, make little bit bigger
-          const nodeSize = 15;
+          const nodeSize = 15; // clickable node zone, make little bit bigger
 
           ctx.fillStyle = color;
           ctx.beginPath();
@@ -87,7 +136,7 @@ const Graph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.1);
+          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.5);
           ctx.lineWidth = 0.25;
 
           ctx.beginPath();
@@ -106,4 +155,4 @@ const Graph = ({ data }: { data: JazzListOfFolders }) => {
   );
 };
 
-export default memo(Graph);
+export default memo(ForceGraph);
