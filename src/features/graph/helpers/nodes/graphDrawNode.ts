@@ -4,6 +4,7 @@ import {
   IGraphRef,
   IGraphNode,
 } from "../../Graph.interface";
+import { useGraphStore } from "../../GraphStore";
 import graphUpdateFolderFlag from "../graphUpdateFolderFlag";
 import { graphDrawDialog } from "./graphDrawDialog";
 import { graphDrawFolder } from "./graphDrawFolder";
@@ -15,9 +16,10 @@ export default function graphDrawNode(
   ctx: CanvasRenderingContext2D,
   globalScale: number
 ) {
+  const { showFolderFlags } = useGraphStore.getState();
   const img = imageCache[node.id!];
 
-  graphUpdateFolderFlag(graphRef, node);
+  if (showFolderFlags) graphUpdateFolderFlag(graphRef, node);
 
   switch (node.type) {
     case IGraphNodeType.DIALOG:
