@@ -136,7 +136,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
-          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.5);
+          ctx.strokeStyle = hexToRgba(getCssVariable("--color-link"), 0.1);
           ctx.lineWidth = 0.25;
 
           ctx.beginPath();
