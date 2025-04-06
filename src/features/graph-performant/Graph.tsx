@@ -10,8 +10,8 @@ import {
   IGraphNodeDialog,
   IGraphNodeType,
 } from "./Graph.interface";
-import { drawContactNode } from "./helpers/-draw-contact-node";
-import { drawTopicNode, getTopicRadius } from "./helpers/-draw-topic-node";
+import { drawContactNode } from "./helpers/graphDrawDialog";
+import { drawTopicNode, getTopicRadius } from "./helpers/graphDrawFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { GraphSelectedDialog } from "./GraphSelectedDialog";
 import { AnimatePresence } from "framer-motion";

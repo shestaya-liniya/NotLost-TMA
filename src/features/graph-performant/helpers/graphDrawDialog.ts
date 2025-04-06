@@ -1,5 +1,5 @@
 import { NodeObject } from "react-force-graph-2d";
-import { getTopicRadius } from "./-draw-topic-node";
+import { getTopicRadius } from "./graphDrawFolder";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
 
