@@ -4,24 +4,22 @@ import ForceGraph2D, {
   NodeObject,
 } from "react-force-graph-2d";
 import {
-  IGraphData,
-  IGraphLink,
   IGraphNode,
   IGraphNodeDialog,
   IGraphNodeType,
 } from "./Graph.interface";
 import { drawContactNode } from "./helpers/graphDrawDialog";
-import { drawTopicNode, getTopicRadius } from "./helpers/graphDrawFolder";
+import { drawTopicNode } from "./helpers/graphDrawFolder";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { GraphSelectedDialog } from "./GraphSelectedDialog";
 import { AnimatePresence } from "framer-motion";
-import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
+import { JazzListOfFolders } from "@/lib/jazz/schema";
 import Switch from "@/ui/Switch";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
-import { getElementHeightById } from "@/helpers/css/getElementHeight";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
 import graphSelectDialog from "./helpers/graphSelectDialog";
 import { useNodeImageCache } from "./helpers/useNodeImageCache";
+import graphInitNodes from "./helpers/graphInitNodes";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
@@ -30,7 +28,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const lp = retrieveLaunchParams();
 
-  const graphData = useMemo(() => initializeGraphData(data), [data]);
+  const graphData = useMemo(() => graphInitNodes(data), [data]);
 
   const [dragNodes, setDragNodes] = useState<boolean>(false);
 
@@ -40,23 +38,18 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     fetchImages();
   }, [graphData.nodes, imageCache]);
 
+  const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
+
   const drawNode = useCallback(
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!];
-      setGlobalScale(globalScale);
 
       switch (node.type) {
         case IGraphNodeType.DIALOG:
-          drawContactNode(
-            node,
-            ctx,
-            globalScale,
-            img,
-            lp.tgWebAppPlatform === "ios"
-          );
+          drawContactNode(node, ctx, globalScale, img, isMacOrIos);
           break;
         case IGraphNodeType.FOLDER:
-          drawTopicNode(node, ctx, img, lp.tgWebAppPlatform);
+          drawTopicNode(node, ctx, img, isMacOrIos);
           break;
       }
     },
@@ -76,14 +69,14 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     });
   }, []);
 
-  const [globalScale, setGlobalScale] = useState<number | null>(null);
-
-  const tabBarHeight = getElementHeightById("tab-bar");
+  const selectDialog = useCallback((node: NodeObject) => {
+    graphSelectDialog(node as IGraphNode, selectedDialog, setSelectedDialog);
+  }, []);
 
   return (
     <div
       style={{
-        height: `calc(var(--initial-height) - ${tabBarHeight}px)`,
+        height: `calc(var(--initial-height)`,
       }}
     >
       <div
@@ -110,42 +103,21 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       <ForceGraph2D
         ref={fgRef}
         graphData={graphData}
-        height={
-          Number(getCssVariable("--initial-height").replace("px", "")) -
-          tabBarHeight!
-        }
+        height={Number(getCssVariable("--initial-height").replace("px", ""))}
         nodeAutoColorBy="group"
         enableNodeDrag={dragNodes}
         onBackgroundClick={() => {
           setSelectedDialog(null);
         }}
-        onNodeClick={(node) => {
-          graphSelectDialog(
-            node as IGraphNode,
-            selectedDialog,
-            setSelectedDialog
-          );
-        }}
-        onNodeDrag={(node) => {
-          graphSelectDialog(
-            node as IGraphNode,
-            selectedDialog,
-            setSelectedDialog
-          );
-        }}
+        onNodeClick={selectDialog}
+        onNodeDrag={selectDialog}
         nodeCanvasObject={drawNode}
         nodePointerAreaPaint={(node, color, ctx) => {
-          // clickable node zone
-          let imgSize;
-          if (node.type === IGraphNodeType.FOLDER) {
-            imgSize = getTopicRadius(globalScale ? globalScale : 0);
-          } else {
-            imgSize = 15;
-          }
-          console.log();
+          const nodeSize = 15; // clickable node zone, make little bit bigger
+
           ctx.fillStyle = color;
           ctx.beginPath();
-          ctx.arc(node.x!, node.y!, imgSize / 2, 0, 2 * Math.PI, false);
+          ctx.arc(node.x!, node.y!, nodeSize / 2, 0, 2 * Math.PI, false);
           ctx.fill();
         }}
         linkCanvasObject={(link, ctx) => {
@@ -166,60 +138,6 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       />
     </div>
   );
-};
-
-const initializeGraphData = (folders: JazzListOfFolders): IGraphData => {
-  const nodes: IGraphNode[] = [];
-  const links: IGraphLink[] = [];
-
-  function processFolders(
-    folders: JazzFolder[],
-    nodes: IGraphNode[],
-    links: IGraphLink[]
-  ) {
-    folders.forEach((folder) => {
-      if (!folder) return;
-
-      nodes.push({
-        id: folder.id,
-        title: folder.title,
-        targets: [],
-        type: IGraphNodeType.FOLDER,
-      });
-
-      folder?.dialogs?.forEach((dialog) => {
-        if (!dialog) return;
-
-        nodes.push({
-          id: dialog.id,
-          username: dialog.username,
-          firstName: dialog.name,
-          tags: [],
-          type: IGraphNodeType.DIALOG,
-        });
-
-        links.push({
-          source: folder.id,
-          target: dialog.id,
-        });
-      });
-
-      if (folder.nestedFolders?.length) {
-        processFolders(folder.nestedFolders as JazzFolder[], nodes, links);
-
-        folder.nestedFolders.forEach((subFolder) => {
-          if (!subFolder) return;
-          links.push({
-            source: folder.id,
-            target: subFolder.id,
-          });
-        });
-      }
-    });
-  }
-
-  processFolders(folders as JazzFolder[], nodes, links);
-  return { nodes, links };
 };
 
 export default memo(ForceGraph);

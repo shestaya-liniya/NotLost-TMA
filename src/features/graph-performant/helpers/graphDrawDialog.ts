@@ -1,5 +1,4 @@
 import { NodeObject } from "react-force-graph-2d";
-import { getTopicRadius } from "./graphDrawFolder";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
 
@@ -11,8 +10,6 @@ export const drawContactNode = (
   isIos: boolean
 ) => {
   const AVATAR_SIZE = 10;
-
-  if (getTopicRadius(globalScale) >= 36) return;
 
   const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
   let textOpacity = Math.min(globalScale / 4, 1);
