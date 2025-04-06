@@ -3,26 +3,30 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from "react-force-graph-2d";
-import { GraphData, GraphLink, GraphNode, GraphNodeType } from "./-@interface";
-import { drawContactNode } from "./(nodes)/-draw-contact-node";
-import { drawTopicNode, getTopicRadius } from "./(nodes)/-draw-topic-node";
-import { useImageCache } from "./(nodes)/-use-image-cache";
+import {
+  IGraphData,
+  IGraphLink,
+  IGraphNode,
+  IGraphNodeDialog,
+  IGraphNodeType,
+} from "./Graph.interface";
+import { drawContactNode } from "./helpers/-draw-contact-node";
+import { drawTopicNode, getTopicRadius } from "./helpers/-draw-topic-node";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { SelectedContact } from "./-selected-contact";
+import { GraphSelectedDialog } from "./GraphSelectedDialog";
 import { AnimatePresence } from "framer-motion";
 import { JazzFolder, JazzListOfFolders } from "@/lib/jazz/schema";
 import Switch from "@/ui/Switch";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { getElementHeightById } from "@/helpers/css/getElementHeight";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
+import graphSelectDialog from "./helpers/graphSelectDialog";
+import { useNodeImageCache } from "./helpers/useNodeImageCache";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
-  const [selectedContact, setSelectedContact] = useState<null | GraphNode>(
+  const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
     null
   );
-  const [selectedContactTimestamp, setSelectedContactTimestamp] = useState<
-    null | number
-  >(null);
 
   const lp = retrieveLaunchParams();
 
@@ -30,7 +34,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
   const [dragNodes, setDragNodes] = useState<boolean>(false);
 
-  const { imageCache, fetchImages } = useImageCache(graphData.nodes);
+  const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
 
   useEffect(() => {
     fetchImages();
@@ -42,10 +46,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
       setGlobalScale(globalScale);
 
       switch (node.type) {
-        case GraphNodeType.DIALOG:
+        case IGraphNodeType.DIALOG:
           drawContactNode(node, ctx, globalScale, img, lp.tgWebAppPlatform);
           break;
-        case GraphNodeType.TOPIC:
+        case IGraphNodeType.FOLDER:
           drawTopicNode(node, ctx, img, lp.tgWebAppPlatform);
           break;
       }
@@ -83,8 +87,8 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         className="absolute left-0 z-10 w-full"
       >
         <AnimatePresence>
-          {selectedContact && (
-            <SelectedContact selectedContact={selectedContact} />
+          {selectedDialog && (
+            <GraphSelectedDialog selectedDialog={selectedDialog} />
           )}
         </AnimatePresence>
       </div>
@@ -107,44 +111,27 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
         nodeAutoColorBy="group"
         enableNodeDrag={dragNodes}
         onBackgroundClick={() => {
-          setSelectedContact(null);
+          setSelectedDialog(null);
         }}
         onNodeClick={(node) => {
-          /* fgRef?.current?.zoomToFit(
-            500,
-            // PADDING DEPENDS ON USER SCREEN RESOLUTION (small screens -> zoom more far a way; big screens -> zoom closer)
-            175,
-            (filterNode) => filterNode.id === node.id
-          ); */
-
-          if (selectedContact !== node) {
-            setSelectedContactTimestamp(Date.now());
-            setSelectedContact(null);
-            setTimeout(() => {
-              setSelectedContact(node as GraphNode);
-            }, 150);
-          } else if (
-            selectedContactTimestamp &&
-            selectedContact.type === GraphNodeType.DIALOG &&
-            Date.now() - selectedContactTimestamp < 500
-          ) {
-            window.open(`https://t.me/${selectedContact.username}`);
-          }
-          setSelectedContactTimestamp(Date.now());
+          graphSelectDialog(
+            node as IGraphNode,
+            selectedDialog,
+            setSelectedDialog
+          );
         }}
         onNodeDrag={(node) => {
-          if (selectedContact !== node) {
-            setSelectedContact(null);
-            setTimeout(() => {
-              setSelectedContact(node as GraphNode);
-            }, 150);
-          }
+          graphSelectDialog(
+            node as IGraphNode,
+            selectedDialog,
+            setSelectedDialog
+          );
         }}
         nodeCanvasObject={drawNode}
         nodePointerAreaPaint={(node, color, ctx) => {
           // clickable node zone
           let imgSize;
-          if (node.type === GraphNodeType.TOPIC) {
+          if (node.type === IGraphNodeType.FOLDER) {
             imgSize = getTopicRadius(globalScale ? globalScale : 0);
           } else {
             imgSize = 15;
@@ -175,14 +162,14 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   );
 };
 
-const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
-  const nodes: GraphNode[] = [];
-  const links: GraphLink[] = [];
+const initializeGraphData = (folders: JazzListOfFolders): IGraphData => {
+  const nodes: IGraphNode[] = [];
+  const links: IGraphLink[] = [];
 
   function processFolders(
     folders: JazzFolder[],
-    nodes: GraphNode[],
-    links: GraphLink[]
+    nodes: IGraphNode[],
+    links: IGraphLink[]
   ) {
     folders.forEach((folder) => {
       if (!folder) return;
@@ -191,7 +178,7 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
         id: folder.id,
         title: folder.title,
         targets: [],
-        type: GraphNodeType.TOPIC,
+        type: IGraphNodeType.FOLDER,
       });
 
       folder?.dialogs?.forEach((dialog) => {
@@ -202,7 +189,7 @@ const initializeGraphData = (folders: JazzListOfFolders): GraphData => {
           username: dialog.username,
           firstName: dialog.name,
           tags: [],
-          type: GraphNodeType.DIALOG,
+          type: IGraphNodeType.DIALOG,
         });
 
         links.push({
