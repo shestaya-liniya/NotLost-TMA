@@ -3,23 +3,18 @@ import { getTopicRadius } from "./-draw-topic-node";
 import { getCssVariable } from "@/helpers/css/getCssVariable";
 import { hexToRgba } from "@/helpers/css/hexToRgba";
 
-
 export const drawContactNode = (
   node: NodeObject,
   ctx: CanvasRenderingContext2D,
   globalScale: number,
   img: HTMLImageElement | null,
-  platform: string
+  isIos: boolean
 ) => {
-  const imgSize = 10;
+  const AVATAR_SIZE = 10;
 
   if (getTopicRadius(globalScale) >= 36) return;
 
-  //const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
-  const usernameFontSize = Math.min(2, (12 * globalScale) / 8);
-
-  ctx.font = `400 ${usernameFontSize}px Sans-Serif`;
-
+  const firstNameFontSize = Math.min(2, (12 * globalScale) / 8);
   let textOpacity = Math.min(globalScale / 4, 1);
 
   if (globalScale < 4) {
@@ -29,6 +24,12 @@ export const drawContactNode = (
   if (globalScale < 2) {
     textOpacity = 0;
   }
+
+  const primaryColor = getCssVariable("--color-primary");
+  const secondaryColor = getCssVariable("--color-secondary");
+  const linkColor = getCssVariable("--color-link");
+
+  ctx.font = `400 ${firstNameFontSize}px Sans-Serif`;
 
   const drawText = (
     text: string,
@@ -43,26 +44,18 @@ export const drawContactNode = (
     ctx.fillText(text, node.x!, node.y! + yOffset);
   };
 
-  // first name
-  /* drawText(
-    node.firstName.toString(),
-    firstNameFontSize,
-    getCssVariable("--tg-theme-text-color"),
-    imgSize / 4 + 1
-  ); */
-
-  // username
+  // firstName
   const textWidth = ctx.measureText(node.firstName).width;
-  const textHeight = usernameFontSize;
+  const textHeight = firstNameFontSize;
 
   // text background
   const padding = 0.6;
   const cornerRadius = 1.6;
-  ctx.fillStyle = hexToRgba(getCssVariable("--color-primary"), textOpacity);
+  ctx.fillStyle = hexToRgba(primaryColor, textOpacity);
 
   ctx.beginPath();
   const x = node.x! - textWidth / 2 - padding * 2;
-  const y = node.y! + imgSize - padding - 6.5;
+  const y = node.y! + AVATAR_SIZE - padding - 6.5;
   const width = textWidth + padding * 4;
   const height = textHeight + padding * 2;
 
@@ -73,52 +66,39 @@ export const drawContactNode = (
   ctx.arcTo(x, y, x + width, y, cornerRadius);
   ctx.closePath();
   ctx.fill();
+
   // border
-  ctx.lineWidth = 0.25; // Set the border width
-  ctx.strokeStyle = hexToRgba(getCssVariable("--color-secondary"), 1); // Set the border color
+  ctx.lineWidth = 0.25;
+  ctx.strokeStyle = hexToRgba(secondaryColor, 1);
   ctx.stroke();
 
   drawText(
     `${node.firstName!}`,
-    usernameFontSize,
-    getCssVariable("--color-link"),
-    platform === "ios" ? imgSize / 4 - 0.25 : imgSize / 4 + 1
+    firstNameFontSize,
+    linkColor,
+    isIos ? AVATAR_SIZE / 4 - 0.25 : AVATAR_SIZE / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
     ctx.save();
     ctx.beginPath();
-    ctx.arc(node.x!, node.y!, imgSize / 4, 0, Math.PI * 2, false);
+    ctx.arc(node.x!, node.y!, AVATAR_SIZE / 4, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.clip();
 
     if (image) {
       ctx.drawImage(
         image,
-        node.x! - imgSize / 4,
-        node.y! - imgSize / 4,
-        imgSize / 2,
-        imgSize / 2
+        node.x! - AVATAR_SIZE / 4,
+        node.y! - AVATAR_SIZE / 4,
+        AVATAR_SIZE / 2,
+        AVATAR_SIZE / 2
       );
-    } /* else {
-      // acronym
-      const acronymFontSize = Math.min(4, (12 * globalScale) / 8);
-      const acronym = node.firstName[0];
-
-      ctx.font = `600 ${acronymFontSize}px Sans-Serif`;
-      ctx.fillStyle = hexToRgba(getCssVariable("--tg-theme-link-color"), 1);
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(acronym, node.x!, node.y!);
-
-      // acronym bg
-      ctx.fillStyle = "rgba(41, 144, 255, .15)";
-      ctx.fill();
-    } */
+    }
 
     // blue border around node
     ctx.beginPath();
-    ctx.arc(node.x!, node.y!, imgSize / 4, 0, 2 * Math.PI, false);
+    ctx.arc(node.x!, node.y!, AVATAR_SIZE / 4, 0, 2 * Math.PI, false);
     ctx.lineWidth = 0.5;
     ctx.strokeStyle = getCssVariable("--color-link");
     ctx.stroke();

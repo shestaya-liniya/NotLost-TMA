@@ -13,7 +13,7 @@ import TelegramSignIn from "@/pages/TelegramSignIn";
 import SlidingPage from "@/ui/SlidingPage";
 import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
-import ForceGraph from "@/features/graph-performant/index";
+import ForceGraph from "@/features/graph-performant/GraphWrapper";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();

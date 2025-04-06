@@ -1,4 +1,4 @@
-import ForceGraph from "./-force-graph";
+import ForceGraph from "./Graph";
 import { memo } from "react";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 

@@ -47,7 +47,13 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
       switch (node.type) {
         case IGraphNodeType.DIALOG:
-          drawContactNode(node, ctx, globalScale, img, lp.tgWebAppPlatform);
+          drawContactNode(
+            node,
+            ctx,
+            globalScale,
+            img,
+            lp.tgWebAppPlatform === "ios"
+          );
           break;
         case IGraphNodeType.FOLDER:
           drawTopicNode(node, ctx, img, lp.tgWebAppPlatform);
