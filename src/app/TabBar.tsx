@@ -57,7 +57,6 @@ const TabViewContainer = () => {
           onSlideChange={(swiper) => {
             setTabIndex(swiper.activeIndex);
           }}
-          height={900}
           allowTouchMove={false}
         >
           <SwiperSlide>

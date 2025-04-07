@@ -242,13 +242,13 @@ input:focus {
   background: var(--color-accent) !important;
 }
 
-.dialogs-swiper .swiper {
-  height: 288px !important;
-}
-
 .swiper,
 .swiper-container {
   z-index: 0 !important;
+}
+
+.swiper {
+  height: 100%;
 }
 
 .ka-wrapper {
