@@ -1,21 +1,18 @@
 import { getCssVariable } from "@/helpers/css/getCssVariable";
-import {
-  IGraphFolderFlag,
-  IGraphNode,
-  IGraphNodeType,
-  IGraphRef,
-} from "../Graph.interface";
+import { IGraphNodeType, IGraphRef } from "../Graph.interface";
 import getTextWidth from "@/helpers/getTextWidth";
 
 import { NodeObject } from "react-force-graph-2d";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
+import { useGraphStore } from "../GraphStore";
 
 export default function graphUpdateFolderFlag(
   graphRef: IGraphRef,
-  node: IGraphNode,
-  folderFlags: IGraphFolderFlag[],
-  setFolderFlags: (flags: IGraphFolderFlag[]) => void
+  node: NodeObject
 ) {
+  const { folderFlags, setFolderFlags } = useGraphStore.getState();
+  const existingFlag = folderFlags.find((f) => f.id === node.id);
+
   if (graphRef && node.type === IGraphNodeType.FOLDER && !node.nested) {
     const SCREEN_WIDTH = window.innerWidth;
     const SCREEN_HEIGHT = Number(
@@ -37,26 +34,28 @@ export default function graphUpdateFolderFlag(
         SCREEN_HEIGHT,
         getTextWidth(node.title)
       );
+      console.log(folderFlags);
 
-      const existingFlagIndex = folderFlags.findIndex(
-        (flag) => flag.id === node.id
-      );
-
-      if (existingFlagIndex !== -1) {
-        setFolderFlags(
-          folderFlags.map((flag, index) =>
-            index === existingFlagIndex
-              ? {
-                  ...flag,
-                  id: String(node.id),
-                  x: position.x,
-                  y: position.y,
-                  distance: position.distance,
-                  visible: isVisible,
-                }
-              : flag
-          )
+      if (
+        existingFlag &&
+        existingFlag.x === position.x &&
+        existingFlag.y === position.y
+      ) {
+        return;
+      }
+      if (existingFlag) {
+        const updatedFlags = folderFlags.map((flag) =>
+          flag.id === node.id
+            ? {
+                ...flag,
+                x: position.x,
+                y: position.y,
+                distance: position.distance,
+                visible: isVisible,
+              }
+            : flag
         );
+        setFolderFlags(updatedFlags);
       } else {
         setFolderFlags([
           ...folderFlags,
@@ -80,7 +79,7 @@ const isNodeOnScreen = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  if (!node.x || !node.y || !graphRef.current) return;
+  if (node.x === undefined || node.y === undefined || !graphRef.current) return;
 
   const { x, y } = graphRef.current.graph2ScreenCoords(node.x, node.y);
   const isVisible = x >= 0 && x <= canvasWidth && y >= 0 && y <= canvasHeight;

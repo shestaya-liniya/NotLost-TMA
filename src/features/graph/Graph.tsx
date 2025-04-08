@@ -4,7 +4,6 @@ import ForceGraph2D, {
   NodeObject,
 } from "react-force-graph-2d";
 import {
-  IGraphFolderFlag,
   IGraphNode,
   IGraphNodeDialog,
   IGraphNodeType,
@@ -23,10 +22,13 @@ import GraphSettings from "./components/GraphSettings";
 import { GraphFolderFlags } from "./components/GraphFoldersFlag";
 import GraphSelectedDialog from "./components/GraphSelectedDialog";
 import graphUpdateFolderFlag from "./helpers/graphUpdateFolderFlag";
+import { useGraphStore } from "./GraphStore";
 
 const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const graphData = useMemo(() => graphInitNodes(data), [data]);
   const { imageCache, fetchImages } = useNodeImageCache(graphData.nodes);
+  const { folderFlags } = useGraphStore();
+
   const graphRef = React.useRef<
     ForceGraphMethods<{ id: string | number }> | undefined
   >(undefined);
@@ -44,7 +46,7 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   const [showFolderFlags, setShowFolderFlags] = useState<boolean>(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] =
     useState<boolean>(false);
-  const [folderFlags, setFolderFlags] = useState<IGraphFolderFlag[]>([]);
+
   const [graphCooldownTicks, setGraphCooldownTicks] = useState<
     number | undefined
   >(0);
@@ -60,24 +62,20 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
     (node: NodeObject, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const img = imageCache[node.id!];
 
-      if (showFolderFlags)
-        graphUpdateFolderFlag(
-          graphRef,
-          node as IGraphNode,
-          folderFlags,
-          setFolderFlags
-        );
-
       switch (node.type) {
         case IGraphNodeType.DIALOG:
           drawContactNode(node, ctx, globalScale, img, isMacOrIos);
           break;
         case IGraphNodeType.FOLDER:
           drawTopicNode(node, ctx, img, isMacOrIos);
+          if (showFolderFlags) {
+            graphUpdateFolderFlag(graphRef, node);
+          }
+
           break;
       }
     },
-    [imageCache]
+    [imageCache, showFolderFlags]
   );
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import Tappable from "@/ui/Tappable";
 import { IGraphFolderFlag, IGraphRef } from "../Graph.interface";
-import { getUniqueKey } from "@/helpers/getUniqueKey";
 import { graphZoomToNode } from "../helpers/graphZoomToNode";
 
 export function GraphFolderFlag(props: {
@@ -30,10 +29,6 @@ export function GraphFolderFlags(props: {
   graphRef: IGraphRef;
 }) {
   return props.folderFlags.map((flag) => (
-    <GraphFolderFlag
-      key={getUniqueKey()}
-      flag={flag}
-      graphRef={props.graphRef}
-    />
+    <GraphFolderFlag key={flag.id} flag={flag} graphRef={props.graphRef} />
   ));
 }
