@@ -34,8 +34,8 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
   >(undefined);
 
   const lp = retrieveLaunchParams();
-  const isMacOrIos = ["macos", "ios"].includes(lp.tgWebAppPlatform);
-  //const isIos = ["ios"].includes(lp.tgWebAppPlatform);
+  const isIos = ["ios"].includes(lp.tgWebAppPlatform);
+  const isMac = ["macos"].includes(lp.tgWebAppPlatform);
 
   // Graph State
   const [selectedDialog, setSelectedDialog] = useState<null | IGraphNodeDialog>(
@@ -65,10 +65,10 @@ const ForceGraph = ({ data }: { data: JazzListOfFolders }) => {
 
       switch (node.type) {
         case IGraphNodeType.DIALOG:
-          drawContactNode(node, ctx, globalScale, img, isMacOrIos);
+          drawContactNode(node, ctx, globalScale, img, isIos, isMac);
           break;
         case IGraphNodeType.FOLDER:
-          drawTopicNode(node, ctx, img, isMacOrIos);
+          drawTopicNode(node, ctx, img, isMac || isIos);
           if (showFolderFlags) {
             graphUpdateFolderFlag(graphRef, node);
           }

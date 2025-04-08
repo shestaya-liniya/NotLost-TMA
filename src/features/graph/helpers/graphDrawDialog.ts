@@ -8,7 +8,8 @@ export const drawContactNode = (
   ctx: CanvasRenderingContext2D,
   globalScale: number,
   img: HTMLImageElement | null,
-  isIos: boolean
+  isIos: boolean,
+  isMac: boolean
 ) => {
   const AVATAR_SIZE = 10;
 
@@ -74,7 +75,11 @@ export const drawContactNode = (
     `${truncateWord(node.firstName!, 6)}`,
     firstNameFontSize,
     linkColor,
-    isIos ? AVATAR_SIZE / 4 - 0.25 : AVATAR_SIZE / 4 + 1
+    isMac
+      ? AVATAR_SIZE / 4 + 0.5
+      : isIos
+        ? AVATAR_SIZE / 4 - 0.25
+        : AVATAR_SIZE / 4 + 1
   );
 
   const drawAvatar = (image: HTMLImageElement | null) => {
