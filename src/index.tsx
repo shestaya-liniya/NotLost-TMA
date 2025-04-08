@@ -11,7 +11,7 @@ import { init } from "@/lib/telegram/env/init.ts";
 import "./lib/telegram/env/mockEnv.ts";
 import { JazzAndAuth } from "@/lib/jazz/jazzProvider.tsx";
 import TelegramProvider from "@/lib/telegram/telegramProvider.tsx";
-import App from "@/app/App.tsx";
+import App from "@/App.tsx";
 // ------
 
 import { AliveScope } from "react-activation";
