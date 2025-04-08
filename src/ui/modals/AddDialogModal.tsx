@@ -1,9 +1,3 @@
-import {
-  telegramActionGetEntityByUsername,
-  ApiTelegramChannel,
-  ApiTelegramUser,
-} from "@/lib/telegram/api/telegramActions";
-import { truncateWord } from "@/helpers/truncateWord";
 import { useModalStore } from "@/lib/store/modalStore";
 import Input from "@/ui/Input";
 import Modal from "@/ui/modals/Modal";
@@ -20,6 +14,9 @@ import SearchIcon from "@/assets/icons/search.svg?react";
 import { getTelegramSession } from "@/helpers/telegram/telegramSession";
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 import DialogsSlider from "../dialog/DialogsSlider";
+import getTelegramAvatarLink, {
+  checkUserExist,
+} from "@/helpers/telegram/getTelegramAvatarLink";
 
 export default function AddDialogModal() {
   const {
@@ -31,24 +28,25 @@ export default function AddDialogModal() {
   const { jazzProfile } = useJazzProfileContext();
 
   const [usernameValue, setUsernameValue] = useState("");
-  const [entity, setEntity] = useState<
-    ApiTelegramUser | ApiTelegramChannel | null
-  >(null);
+  const [isValidUsername, setIsValidUsername] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // Debounced username value
   useEffect(() => {
     if (!usernameValue) {
-      setEntity(null);
+      setIsValidUsername(false);
       return;
     }
 
     const handler = setTimeout(() => {
       setIsLoading(true);
-      telegramActionGetEntityByUsername(usernameValue).then((res) => {
+      checkUserExist(usernameValue).then((res) => {
+        if (res.exists) {
+          setIsValidUsername(true);
+        } else {
+          setIsValidUsername(false);
+        }
         setIsLoading(false);
-        //@ts-ignore
-        setEntity(res[0]);
       });
     }, 300);
 
@@ -56,13 +54,12 @@ export default function AddDialogModal() {
   }, [usernameValue]);
 
   const handleAddDialogIntoFolder = () => {
-    if (addDialogModalFolder && entity) {
+    if (addDialogModalFolder && isValidUsername) {
       jazzAddDialogToFolder(jazzProfile, addDialogModalFolder, {
-        name:
-          entity?.type === "Channel" ? entity.title : entity.firstName || "X",
-        username: entity.username,
+        name: usernameValue,
+        username: usernameValue,
       });
-      setEntity(null);
+      setIsValidUsername(false);
       setUsernameValue("");
     }
   };
@@ -83,7 +80,10 @@ export default function AddDialogModal() {
         <Input
           label="username"
           value={usernameValue}
-          onInput={setUsernameValue}
+          onInput={(val) => {
+            setIsValidUsername(false);
+            setUsernameValue(val);
+          }}
           before={<div className="text-hint">@</div>}
           className="bg-secondary"
         />
@@ -114,7 +114,7 @@ export default function AddDialogModal() {
           </motion.div>
         )}
 
-        {!isLoading && entity && (
+        {!isLoading && isValidUsername && (
           <motion.div
             key="entity"
             className="flex mt-4"
@@ -125,17 +125,16 @@ export default function AddDialogModal() {
           >
             <img
               loading="lazy"
-              src={`https://t.me/i/userpic/320/${entity.username}.svg`}
-              className="h-12 w-12 rounded-full border-1 border-link"
+              src={getTelegramAvatarLink(usernameValue)}
+              className="h-14 w-14 rounded-full"
               decoding="async"
               alt=""
             />
-            <div className="flex flex-col ml-4">
-              <div className="text-sm font-medium">
-                {/* @ts-ignore */}
-                {truncateWord(entity.firstName, 20)}
+            <div className="flex-col items-start ml-4">
+              <div className="text-link">@{usernameValue}</div>
+              <div className="text-xs text-hint">
+                Sync with Telegram to quickly add from your chats
               </div>
-              <div className="text-xs text-link">@{entity.username}</div>
             </div>
             <div className="ml-auto">
               <Button title="Add" onClick={handleAddDialogIntoFolder} />
@@ -143,7 +142,7 @@ export default function AddDialogModal() {
           </motion.div>
         )}
 
-        {!isLoading && !entity && usernameValue && (
+        {!isLoading && !isValidUsername && usernameValue && (
           <motion.div
             key="not-found"
             className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
@@ -155,7 +154,7 @@ export default function AddDialogModal() {
             Nothing found
           </motion.div>
         )}
-        {!isLoading && !entity && !usernameValue && (
+        {!isLoading && !isValidUsername && !usernameValue && (
           <motion.div
             key="not-found"
             className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
