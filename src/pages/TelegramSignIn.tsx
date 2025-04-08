@@ -20,7 +20,7 @@ import PhoneInput from "react-phone-number-input";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { useModalStore } from "@/lib/store/modalStore";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
-import { getTelegramDialogsAndSetToStore } from "@/app/tg";
+import { getTelegramDialogsAndSetToStore } from "@/helpers/telegram/getTelegramDialogsAndSetToStore";
 
 export default function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();
