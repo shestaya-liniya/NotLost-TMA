@@ -72,9 +72,7 @@ const TabViewContainer = () => {
             </DelayedUnmount>
           </SwiperSlide>
           <SwiperSlide>
-            <KeepAlive>
-              <Events />
-            </KeepAlive>
+            <Events />
           </SwiperSlide>
         </Swiper>
       </div>
