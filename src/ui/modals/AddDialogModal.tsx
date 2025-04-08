@@ -31,6 +31,7 @@ export default function AddDialogModal() {
   const [isValidUsername, setIsValidUsername] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const RESULT_BLOCK_HEIGHT = 56;
   // Debounced username value
   useEffect(() => {
     if (!usernameValue) {
@@ -104,7 +105,10 @@ export default function AddDialogModal() {
         {isLoading && (
           <motion.div
             key="loading"
-            className="h-12 mt-4 flex items-center justify-center"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -124,9 +128,12 @@ export default function AddDialogModal() {
             transition={{ duration: 0.2 }}
           >
             <img
+              style={{
+                height: RESULT_BLOCK_HEIGHT,
+              }}
               loading="lazy"
               src={getTelegramAvatarLink(usernameValue)}
-              className="h-14 w-14 rounded-full"
+              className="min-w-14 rounded-full"
               decoding="async"
               alt=""
             />
@@ -145,7 +152,10 @@ export default function AddDialogModal() {
         {!isLoading && !isValidUsername && usernameValue && (
           <motion.div
             key="not-found"
-            className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -157,7 +167,10 @@ export default function AddDialogModal() {
         {!isLoading && !isValidUsername && !usernameValue && (
           <motion.div
             key="not-found"
-            className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
