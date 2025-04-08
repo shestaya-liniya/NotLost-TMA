@@ -106,7 +106,7 @@ const PeopleOnEvent = () => {
     if (backButton.isSupported()) {
       try {
         backButton.show();
-        backButton.onClick(() => navigate("/tab-bar/event-info"));
+        backButton.onClick(() => navigate("/event-info"));
       } catch (e) {
         console.log(e);
       }
@@ -118,7 +118,7 @@ const PeopleOnEvent = () => {
         <div className="bg-primary/50 -mr-4 -ml-4">
           {lp.tgWebAppPlatform === "tdesktop" && (
             <Tappable
-              onClick={() => navigate("/tab-bar/event-info")}
+              onClick={() => navigate("/event-info")}
               className="bg-link/20 w-32 text-link rounded-lg py-1 font-semibold text-xs  text-center flex items-center gap-1 px-1"
             >
               <ChevronRight className="w-3 h-3 rotate-180 text-link" />
@@ -305,7 +305,7 @@ const EventInfo = () => {
     if (backButton.isSupported()) {
       try {
         backButton.show();
-        backButton.onClick(() => navigate("/tab-bar"));
+        backButton.onClick(() => navigate("/"));
       } catch (e) {
         console.log(e);
       }
@@ -317,7 +317,7 @@ const EventInfo = () => {
       <div className="p-4 min-h-full bg-secondary flex flex-col">
         {lp.tgWebAppPlatform === "tdesktop" && (
           <Tappable
-            onClick={() => navigate("/tab-bar")}
+            onClick={() => navigate("/")}
             className="bg-link/20 w-32 text-link rounded-lg py-1 font-semibold text-xs  text-center flex items-center gap-1 px-1"
           >
             <ChevronRight className="w-3 h-3 rotate-180 text-link" />
