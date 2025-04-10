@@ -12,6 +12,7 @@ import FolderAccordionTooltip, {
 } from "./FolderAccordionTooltip";
 import { JazzFolder } from "@/lib/jazz/schema";
 import TelegramAvatar from "@/ui/TelegramAvatar";
+import Tappable from "@/ui/Tappable";
 
 function FolderAccordion(props: {
   children: React.ReactNode;
@@ -93,12 +94,11 @@ function FolderAccordionHeader(props: {
   };
 
   return (
-    <div>
+    <Tappable onClick={props.onClick}>
       <div
         className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 duration-300 ease-in-out transition-all relative ${
           props.expanded ? "" : "rounded-bl-2xl rounded-br-2xl"
         }`}
-        onClick={props.onClick}
       >
         <div className="flex justify-between items-center">
           <div
@@ -177,7 +177,7 @@ function FolderAccordionHeader(props: {
           </FolderAccordionTooltip>,
           document.body
         )}
-    </div>
+    </Tappable>
   );
 }
 

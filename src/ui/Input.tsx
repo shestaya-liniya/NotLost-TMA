@@ -8,6 +8,7 @@ const Input = ({
   before,
   className,
   type = "text",
+  onBlur,
 }: {
   label: string;
   value: string;
@@ -15,6 +16,7 @@ const Input = ({
   before?: React.ReactNode;
   className?: string;
   type?: "text" | "password";
+  onBlur?: () => void;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,6 +40,7 @@ const Input = ({
         placeholder={label}
         value={value}
         onChange={(e) => handleInputChange(e)}
+        onBlur={onBlur}
       />
     </div>
   );

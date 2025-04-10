@@ -40,10 +40,16 @@ function Tappable(props: {
       onPointerDown={() => {
         if (props.onLongPress) {
           startPress();
+        } else {
+          props.onClick?.();
         }
       }}
       onPointerUp={() => {
-        endPress();
+        if (props.onLongPress) {
+          endPress();
+        } else {
+          props.onClick?.();
+        }
       }}
       onPointerLeave={() => {
         activeRef.current = false;
