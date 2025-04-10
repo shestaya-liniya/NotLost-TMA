@@ -5,7 +5,7 @@ import AddDialogModal from "@/ui/modals/AddDialogModal";
 import EditTagsModal from "@/ui/modals/EditTagsModal";
 import { useEffect } from "react";
 import TabViewContainer from "./TabBar";
-import Graph from "@/features/graph/GraphWrapper";
+//import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
 import Settings from "@/pages/Settings";
 import TelegramSignIn from "@/pages/TelegramSignIn";
@@ -14,6 +14,7 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
+import ZoomI from "./features/radar/Radar";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -120,7 +121,7 @@ const ModalsAndSlidingPages = () => {
         open={graphModalOpen}
         onClose={() => setGraphModalOpen(false)}
       >
-        <Graph />
+        <ZoomI height={932} width={430} />
       </SlidingPage>
     </div>
   );
