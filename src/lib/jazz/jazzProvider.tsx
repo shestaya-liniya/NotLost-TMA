@@ -73,6 +73,10 @@ export function JazzProfileProvider({ children }: { children: ReactNode }) {
   if (!logged) return <div>Loading...</div>;
   if (!jazzProfile) return null;
 
+  if (jazzProfile.wallpaperEnabled === undefined) {
+    jazzProfile.wallpaperEnabled = true;
+  }
+
   return (
     <JazzProfileContext.Provider value={{ jazzProfile }}>
       {jazzProfile ? children : null}

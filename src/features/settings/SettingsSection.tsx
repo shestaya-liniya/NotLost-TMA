@@ -7,7 +7,7 @@ export default function SettingsSection(props: {
 }) {
   const { Icon, title, children } = props;
   return (
-    <div>
+    <div className="w-full">
       <div
         className={`rounded-tl-2xl rounded-tr-2xl bg-primary px-6 py-4 w-full font-semibold flex gap-4 mt-4`}
       >
