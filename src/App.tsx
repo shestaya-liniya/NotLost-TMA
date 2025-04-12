@@ -8,7 +8,7 @@ import TabViewContainer from "./TabBar";
 import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
 import Settings from "@/pages/Settings";
-import TelegramSignIn from "@/pages/TelegramSignIn";
+import TelegramSync from "@/pages/TelegramSignIn";
 import SlidingPage from "@/ui/SlidingPage";
 import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
@@ -108,7 +108,7 @@ const ModalsAndSlidingPages = () => {
           setTelegramSignInModalOpen(false);
         }}
       >
-        <TelegramSignIn />
+        <TelegramSync />
       </SlidingPage>
       <SlidingPage
         open={settingsModalOpen}
