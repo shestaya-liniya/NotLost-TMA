@@ -1,15 +1,16 @@
 import FolderIcon from "@/assets/icons/folder.svg?react";
-import SparklesIcon from "@/assets/icons/sparkles.svg?react";
 import TelegramWallpaper from "@/ui/TelegramWallpaper";
-import StarIcon from "@/assets/icons/star.svg?react";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
+import AiIcon from "@/assets/icons/ai-icon-1.svg?react";
+import { TabbarTab } from "@/TabBar";
 
 export default function TabBarLayout({
   activeTab,
   setActiveTab,
   children,
 }: {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: TabbarTab;
+  setActiveTab: (tab: TabbarTab) => void;
   children: React.ReactNode;
 }) {
   return (
@@ -27,8 +28,8 @@ function TabBar({
   activeTab,
   setActiveTab,
 }: {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: TabbarTab;
+  setActiveTab: (tab: TabbarTab) => void;
 }) {
   return (
     <div className="bg-secondary border-t-2 border-primary/30" id="tab-bar">
@@ -38,7 +39,7 @@ function TabBar({
             onClick={() => setActiveTab("ai")}
             title="AI"
             isActive={activeTab === "ai"}
-            Icon={<SparklesIcon />}
+            Icon={<AiIcon className="scale-300 ml-1" />}
           />
           <BottomBarLink
             onClick={() => setActiveTab("folders")}
@@ -47,10 +48,10 @@ function TabBar({
             Icon={<FolderIcon />}
           />
           <BottomBarLink
-            onClick={() => setActiveTab("events")}
-            title="Events"
-            isActive={activeTab === "events"}
-            Icon={<StarIcon className="p-[1px]" />}
+            onClick={() => setActiveTab("settings")}
+            title="Settings"
+            isActive={activeTab === "settings"}
+            Icon={<SettingsIcon />}
           />
         </div>
       </div>

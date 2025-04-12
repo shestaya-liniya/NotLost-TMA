@@ -1,4 +1,4 @@
-import { CoMap, co, Account, Profile, CoList } from "jazz-tools";
+import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
 
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
@@ -39,6 +39,7 @@ export class RootUserProfile extends Profile {
   telegramSync = co.boolean; // if true, app will use live tg contact to sync up
 
   colorScheme = co.string; // "blue", "green", "pink", "purple", "none" (telegram scheme), "white"
+  wallpaperEnabled = co.boolean;
 
   folders = co.ref(JazzListOfFolders);
 }
@@ -72,7 +73,7 @@ export class JazzAccount extends Account {
     }
   } */
 
-  migrate() {
+  async migrate() {
     if (this.root === undefined) {
       const folders = JazzListOfFolders.create([]);
 
@@ -83,9 +84,24 @@ export class JazzAccount extends Account {
         lastName: "",
         telegramSync: false,
         colorScheme: "",
+        wallpaperEnabled: true,
         folders,
         name: "",
       });
+    } else if (this.root && this.root.wallpaperEnabled === undefined) {
+      this.root.wallpaperEnabled = true;
+    }
+
+    const profile = await RootUserProfile.load(
+      this._refs.profile!.id as ID<RootUserProfile>
+    );
+
+    if (!profile) {
+      throw new Error("Account profile missing, not able to run the migration");
+    }
+
+    if (profile.wallpaperEnabled === undefined) {
+      profile.wallpaperEnabled = true;
     }
   }
 }

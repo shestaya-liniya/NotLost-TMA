@@ -1,10 +1,4 @@
-import {
-  $getTelegramEntityByUsername,
-  ApiTelegramChannel,
-  ApiTelegramUser,
-} from "@/actions/telegram";
-import { truncateWord } from "@/helpers/truncate-word";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import Input from "@/ui/Input";
 import Modal from "@/ui/modals/Modal";
 import { useState, useEffect } from "react";
@@ -18,8 +12,11 @@ import Tappable from "../Tappable";
 import { useAppStore } from "@/lib/store/store";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import { getTelegramSession } from "@/helpers/telegram/telegramSession";
-import { TelegramDialogInfo } from "@/lib/telegram/api/telegram-api-client";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 import DialogsSlider from "../dialog/DialogsSlider";
+import getTelegramAvatarLink, {
+  checkUserExist,
+} from "@/helpers/telegram/getTelegramAvatarLink";
 
 export default function AddDialogModal() {
   const {
@@ -31,24 +28,26 @@ export default function AddDialogModal() {
   const { jazzProfile } = useJazzProfileContext();
 
   const [usernameValue, setUsernameValue] = useState("");
-  const [entity, setEntity] = useState<
-    ApiTelegramUser | ApiTelegramChannel | null
-  >(null);
+  const [isValidUsername, setIsValidUsername] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const RESULT_BLOCK_HEIGHT = 56;
   // Debounced username value
   useEffect(() => {
     if (!usernameValue) {
-      setEntity(null);
+      setIsValidUsername(false);
       return;
     }
 
     const handler = setTimeout(() => {
       setIsLoading(true);
-      $getTelegramEntityByUsername(usernameValue).then((res) => {
+      checkUserExist(usernameValue).then((res) => {
+        if (res.exists) {
+          setIsValidUsername(true);
+        } else {
+          setIsValidUsername(false);
+        }
         setIsLoading(false);
-        //@ts-ignore
-        setEntity(res[0]);
       });
     }, 300);
 
@@ -56,13 +55,12 @@ export default function AddDialogModal() {
   }, [usernameValue]);
 
   const handleAddDialogIntoFolder = () => {
-    if (addDialogModalFolder && entity) {
+    if (addDialogModalFolder && isValidUsername) {
       jazzAddDialogToFolder(jazzProfile, addDialogModalFolder, {
-        name:
-          entity?.type === "Channel" ? entity.title : entity.firstName || "X",
-        username: entity.username,
+        name: usernameValue,
+        username: usernameValue,
       });
-      setEntity(null);
+      setIsValidUsername(false);
       setUsernameValue("");
     }
   };
@@ -83,7 +81,10 @@ export default function AddDialogModal() {
         <Input
           label="username"
           value={usernameValue}
-          onInput={setUsernameValue}
+          onInput={(val) => {
+            setIsValidUsername(false);
+            setUsernameValue(val);
+          }}
           before={<div className="text-hint">@</div>}
           className="bg-secondary"
         />
@@ -104,7 +105,10 @@ export default function AddDialogModal() {
         {isLoading && (
           <motion.div
             key="loading"
-            className="h-12 mt-4 flex items-center justify-center"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -114,7 +118,7 @@ export default function AddDialogModal() {
           </motion.div>
         )}
 
-        {!isLoading && entity && (
+        {!isLoading && isValidUsername && (
           <motion.div
             key="entity"
             className="flex mt-4"
@@ -124,18 +128,20 @@ export default function AddDialogModal() {
             transition={{ duration: 0.2 }}
           >
             <img
+              style={{
+                height: RESULT_BLOCK_HEIGHT,
+              }}
               loading="lazy"
-              src={`https://t.me/i/userpic/320/${entity.username}.svg`}
-              className="h-12 w-12 rounded-full border-1 border-link"
+              src={getTelegramAvatarLink(usernameValue)}
+              className="min-w-14 rounded-full"
               decoding="async"
               alt=""
             />
-            <div className="flex flex-col ml-4">
-              <div className="text-sm font-medium">
-                {/* @ts-ignore */}
-                {truncateWord(entity.firstName, 20)}
+            <div className="flex-col items-start ml-4">
+              <div className="text-link">@{usernameValue}</div>
+              <div className="text-xs text-hint">
+                Sync with Telegram to quickly add from your chats
               </div>
-              <div className="text-xs text-link">@{entity.username}</div>
             </div>
             <div className="ml-auto">
               <Button title="Add" onClick={handleAddDialogIntoFolder} />
@@ -143,10 +149,13 @@ export default function AddDialogModal() {
           </motion.div>
         )}
 
-        {!isLoading && !entity && usernameValue && (
+        {!isLoading && !isValidUsername && usernameValue && (
           <motion.div
             key="not-found"
-            className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -155,10 +164,13 @@ export default function AddDialogModal() {
             Nothing found
           </motion.div>
         )}
-        {!isLoading && !entity && !usernameValue && (
+        {!isLoading && !isValidUsername && !usernameValue && (
           <motion.div
             key="not-found"
-            className="h-12 mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
+            style={{
+              height: RESULT_BLOCK_HEIGHT,
+            }}
+            className="mt-4 flex items-center justify-center text-link bg-link/10 rounded-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}

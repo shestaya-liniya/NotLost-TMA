@@ -2,7 +2,7 @@ import Tappable from "@/ui/Tappable";
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import FavIcon from "@/assets/icons/favorite.svg?react";
 import NavigationIcon from "@/assets/icons/navigation.svg?react";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import { useEffect, useState } from "react";
 
 import { backButton, retrieveLaunchParams } from "@telegram-apps/sdk-react";
@@ -12,7 +12,7 @@ import winzavodSlider from "@/assets/winzavod-slider.png";
 import reflection from "@/assets/relfection.png";
 import EventIcon from "@/assets/icons/calendar-2.svg?react";
 import MapPointIcon from "@/assets/icons/map-point.svg?react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { SwiperSlider } from "@/ui/dialog/DialogsSlider";
@@ -23,6 +23,7 @@ import BottomModal from "@/ui/modals/BottomModal";
 import { createPortal } from "react-dom";
 import { twMerge } from "tailwind-merge";
 import Modal from "@/ui/modals/Modal";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 // In that component custom animation is used for the folder height
 // To provide smoothest transition, translate animation is used, as height animation is expensive
@@ -33,15 +34,12 @@ import Modal from "@/ui/modals/Modal";
 export default function Events() {
   const location = useLocation();
   const { setSettingsModalOpen } = useModalStore();
-  const lp = retrieveLaunchParams();
 
   return (
     <div className="h-full flex flex-col relative">
       <div
         style={{
-          paddingTop: ["macos", "tdesktop"].includes(lp.tgWebAppPlatform)
-            ? 40
-            : "calc(var(--tg-viewport-safe-area-inset-top) + var(--tg-viewport-content-safe-area-inset-top))",
+          paddingTop: getMiniAppTopInset(),
         }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30 relative"
       >
@@ -108,7 +106,7 @@ const PeopleOnEvent = () => {
     if (backButton.isSupported()) {
       try {
         backButton.show();
-        backButton.onClick(() => navigate("/tab-bar/event-info"));
+        backButton.onClick(() => navigate("/event-info"));
       } catch (e) {
         console.log(e);
       }
@@ -120,7 +118,7 @@ const PeopleOnEvent = () => {
         <div className="bg-primary/50 -mr-4 -ml-4">
           {lp.tgWebAppPlatform === "tdesktop" && (
             <Tappable
-              onClick={() => navigate("/tab-bar/event-info")}
+              onClick={() => navigate("/event-info")}
               className="bg-link/20 w-32 text-link rounded-lg py-1 font-semibold text-xs  text-center flex items-center gap-1 px-1"
             >
               <ChevronRight className="w-3 h-3 rotate-180 text-link" />
@@ -307,7 +305,7 @@ const EventInfo = () => {
     if (backButton.isSupported()) {
       try {
         backButton.show();
-        backButton.onClick(() => navigate("/tab-bar"));
+        backButton.onClick(() => navigate("/"));
       } catch (e) {
         console.log(e);
       }
@@ -319,7 +317,7 @@ const EventInfo = () => {
       <div className="p-4 min-h-full bg-secondary flex flex-col">
         {lp.tgWebAppPlatform === "tdesktop" && (
           <Tappable
-            onClick={() => navigate("/tab-bar")}
+            onClick={() => navigate("/")}
             className="bg-link/20 w-32 text-link rounded-lg py-1 font-semibold text-xs  text-center flex items-center gap-1 px-1"
           >
             <ChevronRight className="w-3 h-3 rotate-180 text-link" />

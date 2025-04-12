@@ -1,6 +1,10 @@
-import { $sendCode, $signIn, $signInWithPassword } from "@/actions/telegram";
+import {
+  telegramActionSendCode,
+  telegramActionSignIn,
+  telegramActionSignInWithPassword,
+} from "@/lib/telegram/api/telegramActions";
 import Input from "@/ui/Input";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import utyaSendCode from "@/assets/lottie/utya-send-code.json";
@@ -14,11 +18,13 @@ import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
-import { useModalStore } from "@/lib/store/modal-store";
-import { getTelegramDialogsAndSetToStore } from "@/App";
+import { useModalStore } from "@/lib/store/modalStore";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
+import { getTelegramDialogsAndSetToStore } from "@/helpers/telegram/getTelegramDialogsAndSetToStore";
+import TelegramSignInSlider from "./TelegramSignInSlider";
+import { postEvent } from "@telegram-apps/sdk-react";
 
-export default function TelegramSignIn() {
+function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();
   const { setTelegramSignInModalOpen } = useModalStore();
   const { setSession } = useTelegramSession();
@@ -26,7 +32,6 @@ export default function TelegramSignIn() {
   const saveTelegramSession = useCallback((session: string) => {
     setSession(session);
   }, []);
-
   const [step, setStep] = useState<"phone" | "code" | "password" | "success">(
     "phone"
   );
@@ -36,6 +41,8 @@ export default function TelegramSignIn() {
   const [password, setPassword] = useState("");
 
   const alertModal = AlertModal.getInstance();
+
+  postEvent("web_app_request_phone");
 
   useEffect(() => {
     if (step === "success") {
@@ -47,7 +54,7 @@ export default function TelegramSignIn() {
   }, [step]);
 
   const handleSignIn = () => {
-    $signIn(
+    telegramActionSignIn(
       phoneNumber.replace("+", ""),
       phoneCode,
       password,
@@ -67,14 +74,16 @@ export default function TelegramSignIn() {
   };
 
   const handleSignInWithPassword = () => {
-    $signInWithPassword(password, saveTelegramSession).then((res) => {
-      if (res instanceof Error) {
-        alertModal.show("<div>Invalid password</div>");
-      } else {
-        setStep("success");
-        jazzProfile.telegramSync = true;
+    telegramActionSignInWithPassword(password, saveTelegramSession).then(
+      (res) => {
+        if (res instanceof Error) {
+          alertModal.show("<div>Invalid password</div>");
+        } else {
+          setStep("success");
+          jazzProfile.telegramSync = true;
+        }
       }
-    });
+    );
   };
 
   return (
@@ -83,11 +92,10 @@ export default function TelegramSignIn() {
         <div className="h-[160px] w-[160px]">
           <Lottie animationData={utyaSendCode} loop={true} />
         </div>
-        <div className="text-hint text-center pb-8">
+        <div className="text-hint text-center pb-2">
           Telegram offers a secure way to sync your chats with NotLost using
           phone number authentication
         </div>
-        <AnimatePresence></AnimatePresence>
         {step === "phone" && (
           <div className="space-y-4">
             <div className="relative">
@@ -112,7 +120,7 @@ export default function TelegramSignIn() {
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold"
               onClick={() => {
-                $sendCode(phoneNumber).then((res) => {
+                telegramActionSendCode(phoneNumber).then((res) => {
                   if (res) {
                     setStep("code");
                   } else {
@@ -180,5 +188,39 @@ export default function TelegramSignIn() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function TelegramSync() {
+  const [currentView, setCurrentView] = useState<"slider" | "signIn">("slider");
+
+  const handleSliderComplete = () => setCurrentView("signIn");
+
+  return (
+    <AnimatePresence mode="wait">
+      {currentView === "slider" && (
+        <motion.div
+          key="slider"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <TelegramSignInSlider goToSync={handleSliderComplete} />
+        </motion.div>
+      )}
+
+      {currentView === "signIn" && (
+        <motion.div
+          key="tg-sign-in"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <TelegramSignIn />
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

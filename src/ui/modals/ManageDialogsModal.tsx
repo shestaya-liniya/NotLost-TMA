@@ -1,7 +1,7 @@
 import BottomModal from "@/ui/modals/BottomModal.js";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import Draggable from "@/ui/Draggable";
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 
 export default function ManageDialogsModal() {
   const { manageDialogsModalOpen, setManageDialogsModalOpen } = useModalStore();

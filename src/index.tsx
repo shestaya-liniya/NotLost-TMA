@@ -1,19 +1,20 @@
 import ReactDOM from "react-dom/client";
 import { StrictMode } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router";
 
 import "./index.css";
 
 // --- Telegram env ---
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
-import { EnvUnsupported } from "@/lib/telegram/env/env-unsupported.tsx";
+import { EnvUnsupported } from "@/lib/telegram/env/envUnsupported.tsx";
 import { init } from "@/lib/telegram/env/init.ts";
-import "./lib/telegram/env/mock-env.ts";
+import "./lib/telegram/env/mockEnv.ts";
+import { JazzAndAuth } from "@/lib/jazz/jazzProvider.tsx";
+import TelegramProvider from "@/lib/telegram/telegramProvider.tsx";
+import App from "@/App.tsx";
 // ------
 
-import TelegramProvider from "./lib/telegram/telegram-provider.tsx";
-import App from "./App.tsx";
-import { JazzAndAuth } from "./lib/jazz/jazzProvider.tsx";
+import { AliveScope } from "react-activation";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
@@ -26,7 +27,9 @@ try {
       <TelegramProvider>
         <Router>
           <JazzAndAuth>
-            <App />
+            <AliveScope>
+              <App />
+            </AliveScope>
           </JazzAndAuth>
         </Router>
       </TelegramProvider>

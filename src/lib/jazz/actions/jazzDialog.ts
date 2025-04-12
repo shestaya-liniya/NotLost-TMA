@@ -1,4 +1,4 @@
-import { updateLocalStorage } from "@/helpers/use-localstorage-listener";
+import { updateLocalStorage } from "@/helpers/useLocalStorageListener";
 import {
   JazzDialog,
   JazzFolder,

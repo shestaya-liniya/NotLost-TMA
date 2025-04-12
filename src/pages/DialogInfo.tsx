@@ -1,4 +1,4 @@
-import { useModalStore } from "@/lib/store/modal-store";
+import { useModalStore } from "@/lib/store/modalStore";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import TagIcon from "@/assets/icons/tag.svg?react";
 import InlineButton from "@/ui/InlineButton";
