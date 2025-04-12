@@ -5,14 +5,20 @@ import SettingsSectionTgSync from "@/features/settings/SettingsSectionTgSync";
 
 export default function Settings() {
   return (
-    <div
-      className="flex flex-col items-center justify-center w-full px-4"
-      style={{ paddingTop: getMiniAppTopInset() }}
-    >
-      <div className="text-xl font-semibold mt-1 text-link">Settings</div>
-      <SettingsSectionColorScheme />
-      <SettingsSectionTgSync />
-      <SettingsSectionSupport />
+    <div>
+      <div
+        style={{ paddingTop: getMiniAppTopInset() }}
+        className="px-4 py-2 bg-secondary border-b-2 border-primary/30 w-full"
+      >
+        <div className="relative flex mt-2 items-center justify-center h-[48px]">
+          <div className="text-link font-semibold">Settings</div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center w-full px-4">
+        <SettingsSectionColorScheme />
+        <SettingsSectionTgSync />
+        <SettingsSectionSupport />
+      </div>
     </div>
   );
 }

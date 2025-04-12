@@ -18,9 +18,9 @@ if (import.meta.env.DEV) {
 
     const userData = {
       id: 99281932,
-      first_name: "Andrew",
-      last_name: "Rogue",
-      username: "rogue",
+      first_name: "Andrei",
+      last_name: "Silin",
+      username: "shestaya_liniya",
       language_code: "en",
       is_premium: true,
       allows_write_to_pm: true,

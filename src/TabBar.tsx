@@ -1,5 +1,4 @@
 import Ai from "@/pages/Ai";
-import Events from "@/pages/Events";
 import Folders from "@/pages/Folders";
 import TabBarLayout from "@/ui/tab-bar/TabBarLayout";
 import KeepAlive from "react-activation";
@@ -7,6 +6,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import { Navigation, Scrollbar, A11y } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
 import { DelayedUnmount } from "@/ui/DelayedUnmount";
+import Settings from "./pages/Settings";
 
 const SLIDE_ANIMATION = 300;
 
@@ -28,24 +28,12 @@ const TabViewContainer = () => {
     }
   }, []);
 
-  const tabs = [
-    {
-      title: "ai",
-    },
-    {
-      title: "folders",
-    },
-    {
-      title: "events",
-    },
-  ];
-
   return (
     <TabBarLayout
-      activeTab={tabs[tabIndex].title}
+      activeTab={TabbarTabs[tabIndex]}
       setActiveTab={(tab) => {
-        const selectedTab = tabs.find((t) => tab === t.title);
-        selectedTab && slideTo(tabs.indexOf(selectedTab));
+        const selectedTab = TabbarTabs.find((t) => tab === t);
+        selectedTab && slideTo(TabbarTabs.indexOf(selectedTab));
       }}
     >
       <div className="relative w-screen h-full overflow-hidden">
@@ -72,12 +60,15 @@ const TabViewContainer = () => {
             </DelayedUnmount>
           </SwiperSlide>
           <SwiperSlide>
-            <Events />
+            <Settings />
           </SwiperSlide>
         </Swiper>
       </div>
     </TabBarLayout>
   );
 };
+
+export const TabbarTabs: TabbarTab[] = ["ai", "folders", "settings"];
+export type TabbarTab = "ai" | "folders" | "settings";
 
 export default TabViewContainer;

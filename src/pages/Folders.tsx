@@ -4,7 +4,6 @@ import { jazzCreateNewFolder } from "@/lib/jazz/actions/jazzFolder";
 
 import Tappable from "@/ui/Tappable";
 
-import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import Folder from "@/features/folders/Folder";
@@ -12,7 +11,7 @@ import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
-  const { setSettingsModalOpen, setGraphModalOpen } = useModalStore();
+  const { setGraphModalOpen } = useModalStore();
 
   return (
     <div className="h-full flex flex-col relative">
@@ -20,20 +19,19 @@ export default function Folders() {
         style={{ paddingTop: getMiniAppTopInset() }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30"
       >
-        <div className="relative flex justify-between mt-2 items-center">
-          <Tappable
-            onClick={() => setSettingsModalOpen(true)}
-            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
-          >
-            <SettingsIcon className="h-7 w-7 " />
-          </Tappable>
-          <div className="text-link font-semibold">Folders</div>
-          <Tappable
-            onClick={() => setGraphModalOpen(true)}
-            className="flex gap-2 text-link items-center pl-2 pr-2 py-2 rounded-xl"
-          >
-            <GraphIcon className="h-8 w-8 " />
-          </Tappable>
+        <div className="relative grid grid-cols-3 mt-2">
+          <div></div>
+          <div className="text-link font-semibold grid place-items-center">
+            Folders
+          </div>
+          <div className="flex justify-end">
+            <Tappable
+              onClick={() => setGraphModalOpen(true)}
+              className="text-link pl-2 pr-2 py-2 rounded-xl"
+            >
+              <GraphIcon className="h-8 w-8 " />
+            </Tappable>
+          </div>
 
           {/* <div className="text-accent font-semibold text-center w-full absolute z-10 -top-8">
             NotLost
