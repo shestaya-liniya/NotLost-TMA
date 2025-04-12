@@ -7,6 +7,7 @@ import {
   init as initSDK,
   themeParams,
 } from "@telegram-apps/sdk-react";
+import telegramAnalytics from "@telegram-apps/analytics";
 
 /**
  * Initializes the application and configures its dependencies.
@@ -69,6 +70,10 @@ export async function init(debug: boolean): Promise<void> {
       console.log("Error requesting fullscreen", e);
     }
   }
+  telegramAnalytics.init({
+    token: import.meta.env.VITE_TELEGRAM_ANALYTICS_TOKEN,
+    appName: import.meta.env.VITE_TELEGRAM_ANALYTICS_APP_NAME,
+  });
   // Add Eruda if needed.
   /* debug &&
     import("eruda").then((lib) => lib.default.init()).catch(console.error); */
