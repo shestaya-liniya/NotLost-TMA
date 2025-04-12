@@ -44,7 +44,7 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
     <div className="h-full relative">
       <div>
         <SwiperSlider>
-          <SwiperSlide style={{ minHeight: window.innerHeight - 300 }}>
+          <SwiperSlide style={{ minHeight: window.innerHeight - 140 }}>
             <div className="flex flex-col items-center mt-20 pb-10">
               <div className="h-[160px] w-[160px] relative top-4">
                 <Lottie animationData={utyaFolder} loop={true} />
@@ -97,7 +97,7 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
 
           <SwiperSlide>
             <div
-              style={{ minHeight: window.innerHeight - 300 }}
+              style={{ minHeight: window.innerHeight - 140 }}
               className="flex flex-col items-center mt-20 pb-10 min-h-full"
             >
               <div className="h-[160px] w-[160px]">
@@ -131,7 +131,7 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
 
           <SwiperSlide>
             <div
-              style={{ minHeight: window.innerHeight - 300 }}
+              style={{ minHeight: window.innerHeight - 140 }}
               className="flex flex-col items-center mt-20 pb-10 min-h-full"
             >
               <div className="h-[160px] w-[160px] p-6">
@@ -164,14 +164,14 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col items-center mt-12 rounded-full shadow-2xl shadow-link">
+              <div className="flex flex-col items-center mt-12 rounded-full shadow-xl shadow-link/30">
                 <Tappable
                   onClick={props.goToSync}
                   className="bg-link ml-auto mr-auto rounded-full px-4 py-2"
                 >
                   <div className="flex gap-2">
                     <TelegramIcon className="w-6 h-6" />
-                    <div className="font-semibold">Telegram sync</div>
+                    <div className="font-semibold ">Telegram sync</div>
                   </div>
                 </Tappable>
               </div>
