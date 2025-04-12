@@ -1,4 +1,4 @@
-import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
+import { CoMap, co, Account, Profile, CoList } from "jazz-tools";
 
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
@@ -92,7 +92,7 @@ export class JazzAccount extends Account {
       this.root.wallpaperEnabled = true;
     }
 
-    const profile = await RootUserProfile.load(
+    /*     const profile = await RootUserProfile.load(
       this._refs.profile!.id as ID<RootUserProfile>
     );
 
@@ -102,6 +102,6 @@ export class JazzAccount extends Account {
 
     if (profile.wallpaperEnabled === undefined) {
       profile.wallpaperEnabled = true;
-    }
+    } */
   }
 }
