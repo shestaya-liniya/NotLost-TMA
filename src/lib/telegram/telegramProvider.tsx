@@ -16,7 +16,12 @@ function TelegramProvider({ children }: PropsWithChildren) {
           )
         ) {
           postEvent("web_app_expand");
-          postEvent("web_app_request_fullscreen");
+          if (
+            ["ios", "android"].includes(retrieveLaunchParams().tgWebAppPlatform)
+          ) {
+            postEvent("web_app_request_fullscreen");
+          }
+
           postEvent("web_app_setup_swipe_behavior", {
             allow_vertical_swipe: false,
           });

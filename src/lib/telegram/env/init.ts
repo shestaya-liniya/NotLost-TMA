@@ -6,6 +6,7 @@ import {
   setDebug,
   init as initSDK,
   themeParams,
+  retrieveLaunchParams,
 } from "@telegram-apps/sdk-react";
 import telegramAnalytics from "@telegram-apps/analytics";
 
@@ -26,6 +27,8 @@ export async function init(debug: boolean): Promise<void> {
     console.log(e);
   }
 
+  const lp = retrieveLaunchParams();
+
   // Mount all components used in the project.
 
   backButton.mount();
@@ -34,14 +37,12 @@ export async function init(debug: boolean): Promise<void> {
   if (themeParams.bindCssVars.isAvailable()) {
     themeParams.bindCssVars();
   }
+  console.log("PLATFORM", lp.tgWebAppPlatform);
 
   if (viewport.mount.isAvailable()) {
     try {
       const promise = viewport.mount();
       await promise;
-      if (viewport.requestFullscreen.isAvailable()) {
-        await viewport.requestFullscreen();
-      }
       viewport.bindCssVars();
     } catch (err) {
       viewport.mountError(); // equals "err"
@@ -67,7 +68,7 @@ export async function init(debug: boolean): Promise<void> {
     try {
       webApp.disableVerticalSwipes();
     } catch (e) {
-      console.log("Error requesting fullscreen", e);
+      console.log("Error disabling swipes", e);
     }
   }
   telegramAnalytics.init({
