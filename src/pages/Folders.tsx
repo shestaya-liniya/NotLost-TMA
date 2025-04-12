@@ -19,7 +19,7 @@ export default function Folders() {
         style={{ paddingTop: getMiniAppTopInset() }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30"
       >
-        <div className="relative grid grid-cols-3 mt-2">
+        <div className="relative grid grid-cols-3">
           <div></div>
           <div className="text-link font-semibold grid place-items-center">
             Folders

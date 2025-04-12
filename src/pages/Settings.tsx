@@ -10,7 +10,7 @@ export default function Settings() {
         style={{ paddingTop: getMiniAppTopInset() }}
         className="px-4 py-2 bg-secondary border-b-2 border-primary/30 w-full"
       >
-        <div className="relative flex mt-2 items-center justify-center h-[48px]">
+        <div className="relative flex items-center justify-center h-[48px]">
           <div className="text-link font-semibold">Settings</div>
         </div>
       </div>
