@@ -70,6 +70,6 @@ export async function init(debug: boolean): Promise<void> {
     }
   }
   // Add Eruda if needed.
-  debug &&
-    import("eruda").then((lib) => lib.default.init()).catch(console.error);
+  /* debug &&
+    import("eruda").then((lib) => lib.default.init()).catch(console.error); */
 }
