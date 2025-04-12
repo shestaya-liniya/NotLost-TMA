@@ -22,7 +22,6 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
 import { getTelegramDialogsAndSetToStore } from "@/helpers/telegram/getTelegramDialogsAndSetToStore";
 import TelegramSignInSlider from "./TelegramSignInSlider";
-import { postEvent } from "@telegram-apps/sdk-react";
 
 function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();
@@ -41,8 +40,6 @@ function TelegramSignIn() {
   const [password, setPassword] = useState("");
 
   const alertModal = AlertModal.getInstance();
-
-  postEvent("web_app_request_phone");
 
   useEffect(() => {
     if (step === "success") {
