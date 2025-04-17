@@ -1,6 +1,13 @@
 import { create } from "zustand";
 import { JazzDialog, JazzFolder } from "../jazz/schema";
+import { TelegramDialogInfo } from "../telegram/api/telegramApiClient";
 
+interface TooltipPosition {
+  top?: number;
+  left?: number;
+  bottom?: number;
+  right?: number;
+}
 interface ModalState {
   manageDialogsModalOpen: boolean;
   setManageDialogsModalOpen: (newState: boolean) => void;
@@ -10,8 +17,15 @@ interface ModalState {
   dialogInfoModalDialog: JazzDialog | null;
   setDialogInfoModalDialog: (newState: JazzDialog | null) => void;
 
-  editTagsModalOpen: boolean;
-  setEditTagsModalOpen: (newState: boolean) => void;
+  isEditTagsModalOpen: boolean;
+  setIsEditTagsModalOpen: (newState: boolean) => void;
+  selectedDialog: TelegramDialogInfo | JazzDialog | null;
+  setSelectedDialog: (newState: TelegramDialogInfo | JazzDialog) => void;
+
+  isDialogTooltipOpen: boolean;
+  setIsDialogTooltipOpen: (newState: boolean) => void;
+  dialogTooltipPosition: TooltipPosition | null;
+  setDialogTooltipPosition: (newState: TooltipPosition) => void;
 
   addDialogModalOpen: boolean;
   setAddDialogModalOpen: (newState: boolean) => void;
@@ -50,10 +64,26 @@ export const useModalStore = create<ModalState>((set) => ({
       dialogInfoModalDialog: newState,
     })),
 
-  editTagsModalOpen: false,
-  setEditTagsModalOpen: (newState) =>
+  isEditTagsModalOpen: false,
+  setIsEditTagsModalOpen: (newState) =>
     set(() => ({
-      editTagsModalOpen: newState,
+      isEditTagsModalOpen: newState,
+    })),
+  selectedDialog: null,
+  setSelectedDialog: (newState) =>
+    set(() => ({
+      selectedDialog: newState,
+    })),
+
+  isDialogTooltipOpen: false,
+  setIsDialogTooltipOpen: (newState) =>
+    set(() => ({
+      isDialogTooltipOpen: newState,
+    })),
+  dialogTooltipPosition: null,
+  setDialogTooltipPosition: (newState) =>
+    set(() => ({
+      dialogTooltipPosition: newState,
     })),
 
   addDialogModalOpen: false,

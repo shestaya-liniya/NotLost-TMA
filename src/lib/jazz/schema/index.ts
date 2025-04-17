@@ -42,6 +42,7 @@ export class RootUserProfile extends Profile {
   wallpaperEnabled = co.boolean;
 
   folders = co.ref(JazzListOfFolders);
+  dialogs = co.ref(JazzListOfDialogs);
 }
 
 export class JazzAccount extends Account {
@@ -76,6 +77,7 @@ export class JazzAccount extends Account {
   async migrate() {
     if (this.root === undefined) {
       const folders = JazzListOfFolders.create([]);
+      const dialogs = JazzListOfDialogs.create([]);
 
       this.root = RootUserProfile.create({
         telegramId: 0,
@@ -87,6 +89,7 @@ export class JazzAccount extends Account {
         wallpaperEnabled: true,
         folders,
         name: "",
+        dialogs,
       });
     } else if (this.root && this.root.wallpaperEnabled === undefined) {
       this.root.wallpaperEnabled = true;

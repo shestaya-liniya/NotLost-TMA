@@ -6,12 +6,18 @@ import Tappable from "@/ui/Tappable";
 
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
-import Folder from "@/features/folders/Folder";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
+import { useAppStore } from "@/lib/store/store";
+import InlineDialog, {
+  InlineDialogEditTagsModal,
+  InlineDialogTooltip,
+} from "@/ui/dialog/InlineDialog";
+import { getUniqueKey } from "@/helpers/getUniqueKey";
 
 export default function Folders() {
   const { jazzProfile } = useJazzProfileContext();
   const { setGraphModalOpen } = useModalStore();
+  const { telegramDialogs } = useAppStore();
 
   return (
     <div className="h-full flex flex-col relative">
@@ -38,6 +44,7 @@ export default function Folders() {
           </div> */}
         </div>
       </div>
+      <div>Filters</div>
       <div
         style={{
           height: "100%",
@@ -46,16 +53,39 @@ export default function Folders() {
         className={`overflow-y-auto overscroll-none max-h-screen`}
       >
         <div
-          className={`h-full transition-all duration-300 ease-in-out relative`}
+          className={`h-full transition-all duration-300 ease-in-out relative py-4`}
         >
-          {jazzProfile.folders?.map((folder) => {
+          <div className="rounded-xl overflow-hidden">
+            {jazzProfile.dialogs
+              ?.filter((d) => d !== null)
+              .map((d) => (
+                <InlineDialog key={getUniqueKey()} dialog={d} unreadCount={0} />
+              ))}
+            {telegramDialogs.map((d) => {
+              if (
+                jazzProfile.dialogs?.find((jd) => jd?.username === d.username)
+              )
+                return;
+              return (
+                <InlineDialog
+                  key={getUniqueKey()}
+                  dialog={d}
+                  unreadCount={d.unreadCount}
+                />
+              );
+            })}
+            <InlineDialogEditTagsModal />
+            <InlineDialogTooltip />
+          </div>
+
+          {/* {jazzProfile.folders?.map((folder) => {
             if (!folder) return null;
             return (
               <div key={folder.id} className="w-full">
                 <Folder folder={folder} />
               </div>
             );
-          })}
+          })} */}
         </div>
       </div>
 

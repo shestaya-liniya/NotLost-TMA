@@ -13,6 +13,9 @@ export const useJazzProfile = () => {
         folders: {
           $each: { dialogs: { $each: true }, nestedFolders: { $each: true } },
         },
+        dialogs: {
+          $each: { tags: { $each: true } },
+        },
       },
     },
   });

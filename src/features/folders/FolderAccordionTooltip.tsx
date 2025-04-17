@@ -1,53 +1,55 @@
 import Tappable from "@/ui/Tappable";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
 
 export default function FolderAccordionTooltip(props: {
   children: React.ReactElement;
   isVisible: boolean;
   handleClose: () => void;
-  position: { top: number; left: number } | null;
+  position: {
+    top?: number;
+    left?: number;
+    bottom?: number;
+    right?: number;
+  } | null;
 }) {
-  useEffect(() => {
-    const handleTouchStart = (event: TouchEvent) => {
-      if (props.isVisible) {
-        event.preventDefault();
-        props.handleClose();
-      }
-    };
-
-    if (props.isVisible) {
-      window.addEventListener("touchstart", handleTouchStart, {
-        passive: false,
-      });
-    }
-
-    return () => {
-      window.removeEventListener("touchstart", handleTouchStart);
-    };
-  }, [props.isVisible]);
-
   if (!props.position) return;
 
   return (
     <AnimatePresence>
       {props.isVisible && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.1 }}
-          className={`absolute -translate-x-1/4 backdrop-blur-lg bg-primary bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30`}
-          onTouchStart={(event) => {
-            event.stopPropagation();
-          }}
-          style={{
-            top: `${props.position.top}px`,
-            left: `${props.position.left}px`,
-          }}
-        >
-          {props.children}
-        </motion.div>
+        <div>
+          <div
+            className="fixed top-0 left-0 w-screen h-screen z-20"
+            onClick={props.handleClose}
+          />
+          <motion.div
+            initial={{
+              opacity: 0,
+              transform: "translateX(10px) scale(0.8)",
+            }}
+            animate={{
+              opacity: 1,
+              transform: "translateX(0px) scale(1)",
+            }}
+            exit={{
+              opacity: 0,
+              transform: "translateX(0px) scale(1)",
+            }}
+            transition={{ duration: 0.1 }}
+            className={`absolute -translate-x-1/4 backdrop-blur-lg bg-secondary bg-opacity-70 rounded-xl shadow-lg z-30 flex`}
+            onTouchStart={(event) => {
+              event.stopPropagation();
+            }}
+            style={{
+              top: props.position.top,
+              left: props.position.left,
+              bottom: props.position.bottom,
+              right: props.position.right,
+            }}
+          >
+            <div className="bg-primary rounded-md">{props.children}</div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
@@ -69,7 +71,7 @@ export const FolderAccordionToolTipItem = (props: {
     >
       <div className="flex w-full items-center">
         {props.Icon}
-        <div className="ml-2 text-left font-medium text-sm whitespace-nowrap">
+        <div className="ml-2 text-left font-semibold text-sm whitespace-nowrap">
           {props.title}
         </div>
       </div>

@@ -21,7 +21,7 @@ export default function Tag({
   return (
     <div
       className={twMerge(
-        `bg-${color}/20 ${sizeClass} text-${color} font-bold px-1 py-0.5 uppercase inline-block leading-3`,
+        `bg-primary ${sizeClass} text-${color} font-bold px-1 py-0.5 uppercase inline-block leading-3`,
         className
       )}
     >

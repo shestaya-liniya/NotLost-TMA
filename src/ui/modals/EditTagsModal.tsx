@@ -13,11 +13,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { JazzTag } from "@/lib/jazz/schema";
 import ColorCircle from "@/ui/ColorCircle";
 import { useAppStore } from "@/lib/store/store";
+import { createPortal } from "react-dom";
 
 export default function EditTagsModal() {
   const {
-    editTagsModalOpen,
-    setEditTagsModalOpen,
+    isEditTagsModalOpen,
+    setIsEditTagsModalOpen,
     dialogInfoModalDialog: dialog,
     setDialogInfoModalDialog,
   } = useModalStore();
@@ -64,12 +65,12 @@ export default function EditTagsModal() {
 
   if (!dialog) return null;
 
-  return (
+  return createPortal(
     <BottomModal
       id="edit-tags-modal"
       title="Edit tags"
-      isOpen={editTagsModalOpen}
-      onClose={() => setEditTagsModalOpen(false)}
+      isOpen={isEditTagsModalOpen}
+      onClose={() => setIsEditTagsModalOpen(false)}
     >
       <div className="px-4 flex flex-col items-center">
         {dialog.tags && dialog.tags?.length > 0 && (
@@ -137,7 +138,8 @@ export default function EditTagsModal() {
           Add tag
         </Tappable>
       </div>
-    </BottomModal>
+    </BottomModal>,
+    document.body
   );
 }
 

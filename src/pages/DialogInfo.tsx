@@ -6,7 +6,7 @@ import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
 import Tag from "@/ui/Tag";
 
 export default function DialogInfo() {
-  const { dialogInfoModalDialog: dialog, setEditTagsModalOpen } =
+  const { dialogInfoModalDialog: dialog, setIsEditTagsModalOpen } =
     useModalStore();
   const lp = retrieveLaunchParams();
 
@@ -46,7 +46,7 @@ export default function DialogInfo() {
         <InlineButton
           title="Edit tags"
           Icon={<TagIcon className="h-6 w-6 text-link pt-1" />}
-          onClick={() => setEditTagsModalOpen(true)}
+          onClick={() => setIsEditTagsModalOpen(true)}
         />
         <InlineButton
           title="Add note"

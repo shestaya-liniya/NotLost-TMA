@@ -7,6 +7,34 @@ import {
   JazzTag,
   RootUserProfile,
 } from "../schema";
+import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
+
+export const jazzAddDialog = (
+  jazzProfile: RootUserProfile,
+  dialog: TelegramDialogInfo,
+  tag?: { title: string; color: string }
+) => {
+  if (jazzProfile.dialogs === undefined) {
+    jazzProfile.dialogs = JazzListOfDialogs.create([]);
+  }
+  if (tag) {
+    jazzProfile.dialogs?.push(
+      JazzDialog.create({
+        name: dialog.label,
+        username: dialog.username,
+        tags: JazzListOfTags.create([JazzTag.create(tag)]),
+      })
+    );
+  } else {
+    jazzProfile.dialogs?.push(
+      JazzDialog.create({
+        name: dialog.label,
+        username: dialog.username,
+        tags: JazzListOfTags.create([]),
+      })
+    );
+  }
+};
 
 export const jazzRemoveDialog = (
   jazzProfile: RootUserProfile,
