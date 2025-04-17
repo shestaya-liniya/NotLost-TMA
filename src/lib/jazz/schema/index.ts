@@ -1,4 +1,4 @@
-import { CoMap, co, Account, Profile, CoList, ID } from "jazz-tools";
+import { CoMap, co, Account, Profile, CoList } from "jazz-tools";
 
 // TODO: check if this is valid for jazz, maybe something is off
 // here is how we see jazz working with NotLost
@@ -52,11 +52,14 @@ export class JazzAccount extends Account {
   /** The account migration is run on account creation and on every log-in.
    *  You can use it to set up the account root and any other initial CoValues you need.
    */
-  /*   async migrate(creationProps?: { name: string }) {
+  /* async migrate(creationProps?: { name: string }) {
     super.migrate(creationProps);
 
+    if (!this._refs.profile) {
+      throw new Error("Account profile missing, not able to run the migration");
+    }
     const profile = await RootUserProfile.load(
-      this._refs.profile!.id as ID<RootUserProfile>
+      this._refs.profile.id as ID<RootUserProfile>
     );
 
     if (!profile) {
@@ -91,20 +94,14 @@ export class JazzAccount extends Account {
         name: "",
         dialogs,
       });
-    } else if (this.root && this.root.wallpaperEnabled === undefined) {
-      this.root.wallpaperEnabled = true;
     }
+    const { root } = await this.ensureLoaded({
+      //@ts-ignore
+      resolve: { root: true },
+    });
 
-    const profile = await RootUserProfile.load(
-      this._refs.profile!.id as ID<RootUserProfile>
-    );
-
-    if (!profile) {
-      throw new Error("Account profile missing, not able to run the migration");
-    }
-
-    if (profile.wallpaperEnabled === undefined) {
-      profile.wallpaperEnabled = true;
+    if (root && root?.dialogs === undefined) {
+      root.dialogs = JazzListOfDialogs.create([]);
     }
   }
 }
