@@ -32,8 +32,6 @@ function InlineDialogTooltip() {
     ).values()
   );
 
-  if (!isDialogTooltipOpen) return;
-
   return createPortal(
     <FolderAccordionTooltip
       isVisible={isDialogTooltipOpen}
@@ -49,25 +47,25 @@ function InlineDialogTooltip() {
             onClick={() => {
               setShowAddTagTooltip(true);
             }}
-            className="flex gap-0.5 items-center p-2"
+            className="flex gap-0.5 items-center px-4 py-3"
           >
-            <TagIcon className="h-4 w-4 text-link " />
-            <PlusIcon className="text-link h-3.5 w-3.5 self-start scale-110" />
+            <TagIcon className="h-5 w-5 text-link " />
+            <PlusIcon className="text-link h-4.5 w-4.5 self-start scale-110" />
           </Tappable>
-          <div className="w-[1px] h-4 bg-link/80"></div>
+          <div className="w-[2px] rounded-full h-4 bg-link/50"></div>
           <Tappable
             onClick={() => {
               setIsEditTagsModalOpen(true);
               setIsDialogTooltipOpen(false);
             }}
-            className="flex gap-0.5 items-center p-2"
+            className="flex gap-0.5 items-center px-4 py-3"
           >
-            <TagIcon className="h-4 w-4 text-link " />
-            <PencilIcon className="text-link h-3 w-3 self-start" />
+            <TagIcon className="h-5 w-5 text-link " />
+            <PencilIcon className="text-link h-4 w-4 self-start" />
           </Tappable>
         </div>
         {showAddTagTooltip && (
-          <div className=" absolute top-10 left-0 -translate-x-12">
+          <div className=" absolute top-14 left-4 -translate-x-12">
             <div className="max-h-40 backdrop-blur-lg bg-opacity-70 border-link/10 border-[2px] rounded-xl shadow-lg z-30 flex flex-col gap-2 overflow-y-scroll py-2 px-4 bg-secondary items-center">
               {allTags?.map((t) => (
                 <Tappable
