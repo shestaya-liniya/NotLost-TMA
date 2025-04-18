@@ -22,6 +22,7 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
 import { getTelegramDialogsAndSetToStore } from "@/helpers/telegram/getTelegramDialogsAndSetToStore";
 import TelegramSignInSlider from "./TelegramSignInSlider";
+import { requestContact } from "@telegram-apps/sdk-react";
 
 function TelegramSignIn() {
   const { jazzProfile } = useJazzProfileContext();
@@ -41,10 +42,11 @@ function TelegramSignIn() {
 
   const alertModal = AlertModal.getInstance();
 
-  window.addEventListener("message", (mes) => {
-    console.log(mes);
-    debugger;
-  });
+  if (requestContact.isAvailable()) {
+    const contact = requestContact().then((contact) => {
+      console.log(contact);
+    });
+  }
 
   useEffect(() => {
     if (step === "success") {
