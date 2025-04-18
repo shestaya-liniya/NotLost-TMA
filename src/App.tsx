@@ -79,16 +79,24 @@ export default function App() {
 }
 
 const ModalsAndSlidingPages = () => {
-  const {
-    dialogInfoModalOpen,
-    setDialogInfoModalOpen,
-    telegramSignInModalOpen,
-    setTelegramSignInModalOpen,
-    settingsModalOpen,
-    setSettingsModalOpen,
-    graphModalOpen,
-    setGraphModalOpen,
-  } = useModalStore();
+  const dialogInfoModalOpen = useModalStore(
+    (state) => state.dialogInfoModalOpen
+  );
+  const setDialogInfoModalOpen = useModalStore(
+    (state) => state.setDialogInfoModalOpen
+  );
+  const telegramSignInModalOpen = useModalStore(
+    (state) => state.telegramSignInModalOpen
+  );
+  const setTelegramSignInModalOpen = useModalStore(
+    (state) => state.setTelegramSignInModalOpen
+  );
+  const settingsModalOpen = useModalStore((state) => state.settingsModalOpen);
+  const setSettingsModalOpen = useModalStore(
+    (state) => state.setSettingsModalOpen
+  );
+  const graphModalOpen = useModalStore((state) => state.graphModalOpen);
+  const setGraphModalOpen = useModalStore((state) => state.setGraphModalOpen);
   return (
     <div>
       <EditTagsModal />

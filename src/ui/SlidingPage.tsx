@@ -13,7 +13,10 @@ export default function SlidingPage({
   open: boolean;
   onClose: () => void;
 }) {
-  const { setIsSlidingModalOpen } = useModalStore();
+  const setIsSlidingModalOpen = useModalStore(
+    (state) => state.setIsSlidingModalOpen
+  );
+
   const handleClose = () => {
     onClose();
     setIsSlidingModalOpen(false);

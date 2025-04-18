@@ -8,13 +8,12 @@ import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useAppStore } from "@/lib/store/store";
-import InlineDialog, {
-  InlineDialogEditTagsModal,
-  InlineDialogTooltip,
-} from "@/ui/dialog/InlineDialog";
-import { getUniqueKey } from "@/helpers/getUniqueKey";
+import InlineDialog from "@/ui/dialog/InlineDialog";
+import InlineDialogEditTagsModal from "@/ui/dialog/InlineDialogEditTagsModal";
+import InlineDialogTooltip from "@/ui/dialog/InlineDialogTooltip";
+import { memo } from "react";
 
-export default function Folders() {
+function Folders() {
   const { jazzProfile } = useJazzProfileContext();
   const { setGraphModalOpen } = useModalStore();
   const { telegramDialogs } = useAppStore();
@@ -59,7 +58,7 @@ export default function Folders() {
             {jazzProfile.dialogs
               ?.filter((d) => d !== null)
               .map((d) => (
-                <InlineDialog key={getUniqueKey()} dialog={d} unreadCount={0} />
+                <InlineDialog key={d.id} dialog={d} unreadCount={0} />
               ))}
             {telegramDialogs.map((d) => {
               if (
@@ -68,7 +67,7 @@ export default function Folders() {
                 return;
               return (
                 <InlineDialog
-                  key={getUniqueKey()}
+                  key={`inline-dialog-${d.username}`}
                   dialog={d}
                   unreadCount={d.unreadCount}
                 />
@@ -112,3 +111,5 @@ export default function Folders() {
     </div>
   );
 }
+
+export default memo(Folders);
