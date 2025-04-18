@@ -43,7 +43,7 @@ function TelegramSignIn() {
   const alertModal = AlertModal.getInstance();
 
   if (requestContact.isAvailable()) {
-    const contact = requestContact().then((contact) => {
+    requestContact().then((contact) => {
       console.log(contact);
     });
   }
