@@ -4,7 +4,7 @@ import { useAppStore } from "@/lib/store/store";
 import AddDialogModal from "@/ui/modals/AddDialogModal";
 import EditTagsModal from "@/ui/modals/EditTagsModal";
 import { useEffect } from "react";
-import TabViewContainer from "./TabBar";
+//import TabViewContainer from "./TabBar";
 import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
 import Settings from "@/pages/Settings";
@@ -14,6 +14,7 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
+import GridFlow from "./features/grid-flow/GridFlow";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -71,7 +72,7 @@ export default function App() {
         )}
       >
         <KeepAlive cacheKey="tab-bar"> */}
-      <TabViewContainer />
+      <GridFlow />
       {/* </KeepAlive>
       </DelayedUnmount> */}
     </div>

@@ -9,7 +9,7 @@ interface DragState {
   setDraggableItem: (newState: DraggableItem | null) => void;
 }
 
-export const useDragStore = create<DragState>((set) => ({
+export const useGridFlowDragStore = create<DragState>((set) => ({
   draggableItem: null,
   setDraggableItem: (newState) =>
     set(() => ({
