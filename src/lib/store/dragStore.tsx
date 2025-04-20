@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export interface DraggableItem {
+  id: string;
   type: "custom" | null;
 }
 

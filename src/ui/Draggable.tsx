@@ -26,7 +26,9 @@ function Draggable(props: {
     };
 
     const handleTouchMove = (e: React.TouchEvent) => {
-      ref.current!.style.transition = "";
+      if (!ref.current) return;
+
+      ref.current.style.transition = "";
 
       touch = e.touches[0];
       const dx = touch.clientX - startPos.x;
@@ -38,6 +40,8 @@ function Draggable(props: {
     };
 
     const handleTouchEnd = () => {
+      if (!ref.current) return;
+
       props.onDrop?.();
 
       setDraggableItem(null);
