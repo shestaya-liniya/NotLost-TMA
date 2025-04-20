@@ -5,6 +5,7 @@ import { memo } from "react";
 import Tag from "../Tag";
 import Tappable from "../Tappable";
 import MoreIcon from "@/assets/icons/more.svg?react";
+import RetryableImage from "../RetryableImage";
 
 function InlineDialogContent(props: {
   dialog: TelegramDialogInfo | JazzDialog;
@@ -15,10 +16,11 @@ function InlineDialogContent(props: {
 
   return (
     <div className="w-full flex gap-4 relative">
-      <img
+      <RetryableImage
         src={getTelegramAvatarLink(dialog.username)}
         className="h-14 w-14 rounded-full"
-        alt=""
+        delay={1000}
+        maxRetries={3}
       />
       <div className="flex-1 flex-col">
         <div className="font-medium">

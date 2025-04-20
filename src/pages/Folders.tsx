@@ -57,9 +57,18 @@ function Folders() {
           <div className="rounded-xl overflow-hidden">
             {jazzProfile.dialogs
               ?.filter((d) => d !== null)
-              .map((d) => (
-                <InlineDialog key={d.id} dialog={d} unreadCount={0} />
-              ))}
+              .map((d) => {
+                return (
+                  <InlineDialog
+                    key={d.id}
+                    dialog={d}
+                    unreadCount={
+                      telegramDialogs.find((td) => td.username === d.username)
+                        ?.unreadCount || 0
+                    }
+                  />
+                );
+              })}
             {telegramDialogs.map((d) => {
               if (
                 jazzProfile.dialogs?.find((jd) => jd?.username === d.username)
