@@ -14,7 +14,7 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
-import GridFlow from "./features/grid-flow/GridFlow";
+import PinDesk from "./features/grid-flow/PinDesk";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -72,7 +72,7 @@ export default function App() {
         )}
       >
         <KeepAlive cacheKey="tab-bar"> */}
-      <GridFlow />
+      <PinDesk />
       {/* </KeepAlive>
       </DelayedUnmount> */}
     </div>

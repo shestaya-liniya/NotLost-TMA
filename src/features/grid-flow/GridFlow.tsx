@@ -8,13 +8,10 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import { initNodes, nodeTypes } from "./GridFlowNodes";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import DraggableAvatars from "./DraggableAvatars";
 import { useDragStore } from "@/lib/store/dragStore";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
-import Tappable from "@/ui/Tappable";
-import GridFlowMenu from "./GridFlowMenu";
 
 const NODE_SIZE = 40;
 
@@ -25,12 +22,10 @@ export const useGridFlowNodesState = (initNodes?: FlowNode[]) => {
 };
 
 function GridFlow() {
-  //@ts-ignorec
+  //@ts-ignore
   const { nodes, setNodes, onNodesChange } = useGridFlowNodesState(initNodes);
   const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
   const reactFlowWrapper = useRef(null);
-
-  const [showMenu, setShowMenu] = useState(false);
 
   const prevPosition = useRef<{ x: number; y: number }>();
   const lastValidPositionRef = useRef<{ x: number; y: number }>();
@@ -190,31 +185,16 @@ function GridFlow() {
           <DraggableAvatars />
         </div>
       </div>
-      <Tappable
-        onClick={() => setShowMenu(!showMenu)}
-        style={{
-          top: -getMiniAppTopInset() / 2,
-        }}
-        className="absolute left-1/2 text-sm max-h-[32px] h-[32px] -translate-x-1/2 backdrop-blur-[25px] bg-black/20 rounded-2xl px-3 py-1.5 font-medium flex items-center gap-2 border-[1px] border-[#252525]"
-      >
-        Workspace
-        <SettingsIcon
-          className={`h-4 w-4 text-white transition-transform duration-300 ${
-            showMenu ? "rotate-180" : "rotate-0"
-          }`}
-        />
-      </Tappable>
-      <GridFlowMenu show={showMenu} setShow={setShowMenu} />
     </div>
   );
 }
 
 // eslint-disable-next-line react/display-name
-export default () => (
+export default memo(() => (
   <ReactFlowProvider>
     <GridFlow />
   </ReactFlowProvider>
-);
+));
 
 const getExtent = (val: number): number => {
   return Math.floor(val / 40) * 40;
