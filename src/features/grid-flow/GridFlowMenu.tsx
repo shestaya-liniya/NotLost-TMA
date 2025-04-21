@@ -27,7 +27,7 @@ export default function GridFlowMenu(props: {
           {/* Menu */}
           <motion.div
             style={{
-              top: getMiniAppTopInset() + 32,
+              top: getMiniAppTopInset() + 10,
               boxShadow:
                 "rgba(0, 0, 0, 0.3) 0px 2px 4px 0px, rgba(0, 0, 0, 0.3) 0px 2px 16px 0px",
             }}
