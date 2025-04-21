@@ -25,6 +25,9 @@ function TelegramProvider({ children }: PropsWithChildren) {
           postEvent("web_app_setup_swipe_behavior", {
             allow_vertical_swipe: false,
           });
+          postEvent("web_app_set_header_color", {
+            color: "#fff",
+          });
         }
       }
     } catch (e) {
