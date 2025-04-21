@@ -4,11 +4,15 @@ import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Tappable from "@/ui/Tappable";
+import PlusIcon from "@/assets/icons/plus.svg?react";
+import { usePinDeskStore } from "./PinDeskStore";
 
 export default function GridFlowMenu(props: {
   show: boolean;
   setShow: (val: boolean) => void;
 }) {
+  const { nodesDraggable, setNodesDraggable } = usePinDeskStore();
+
   if (typeof window === "undefined") return null;
 
   return createPortal(
@@ -35,21 +39,19 @@ export default function GridFlowMenu(props: {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-20 left-1/2 -translate-x-1/2 bg-[#141414] rounded-xl border-[1px] border-[#252525]"
+            className="absolute z-20 left-1/2 -translate-x-1/2 bg-[#141414] rounded-xl border-[1px] border-[#252525] overflow-hidden"
           >
-            <MenuItem>
+            <MenuItem
+              active={nodesDraggable}
+              action={() => setNodesDraggable(!nodesDraggable)}
+            >
               <GrabIcon className="w-5 h-5" />
               <div>Move</div>
             </MenuItem>
             <Divider />
             <MenuItem>
-              <GrabIcon className="w-5 h-5" />
+              <PlusIcon className="w-5 h-5" />
               <div>Add</div>
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <GrabIcon className="w-5 h-5" />
-              <div>Home</div>
             </MenuItem>
           </motion.div>
         </>
@@ -59,10 +61,17 @@ export default function GridFlowMenu(props: {
   );
 }
 
-const MenuItem = ({ children }: { children: ReactNode }) => {
+const MenuItem = (props: {
+  children: ReactNode;
+  active?: boolean;
+  action?: () => void;
+}) => {
   return (
-    <Tappable className="px-3 py-1.5 flex items-center gap-2 hover:bg-white/5 transition-colors">
-      {children}
+    <Tappable
+      onClick={props.action}
+      className={`px-3 py-1.5 flex items-center gap-2 ${props.active ? "text-black bg-white" : ""}`}
+    >
+      {props.children}
     </Tappable>
   );
 };

@@ -12,6 +12,7 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import DraggableAvatars from "./DraggableAvatars";
 import { useDragStore } from "@/lib/store/dragStore";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
+import { usePinDeskStore } from "./PinDeskStore";
 
 const NODE_SIZE = 40;
 
@@ -25,6 +26,7 @@ function GridFlow() {
   //@ts-ignore
   const { nodes, setNodes, onNodesChange } = useGridFlowNodesState(initNodes);
   const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
+  const { nodesDraggable } = usePinDeskStore();
   const reactFlowWrapper = useRef(null);
 
   const prevPosition = useRef<{ x: number; y: number }>();
@@ -176,6 +178,7 @@ function GridFlow() {
           zoomOnScroll={false}
           colorMode="dark"
           proOptions={{ hideAttribution: true }}
+          nodesDraggable={nodesDraggable}
           onNodeDrag={onNodeDrag}
           onNodeDragStop={onNodeDragStop}
         >
