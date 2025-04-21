@@ -11,6 +11,11 @@ import { initNodes, nodeTypes } from "./GridFlowNodes";
 import { useCallback, useEffect, useRef } from "react";
 import DraggableAvatars from "./DraggableAvatars";
 import { useDragStore } from "@/lib/store/dragStore";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
+import SettingsIcon from "@/assets/icons/settings.svg?react";
+import Tappable from "@/ui/Tappable";
+
+const NODE_SIZE = 40;
 
 export const useGridFlowNodesState = (initNodes?: FlowNode[]) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes || []);
@@ -28,6 +33,7 @@ function GridFlow() {
   const lastValidPositionRef = useRef<{ x: number; y: number }>();
 
   const onNodeDrag = useCallback((_event: React.MouseEvent, node: FlowNode) => {
+    _event.preventDefault();
     fixNodePosition(node, setNodes);
     const intersections = getIntersectingNodes(node).map((n) => n.id);
     if (intersections.length > 0 && prevPosition.current) {
@@ -74,8 +80,8 @@ function GridFlow() {
 
       const touch = e.touches[0];
       const position = screenToFlowPosition({
-        x: touch.clientX - 40,
-        y: touch.clientY - 40,
+        x: touch.clientX - NODE_SIZE,
+        y: touch.clientY - NODE_SIZE,
       });
       //@ts-ignore
       setNodes((prev) => {
@@ -108,10 +114,10 @@ function GridFlow() {
 
           const wouldIntersect = prev.some((existingNode) => {
             return (
-              position.x < existingNode.position.x + 40 &&
-              position.x + 40 > existingNode.position.x &&
-              position.y < existingNode.position.y + 40 &&
-              position.y + 40 > existingNode.position.y
+              position.x < existingNode.position.x + NODE_SIZE &&
+              position.x + NODE_SIZE > existingNode.position.x &&
+              position.y < existingNode.position.y + NODE_SIZE &&
+              position.y + NODE_SIZE > existingNode.position.y
             );
           });
 
@@ -138,15 +144,13 @@ function GridFlow() {
   }, []);
 
   return (
-    <div className="relative transition-all duration-300 ease-in-out">
+    <div className="relative transition-all duration-300 ease-in-out h-screen">
       <div
         ref={reactFlowWrapper}
-        className="h-screen w-screen"
-        onTouchStartCapture={() => {
-          console.log("touch start (captured)");
-        }}
-        onTouchEndCapture={() => {
-          console.log("touch end (captured)");
+        style={{
+          height: window.innerHeight - getMiniAppTopInset(),
+          marginTop: getMiniAppTopInset(),
+          position: "relative",
         }}
       >
         <ReactFlow
@@ -157,13 +161,16 @@ function GridFlow() {
           snapGrid={[20, 20]}
           translateExtent={[
             [0, 0],
-            [getExtent(window.innerWidth), getExtent(window.innerHeight)],
+            [
+              getExtent(window.innerWidth),
+              getExtent(window.innerHeight - getMiniAppTopInset()),
+            ],
           ]}
           nodeExtent={[
             [0, 0],
             [
               getExtent(window.innerWidth) - 28,
-              getExtent(window.innerHeight) - 28,
+              getExtent(window.innerHeight - getMiniAppTopInset()) - 28,
             ],
           ]}
           zoomOnDoubleClick={false}
@@ -176,10 +183,14 @@ function GridFlow() {
         >
           <Background bgColor="#191919" gap={40} />
         </ReactFlow>
+        <div className="absolute bottom-0 left-0">
+          <DraggableAvatars />
+        </div>
       </div>
-      <div className="absolute bottom-0 left-0">
-        <DraggableAvatars />
-      </div>
+      <Tappable className="absolute top-0 left-1/2 -translate-x-1/2 backdrop-blur-[25px] bg-black/20 rounded-2xl px-2 py-1 text-xs font-medium flex items-center gap-2">
+        Workspace
+        <SettingsIcon className="h-3 w-3 text-white" />
+      </Tappable>
     </div>
   );
 }
