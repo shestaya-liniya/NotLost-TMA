@@ -191,7 +191,7 @@ function GridFlow() {
         style={{
           top: -getMiniAppTopInset() / 2,
         }}
-        className="absolute left-1/2 text-sm -translate-x-1/2 backdrop-blur-[25px] bg-black/20 rounded-2xl px-4 py-1.5 font-medium flex items-center gap-2"
+        className="absolute left-1/2 text-sm -translate-x-1/2 backdrop-blur-[25px] bg-black/20 rounded-2xl px-4 py-1 font-medium flex items-center gap-2"
       >
         Workspace
         <SettingsIcon className="h-3 w-3 text-white" />
