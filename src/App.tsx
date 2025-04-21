@@ -1,17 +1,17 @@
 import { getTelegramSession } from "@/helpers/telegram/telegramSession";
 import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 import { useAppStore } from "@/lib/store/store";
-/* import AddDialogModal from "@/ui/modals/AddDialogModal";
-import EditTagsModal from "@/ui/modals/EditTagsModal"; */
+import AddDialogModal from "@/ui/modals/AddDialogModal";
+import EditTagsModal from "@/ui/modals/EditTagsModal";
 import { useEffect } from "react";
 //import TabViewContainer from "./TabBar";
-/* import Graph from "@/features/graph/GraphWrapper";
+import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
 import Settings from "@/pages/Settings";
 import TelegramSync from "@/pages/TelegramSignIn";
 import SlidingPage from "@/ui/SlidingPage";
 import { useModalStore } from "@/lib/store/modalStore";
-import { createPortal } from "react-dom"; */
+import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
 import PinDesk from "./features/grid-flow/PinDesk";
@@ -53,7 +53,7 @@ export default function App() {
 
   return (
     <div style={{ height: "var(--initial-height)" }}>
-      {/* {createPortal(<ModalsAndSlidingPages />, document.body)} */}
+      {createPortal(<ModalsAndSlidingPages />, document.body)}
       {/* Shadow input for keyboard */}
       <input
         type="text"
@@ -79,7 +79,7 @@ export default function App() {
   );
 }
 
-/* const ModalsAndSlidingPages = () => {
+const ModalsAndSlidingPages = () => {
   const {
     dialogInfoModalOpen,
     setDialogInfoModalOpen,
@@ -125,7 +125,7 @@ export default function App() {
       </SlidingPage>
     </div>
   );
-}; */
+};
 
 const setupTelegramTheme = (): void => {
   const lp = retrieveLaunchParams();
