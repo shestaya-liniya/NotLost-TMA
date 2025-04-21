@@ -3,7 +3,7 @@ import GridFlow from "./GridFlow";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import Tappable from "@/ui/Tappable";
 import GridFlowMenu from "./GridFlowMenu";
-import SettingsIcon from "@/assets/icons/settings.svg?react";
+import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 
 export default function PinDesk() {
   const [showMenu, setShowMenu] = useState(false);
