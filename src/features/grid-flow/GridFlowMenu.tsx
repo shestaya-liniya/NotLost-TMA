@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Tappable from "@/ui/Tappable";
 
 export default function GridFlowMenu(props: {
   show: boolean;
@@ -26,7 +27,7 @@ export default function GridFlowMenu(props: {
           {/* Menu */}
           <motion.div
             style={{
-              top: -getMiniAppTopInset() / 2 + 64,
+              top: getMiniAppTopInset() + 32,
               boxShadow:
                 "rgba(0, 0, 0, 0.3) 0px 2px 4px 0px, rgba(0, 0, 0, 0.3) 0px 2px 16px 0px",
             }}
@@ -60,9 +61,9 @@ export default function GridFlowMenu(props: {
 
 const MenuItem = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="px-3 py-1.5 flex items-center gap-2 hover:bg-white/5 transition-colors">
+    <Tappable className="px-3 py-1.5 flex items-center gap-2 hover:bg-white/5 transition-colors">
       {children}
-    </div>
+    </Tappable>
   );
 };
 
