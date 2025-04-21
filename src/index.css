@@ -260,5 +260,7 @@ input:focus {
 }
 
 .react-flow__node {
-  transition: transform 0.15s steps(200);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transition: transform 0.15s linear;
 }
