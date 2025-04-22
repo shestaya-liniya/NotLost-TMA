@@ -73,7 +73,10 @@ function GridFlow() {
 
       fixNodePosition(node, setNodes);
       const intersections = getIntersectingNodes(node).map((n) => n.id);
-      if (intersections.length > 0 && prevPosition.current) {
+      if (
+        intersections.filter((id) => id !== "shadow").length > 0 &&
+        prevPosition.current
+      ) {
         setNodes((prev) => [
           ...prev,
           {
