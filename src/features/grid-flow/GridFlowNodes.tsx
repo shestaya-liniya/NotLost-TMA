@@ -1,7 +1,8 @@
-import CustomNode from "./GridFlowCustomNode";
+import CustomNode, { NodeShadow } from "./GridFlowCustomNode";
 
 export const nodeTypes = {
   custom: CustomNode,
+  shadow: NodeShadow,
 };
 
 export const initNodes = [

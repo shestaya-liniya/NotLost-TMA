@@ -29,28 +29,48 @@ function GridFlow() {
   const { nodesDraggable } = usePinDeskStore();
   const reactFlowWrapper = useRef(null);
 
+  const enableAnimation = useRef(false);
+  const showShadows = useRef(false);
+
   const prevPosition = useRef<{ x: number; y: number }>();
-  const lastValidPositionRef = useRef<{ x: number; y: number }>();
+
+  const onNodeDragStart = useCallback((_: React.MouseEvent, node: FlowNode) => {
+    prevPosition.current = node.position;
+
+    const newNode = {
+      id: "shadow",
+      type: "shadow",
+      position: prevPosition.current,
+    };
+
+    setNodes((nds) => nds.concat(newNode as FlowNode));
+  }, []);
 
   const onNodeDrag = useCallback((_event: React.MouseEvent, node: FlowNode) => {
-    _event.preventDefault();
-    fixNodePosition(node, setNodes);
     const intersections = getIntersectingNodes(node).map((n) => n.id);
-    if (intersections.length > 0 && prevPosition.current) {
-      setNodes((prev) => [
-        ...prev,
-        {
-          ...node,
-          position: prevPosition.current as { x: number; y: number },
-        },
-      ]);
-      node.position = prevPosition.current;
+
+    setNodes((ns) =>
+      ns.map((n) => ({
+        ...n,
+        className: intersections.includes(n.id) ? "highlight" : "",
+      }))
+    );
+
+    if (intersections.filter((id) => id !== "shadow").length > 0) {
+      showShadows.current = true;
+    } else {
+      showShadows.current = false;
     }
-    prevPosition.current = node.position;
   }, []);
 
   const onNodeDragStop = useCallback(
     (_event: React.MouseEvent, node: FlowNode) => {
+      enableAnimation.current = true;
+      setTimeout(() => {
+        enableAnimation.current = false;
+      }, 200);
+      showShadows.current = false;
+
       fixNodePosition(node, setNodes);
       const intersections = getIntersectingNodes(node).map((n) => n.id);
       if (intersections.length > 0 && prevPosition.current) {
@@ -63,7 +83,15 @@ function GridFlow() {
         ]);
         node.position = prevPosition.current;
       }
-      prevPosition.current = node.position;
+
+      setNodes((ns) =>
+        ns
+          .filter((ns) => ns.id !== "shadow")
+          .map((n) => ({
+            ...n,
+            className: "",
+          }))
+      );
     },
     []
   );
@@ -75,6 +103,7 @@ function GridFlow() {
 
   useEffect(() => {
     const handleOnTouchMove = (e: TouchEvent) => {
+      // drag new item
       const draggableItem = useDragStore.getState().draggableItem;
       if (!draggableItem || !nodesRef.current) return;
 
@@ -83,57 +112,29 @@ function GridFlow() {
         x: touch.clientX - NODE_SIZE,
         y: touch.clientY - NODE_SIZE,
       });
-      //@ts-ignore
-      setNodes((prev) => {
-        const existingNode = prev.find((n) => n.id === draggableItem.id);
 
-        if (existingNode) {
-          const nextPosition = { ...position };
-          const updatedNode = { ...existingNode, position: nextPosition };
+      const existingNode = nodes.find((n) => n.id === draggableItem.id);
 
-          const intersections = getIntersectingNodes(updatedNode).map(
-            (n) => n.id
-          );
+      if (!existingNode) {
+        const newNode = {
+          id: draggableItem.id,
+          type: draggableItem.type,
+          position,
+        };
 
-          if (intersections.length > 0 && prevPosition.current) {
-            return prev;
-          }
+        setNodes((nds) => nds.concat(newNode as FlowNode));
+      } else {
+        const intersections = getIntersectingNodes(existingNode).map(
+          (n) => n.id
+        );
 
-          prevPosition.current = nextPosition;
-          lastValidPositionRef.current = nextPosition;
-
-          return prev.map((n) =>
-            n.id === draggableItem.id ? { ...n, position: nextPosition } : n
-          );
-        } else {
-          const newNode = {
-            id: draggableItem.id,
-            type: draggableItem.type,
-            position,
-          };
-
-          const wouldIntersect = prev.some((existingNode) => {
-            return (
-              position.x < existingNode.position.x + NODE_SIZE &&
-              position.x + NODE_SIZE > existingNode.position.x &&
-              position.y < existingNode.position.y + NODE_SIZE &&
-              position.y + NODE_SIZE > existingNode.position.y
-            );
-          });
-
-          if (wouldIntersect) {
-            if (lastValidPositionRef.current) {
-              newNode.position = lastValidPositionRef.current;
-            } else {
-              return prev;
-            }
-          }
-
-          lastValidPositionRef.current = newNode.position;
-
-          return [...prev, newNode];
-        }
-      });
+        setNodes((ns) =>
+          ns.map((n) => ({
+            ...n,
+            className: intersections.includes(n.id) ? "highlight" : "",
+          }))
+        );
+      }
     };
 
     window.addEventListener("touchmove", handleOnTouchMove);
@@ -157,8 +158,7 @@ function GridFlow() {
           nodes={nodes}
           nodeTypes={nodeTypes}
           onNodesChange={onNodesChange}
-          snapToGrid
-          snapGrid={[20, 20]}
+          className={`flow-wrapper ${showShadows.current && "shadow-visible"} ${enableAnimation.current && "transitions-enabled"}`}
           translateExtent={[
             [0, 0],
             [
@@ -180,6 +180,7 @@ function GridFlow() {
           proOptions={{ hideAttribution: true }}
           nodesDraggable={nodesDraggable}
           onNodeDrag={onNodeDrag}
+          onNodeDragStart={onNodeDragStart}
           onNodeDragStop={onNodeDragStop}
         >
           <Background bgColor="#191919" gap={40} />
@@ -208,14 +209,20 @@ const fixNodePosition = (
   setNodes: (updater: (prev: FlowNode[]) => FlowNode[]) => void,
   position?: { x: number; y: number }
 ) => {
-  const newPos = position ? position : { ...node.position };
+  const rawPos = position ? position : { ...node.position };
 
-  if (newPos.x === 0) newPos.x = 20;
-  if (newPos.y === 0) newPos.y = 20;
+  const snappedPos = {
+    x: Math.round(rawPos.x / 20) * 20,
+    y: Math.round(rawPos.y / 20) * 20,
+  };
 
-  if (newPos.x !== node.position.x || newPos.y !== node.position.y) {
+  // avoid zero positioning
+  if (snappedPos.x === 0) snappedPos.x = 20;
+  if (snappedPos.y === 0) snappedPos.y = 20;
+
+  if (snappedPos.x !== node.position.x || snappedPos.y !== node.position.y) {
     setNodes((prev) =>
-      prev.map((n) => (n.id === node.id ? { ...n, position: newPos } : n))
+      prev.map((n) => (n.id === node.id ? { ...n, position: snappedPos } : n))
     );
   }
 };
