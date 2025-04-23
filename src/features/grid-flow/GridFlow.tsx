@@ -23,7 +23,6 @@ export const useGridFlowNodesState = (initNodes?: FlowNode[]) => {
 };
 
 function GridFlow() {
-  //@ts-ignore
   const { nodes, setNodes, onNodesChange } = useGridFlowNodesState(initNodes);
   const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
   const { nodesDraggable } = usePinDeskStore();
@@ -48,11 +47,12 @@ function GridFlow() {
 
   const onNodeDrag = useCallback((_event: React.MouseEvent, node: FlowNode) => {
     const intersections = getIntersectingNodes(node).map((n) => n.id);
+    const firstIntersection = intersections[0];
 
     setNodes((ns) =>
       ns.map((n) => ({
         ...n,
-        className: intersections.includes(n.id) ? "highlight" : "",
+        className: n.id === firstIntersection ? "highlight" : "",
       }))
     );
 
@@ -72,19 +72,36 @@ function GridFlow() {
       showShadows.current = false;
 
       fixNodePosition(node, setNodes);
-      const intersections = getIntersectingNodes(node).map((n) => n.id);
-      if (
-        intersections.filter((id) => id !== "shadow").length > 0 &&
-        prevPosition.current
-      ) {
-        setNodes((prev) => [
-          ...prev,
-          {
-            ...node,
-            position: prevPosition.current as { x: number; y: number },
-          },
-        ]);
-        node.position = prevPosition.current;
+      const intersections = getIntersectingNodes(node).filter(
+        (n) => n.id !== "shadow"
+      );
+
+      const firstIntersectedNode = intersections[0];
+
+      if (firstIntersectedNode && prevPosition.current) {
+        const draggedNodeId = node.id;
+        const intersectedNodeId = firstIntersectedNode.id;
+
+        const draggedNodeNewPos = { ...firstIntersectedNode.position };
+        const intersectedNodeNewPos = { ...prevPosition.current };
+
+        setNodes((ns) =>
+          ns.map((n) => {
+            if (n.id === draggedNodeId) {
+              return {
+                ...n,
+                position: draggedNodeNewPos,
+              };
+            }
+            if (n.id === intersectedNodeId) {
+              return {
+                ...n,
+                position: intersectedNodeNewPos,
+              };
+            }
+            return n;
+          })
+        );
       }
 
       setNodes((ns) =>
@@ -234,9 +251,7 @@ interface FlowNode {
   id: string;
   type: string;
   data: {
-    name: string;
-    job: string;
-    emoji: string;
+    username: string;
   };
   position: {
     x: number;
