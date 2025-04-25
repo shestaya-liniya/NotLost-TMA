@@ -1,31 +1,25 @@
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { createPortal } from "react-dom";
-import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Tappable from "@/ui/Tappable";
-import PlusIcon from "@/assets/icons/plus.svg?react";
-import { usePinDeskStore } from "./PinDeskStore";
 
-export default function GridFlowMenu(props: {
+export default function MiniAppTopMenu(props: {
+  children: ReactNode;
   show: boolean;
   setShow: (val: boolean) => void;
 }) {
-  const { nodesDraggable, setNodesDraggable } = usePinDeskStore();
-
   if (typeof window === "undefined") return null;
 
   return createPortal(
     <AnimatePresence>
       {props.show && (
         <>
-          {/* Backdrop */}
           <div
             onPointerDown={() => props.setShow(false)}
             className="absolute top-0 left-0 h-screen w-screen"
           />
 
-          {/* Menu */}
           <motion.div
             style={{
               top: getMiniAppTopInset() + 10,
@@ -38,18 +32,7 @@ export default function GridFlowMenu(props: {
             transition={{ duration: 0.15 }}
             className="absolute z-20 left-1/2 -translate-x-1/2 bg-button rounded-xl border-[1px] border-secondary overflow-hidden"
           >
-            <MenuItem
-              active={nodesDraggable}
-              action={() => setNodesDraggable(!nodesDraggable)}
-            >
-              <GrabIcon className="w-5 h-5" />
-              <div>Move</div>
-            </MenuItem>
-            <Divider />
-            <MenuItem>
-              <PlusIcon className="w-5 h-5" />
-              <div>Add</div>
-            </MenuItem>
+            {props.children}
           </motion.div>
         </>
       )}
@@ -58,7 +41,7 @@ export default function GridFlowMenu(props: {
   );
 }
 
-const MenuItem = (props: {
+export const MiniAppTopMenuItem = (props: {
   children: ReactNode;
   active?: boolean;
   action?: () => void;
@@ -66,11 +49,13 @@ const MenuItem = (props: {
   return (
     <Tappable
       onClick={props.action}
-      className={`px-3 py-2 flex text-sm items-center font-medium gap-2 ${props.active ? "text-black bg-white" : ""}`}
+      className={`px-3 py-2 flex items-center text-sm font-medium gap-3 ${props.active ? "text-black bg-white" : ""}`}
     >
       {props.children}
     </Tappable>
   );
 };
 
-const Divider = () => <div className="bg-secondary h-[1px] w-full" />;
+export const MiniAppTopMenuDivider = () => (
+  <div className="bg-secondary h-[1px] w-full" />
+);
