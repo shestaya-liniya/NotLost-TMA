@@ -14,6 +14,7 @@ export default function Home() {
       <div>
         <Tappable onClick={() => setPinDeskOpen(true)}>Open desk</Tappable>
       </div>
+      HELLO
     </div>
   );
 }

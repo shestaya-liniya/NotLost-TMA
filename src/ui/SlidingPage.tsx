@@ -49,7 +49,7 @@ export default function SlidingPage({
         style={{
           height: "var(--initial-height)",
         }}
-        className={`absolute top-0 left-0 w-screen bg-secondary transition-all ease duration-500 ${
+        className={`absolute top-0 left-0 w-screen bg-primary transition-all ease duration-500 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
