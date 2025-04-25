@@ -15,20 +15,16 @@ import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 export default function Home() {
   const { setPinDeskOpen } = useModalStore();
   const [showMenu, setShowMenu] = useState(false);
+
   return (
     <div className="h-screen relative">
-      <MiniAppTopButton>
-        <Tappable
-          onClick={() => setShowMenu(true)}
-          className="max-h-[32px] h-[32px] text-sm backdrop-blur-[25px] bg-button rounded-2xl px-3 py-1.5 font-medium flex items-center gap-2 border-[1px] border-[#252525]"
-        >
-          NotLost
-          <MenuIcon
-            className={`h-3 w-3 text-white transition-transform duration-300 ${
-              showMenu ? "rotate-90" : "rotate-0"
-            }`}
-          />
-        </Tappable>
+      <MiniAppTopButton onClick={() => setShowMenu(true)}>
+        NotLost
+        <MenuIcon
+          className={`h-3 w-3 text-white transition-transform duration-300 ${
+            showMenu ? "rotate-90" : "rotate-0"
+          }`}
+        />
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem>
