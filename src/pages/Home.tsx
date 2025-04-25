@@ -21,7 +21,7 @@ export default function Home() {
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
         NotLost
         <MenuIcon
-          className={`h-3 w-3 text-white transition-transform duration-300 ${
+          className={`h-4 w-4 text-white transition-transform duration-300 ${
             showMenu ? "rotate-90" : "rotate-0"
           }`}
         />
