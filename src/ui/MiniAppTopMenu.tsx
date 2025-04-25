@@ -49,7 +49,7 @@ export const MiniAppTopMenuItem = (props: {
   return (
     <Tappable
       onTap={props.action}
-      className={`px-4 py-2.5 flex items-center text-[15px] font-medium gap-3 ${props.active ? "text-black bg-white" : ""}`}
+      className={`px-4 py-2 flex items-center text-[15px] font-medium gap-3 ${props.active ? "text-black bg-white" : ""}`}
     >
       {props.children}
     </Tappable>
@@ -57,5 +57,5 @@ export const MiniAppTopMenuItem = (props: {
 };
 
 export const MiniAppTopMenuDivider = () => (
-  <div className="bg-primary h-[1px] w-full" />
+  <div className="bg-white/5 h-[1px] w-full" />
 );
