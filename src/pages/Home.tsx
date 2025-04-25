@@ -2,7 +2,7 @@ import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useModalStore } from "@/lib/store/modalStore";
 import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
 import Tappable from "@/ui/Tappable";
-import MenuIcon from "@/assets/icons/menu.svg?react";
+import MenuIcon from "@/assets/icons/telegram.svg?react";
 import { useState } from "react";
 import MiniAppTopMenu, {
   MiniAppTopMenuDivider,
@@ -19,12 +19,10 @@ export default function Home() {
   return (
     <div className="h-screen relative">
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
-        NotLost
         <MenuIcon
-          className={`h-4 w-4 text-white transition-transform duration-300 ${
-            showMenu ? "rotate-90" : "rotate-0"
-          }`}
+          className={`h-4 w-4 text-white transition-transform duration-300`}
         />
+        NotLost
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem>
