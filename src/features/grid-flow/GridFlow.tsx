@@ -170,7 +170,7 @@ function GridFlow() {
         ref={reactFlowWrapper}
         style={{
           height: window.innerHeight - getMiniAppTopInset(),
-          marginTop: getMiniAppTopInset(),
+          top: getMiniAppTopInset(),
           position: "relative",
         }}
       >

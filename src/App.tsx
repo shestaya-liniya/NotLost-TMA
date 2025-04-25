@@ -149,7 +149,7 @@ const setupTelegramTheme = (): void => {
     --tg-theme-hint-color: ${tp.hint_color};
     --tg-theme-button-color: ${tp.button_color};
     --tg-theme-text-color: ${tp.text_color};
-    ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 20px; --tg-viewport-content-safe-area-inset-top: 20px"}
+    ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 36px; --tg-viewport-content-safe-area-inset-top: 36px"}
   }`;
   document.head.appendChild(style);
 };
