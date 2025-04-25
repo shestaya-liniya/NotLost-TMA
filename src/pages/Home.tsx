@@ -51,7 +51,7 @@ export default function Home() {
         <div>
           <div className="text-[#D4D4D4] font-medium flex gap-1 items-center ml-2">
             <div className="text-xs">All workspaces</div>
-            <ChevronRightIcon className="h-3 w-3" />
+            <ChevronRightIcon className="h-2 w-2 mt-0.5" />
           </div>
           <VerticalScrollableList className="-ml-4 -mr-4 px-4 pt-3">
             <li>
@@ -110,6 +110,18 @@ export default function Home() {
               </div>
             </li>
           </VerticalScrollableList>
+        </div>
+        <div>
+          <div className="text-[#D4D4D4] font-medium flex gap-1 items-center ml-2 mt-4">
+            <div className="text-xs">Inbox</div>
+            <ChevronRightIcon className="h-2 w-2 mt-0.5" />
+            <div className="rounded-full text-xs p-0.5 h-4 w-4 bg-red-500/80 grid place-content-center">
+              0
+            </div>
+            <div className="rounded-full text-xs p-0.5 h-4 w-4 bg-secondary grid place-content-center">
+              0
+            </div>
+          </div>
         </div>
       </div>
     </div>

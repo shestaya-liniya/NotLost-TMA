@@ -3,6 +3,7 @@ import { memo, useRef, useState } from "react";
 function Tappable(props: {
   children: React.ReactNode;
   className?: string;
+  onTap?: () => void;
   onClick?: () => void;
   onLongPress?: () => void;
   style?: object;
@@ -39,9 +40,9 @@ function Tappable(props: {
       onPointerDown={() => {
         if (props.onLongPress) {
           startPress();
-        } else {
+        } else if (props.onTap) {
           setActive(true);
-          props.onClick?.();
+          props.onTap();
           setTimeout(() => {
             setActive(false);
           }, 100);
@@ -64,11 +65,11 @@ function Tappable(props: {
           timerRef.current = null;
         }
       }} */
-      /* onClick={() => {
-        if (!props.onLongPress) {
-          props.onClick?.();
+      onClick={() => {
+        if (!props.onLongPress && props.onClick) {
+          props.onClick();
         }
-      }} */
+      }}
     >
       {props.children}
     </div>

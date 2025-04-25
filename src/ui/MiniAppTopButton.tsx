@@ -29,7 +29,7 @@ export const MiniAppTopButton = (props: {
       className="absolute w-screen grid place-items-center"
     >
       <Tappable
-        onClick={props.onClick}
+        onTap={props.onClick}
         style={{
           background:
             lp.tgWebAppPlatform === "ios" ? "#2f2f2f" : "var(--color-button)",

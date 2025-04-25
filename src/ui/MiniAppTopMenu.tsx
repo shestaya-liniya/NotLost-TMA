@@ -30,7 +30,7 @@ export default function MiniAppTopMenu(props: {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-20 left-1/2 -translate-x-1/2 bg-button rounded-xl border-[1px] border-secondary overflow-hidden"
+            className="absolute z-20 left-1/2 -translate-x-1/2 bg-secondary rounded-xl border-[1px] border-secondary overflow-hidden"
           >
             {props.children}
           </motion.div>
@@ -48,7 +48,7 @@ export const MiniAppTopMenuItem = (props: {
 }) => {
   return (
     <Tappable
-      onClick={props.action}
+      onTap={props.action}
       className={`px-4 py-2.5 flex items-center text-[15px] font-medium gap-3 ${props.active ? "text-black bg-white" : ""}`}
     >
       {props.children}
@@ -57,5 +57,5 @@ export const MiniAppTopMenuItem = (props: {
 };
 
 export const MiniAppTopMenuDivider = () => (
-  <div className="bg-secondary h-[1px] w-full" />
+  <div className="bg-primary h-[1px] w-full" />
 );
