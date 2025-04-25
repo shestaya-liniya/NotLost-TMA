@@ -33,6 +33,10 @@ export const MiniAppTopButton = (props: {
         style={{
           background:
             lp.tgWebAppPlatform === "ios" ? "#2f2f2f" : "var(--color-button)",
+          border:
+            lp.tgWebAppPlatform === "ios"
+              ? ""
+              : "1px solid var(--color-secondary)",
         }}
         className="max-h-[32px] h-[32px] text-sm backdrop-blur-[25px] rounded-2xl px-3 py-1.5 font-medium flex items-center gap-2"
       >

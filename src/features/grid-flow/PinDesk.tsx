@@ -9,6 +9,7 @@ import MiniAppTopMenu, {
   MiniAppTopMenuDivider,
 } from "@/ui/MiniAppTopMenu";
 import { usePinDeskStore } from "./PinDeskStore";
+import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 export default function PinDesk() {
   const [showMenu, setShowMenu] = useState(false);
@@ -16,7 +17,15 @@ export default function PinDesk() {
 
   return (
     <div className="h-screen relative">
-      <GridFlow />
+      <div
+        className="relative"
+        style={{
+          top: getMiniAppTopInset(),
+        }}
+      >
+        <GridFlow />
+      </div>
+
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
         Workspace
         <SettingsIcon

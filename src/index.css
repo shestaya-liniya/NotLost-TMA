@@ -99,6 +99,7 @@
   --color-default: #fff;
   --color-button: #141414;
   --color-link: #118bf6;
+  --color-hint: #9b9b9b;
 }
 
 [data-theme="pink"] {
@@ -316,4 +317,8 @@ input:focus {
   100% {
     transform: rotate(2deg);
   }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari + Chrome */
 }
