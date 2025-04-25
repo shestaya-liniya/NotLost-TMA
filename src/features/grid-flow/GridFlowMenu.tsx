@@ -20,12 +20,9 @@ export default function GridFlowMenu(props: {
       {props.show && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <div
+            onPointerDown={() => props.setShow(false)}
             className="absolute top-0 left-0 h-screen w-screen"
-            onClick={() => props.setShow(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
           />
 
           {/* Menu */}
@@ -39,7 +36,7 @@ export default function GridFlowMenu(props: {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-20 left-1/2 -translate-x-1/2 bg-[#141414] rounded-xl border-[1px] border-[#252525] overflow-hidden"
+            className="absolute z-20 left-1/2 -translate-x-1/2 bg-button rounded-xl border-[1px] border-secondary overflow-hidden"
           >
             <MenuItem
               active={nodesDraggable}
@@ -76,4 +73,4 @@ const MenuItem = (props: {
   );
 };
 
-const Divider = () => <div className="bg-[#252525] h-[1px] w-full" />;
+const Divider = () => <div className="bg-secondary h-[1px] w-full" />;

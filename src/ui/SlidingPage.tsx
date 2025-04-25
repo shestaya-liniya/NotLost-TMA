@@ -62,7 +62,9 @@ export default function SlidingPage({
           </div>
         )}
         <TelegramWallpaper />
-        <DelayedUnmount mounted={open}>{children}</DelayedUnmount>
+        <DelayedUnmount mounted={open} delay={500}>
+          {children}
+        </DelayedUnmount>
       </div>
     </div>
   );

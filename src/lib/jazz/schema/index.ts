@@ -83,7 +83,7 @@ export class JazzAccount extends Account {
         firstName: "",
         lastName: "",
         telegramSync: false,
-        colorScheme: "",
+        colorScheme: "dark",
         wallpaperEnabled: true,
         folders,
         name: "",

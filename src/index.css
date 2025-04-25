@@ -92,6 +92,14 @@
   }
 }
 
+[data-theme="dark"] {
+  --color-primary: #191919;
+  --color-secondary: #252525;
+
+  --color-default: #fff;
+  --color-button: #141414;
+}
+
 [data-theme="pink"] {
   --color-primary: #38282f;
   --color-secondary: #251a1f;

@@ -15,6 +15,7 @@ import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
 import PinDesk from "./features/grid-flow/PinDesk";
+import Home from "./pages/Home";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -37,10 +38,7 @@ export default function App() {
       jazzProfile.colorScheme = "blue";
       document.documentElement.setAttribute("data-theme", "blue");
     } else {
-      document.documentElement.setAttribute(
-        "data-theme",
-        jazzProfile.colorScheme
-      );
+      document.documentElement.setAttribute("data-theme", "dark");
     }
   }, [jazzProfile]);
 
@@ -72,7 +70,7 @@ export default function App() {
         )}
       >
         <KeepAlive cacheKey="tab-bar"> */}
-      <PinDesk />
+      <Home />
       {/* </KeepAlive>
       </DelayedUnmount> */}
     </div>
@@ -89,11 +87,22 @@ const ModalsAndSlidingPages = () => {
     setSettingsModalOpen,
     graphModalOpen,
     setGraphModalOpen,
+    pinDeskOpen,
+    setPinDeskOpen,
   } = useModalStore();
   return (
     <div>
       <EditTagsModal />
       <AddDialogModal />
+
+      <SlidingPage
+        open={pinDeskOpen}
+        onClose={() => {
+          setPinDeskOpen(false);
+        }}
+      >
+        <PinDesk />
+      </SlidingPage>
 
       <SlidingPage
         open={dialogInfoModalOpen}

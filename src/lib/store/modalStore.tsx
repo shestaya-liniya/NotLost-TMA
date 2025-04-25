@@ -30,6 +30,9 @@ interface ModalState {
 
   graphModalOpen: boolean;
   setGraphModalOpen: (newState: boolean) => void;
+
+  pinDeskOpen: boolean;
+  setPinDeskOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -89,5 +92,11 @@ export const useModalStore = create<ModalState>((set) => ({
   setGraphModalOpen: (newState) =>
     set(() => ({
       graphModalOpen: newState,
+    })),
+
+  pinDeskOpen: false,
+  setPinDeskOpen: (newState) =>
+    set(() => ({
+      pinDeskOpen: newState,
     })),
 }));
