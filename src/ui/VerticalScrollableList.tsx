@@ -40,7 +40,7 @@ export default function VerticalScrollableList({
         transition: "mask-image 0.15s ease, -webkit-mask-image 0.15s ease",
       }}
       className={twMerge(
-        "flex gap-2 overflow-x-auto scrollbar-hide",
+        "flex gap-2 overflow-x-auto scrollbar-hide overscroll-contain",
         className
       )}
     >

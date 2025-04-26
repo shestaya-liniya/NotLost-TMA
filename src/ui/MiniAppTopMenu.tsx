@@ -30,7 +30,7 @@ export default function MiniAppTopMenu(props: {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-20 left-1/2 -translate-x-1/2 bg-secondary/50  backdrop-blur-sm rounded-xl overflow-hidden"
+            className="absolute z-20 left-1/2 -translate-x-1/2 bg-secondary/50  backdrop-blur-2xl rounded-xl overflow-hidden"
           >
             {props.children}
           </motion.div>
