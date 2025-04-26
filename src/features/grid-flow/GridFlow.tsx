@@ -173,6 +173,7 @@ function GridFlow() {
         }}
       >
         <ReactFlow
+          id="fullscreen"
           nodes={nodes}
           nodeTypes={nodeTypes}
           onNodesChange={onNodesChange}

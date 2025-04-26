@@ -1,7 +1,7 @@
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
 import MenuIcon from "@/assets/icons/telegram.svg?react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import MiniAppTopMenu, {
   MiniAppTopMenuDivider,
   MiniAppTopMenuItem,
@@ -11,9 +11,10 @@ import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
 import VerticalScrollableList from "@/ui/VerticalScrollableList";
-import GridFlow from "@/features/grid-flow/GridFlow";
 import Tappable from "@/ui/Tappable";
 import { useModalStore } from "@/lib/store/modalStore";
+import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
+import { initNodes, nodeTypes } from "@/features/grid-flow/GridFlowNodes";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
@@ -28,18 +29,18 @@ export default function Home() {
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem>
-          <CrownIcon className="h-4 w-4 text-link" />
           <div>Premium</div>
+          <CrownIcon className="h-4 w-4" />
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem>
-          <GraphIcon className="h-4 w-4 scale-130" />
           <div>Graph</div>
+          <GraphIcon className="h-4 w-4 scale-130" />
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem>
-          <SettingsIcon className="h-4 w-4" />
           <div>Settings</div>
+          <SettingsIcon className="h-4 w-4" />
         </MiniAppTopMenuItem>
       </MiniAppTopMenu>
       <div
@@ -49,10 +50,13 @@ export default function Home() {
         className="px-4"
       >
         <div>
-          <div className="text-[#D4D4D4] font-medium flex gap-1 items-center ml-2">
+          <Tappable
+            onTap={() => setPinDeskOpen(true)}
+            className="text-[#D4D4D4] font-medium flex gap-1 items-center ml-2"
+          >
             <div className="text-xs">All workspaces</div>
             <ChevronRightIcon className="h-2 w-2 mt-0.5" />
-          </div>
+          </Tappable>
           <VerticalScrollableList className="-ml-4 -mr-4 px-4 pt-3">
             <li>
               <Tappable
@@ -60,7 +64,7 @@ export default function Home() {
                 className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary"
               >
                 <div className="absolute -top-10 -left-30 w-100 h-30 scale-30 pointer-events-none">
-                  <GridFlow />
+                  <PreviewGridFlow id="preview" />
                 </div>
 
                 <div className="absolute bottom-0 w-full h-10 bg-secondary flex items-center pl-2">
@@ -71,9 +75,12 @@ export default function Home() {
               </Tappable>
             </li>
             <li>
-              <div className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary">
-                <div className="absolute -top-10 -left-30 w-100 h-30 -scale-30 pointer-events-none">
-                  <GridFlow />
+              <Tappable
+                onClick={() => setPinDeskOpen(true)}
+                className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary"
+              >
+                <div className="absolute -top-10 -left-30 w-100 h-30 scale-30 pointer-events-none">
+                  <PreviewGridFlow id="preview" />
                 </div>
 
                 <div className="absolute bottom-0 w-full h-10 bg-secondary flex items-center pl-2">
@@ -81,12 +88,15 @@ export default function Home() {
                     Workspace #1
                   </div>
                 </div>
-              </div>
+              </Tappable>
             </li>
             <li>
-              <div className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary">
+              <Tappable
+                onClick={() => setPinDeskOpen(true)}
+                className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary"
+              >
                 <div className="absolute -top-10 -left-30 w-100 h-30 scale-30 pointer-events-none">
-                  <GridFlow />
+                  <PreviewGridFlow id="preview" />
                 </div>
 
                 <div className="absolute bottom-0 w-full h-10 bg-secondary flex items-center pl-2">
@@ -94,12 +104,15 @@ export default function Home() {
                     Workspace #1
                   </div>
                 </div>
-              </div>
+              </Tappable>
             </li>
             <li>
-              <div className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary">
+              <Tappable
+                onClick={() => setPinDeskOpen(true)}
+                className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary"
+              >
                 <div className="absolute -top-10 -left-30 w-100 h-30 scale-30 pointer-events-none">
-                  <GridFlow />
+                  <PreviewGridFlow id="preview" />
                 </div>
 
                 <div className="absolute bottom-0 w-full h-10 bg-secondary flex items-center pl-2">
@@ -107,7 +120,7 @@ export default function Home() {
                     Workspace #1
                   </div>
                 </div>
-              </div>
+              </Tappable>
             </li>
           </VerticalScrollableList>
         </div>
@@ -127,3 +140,30 @@ export default function Home() {
     </div>
   );
 }
+
+// eslint-disable-next-line react/display-name
+const PreviewGridFlow = memo(
+  ({ className, id }: { className?: string; id: string }) => {
+    return (
+      <ReactFlowProvider>
+        <div style={{ width: "400px", height: "300px" }} className={className}>
+          <ReactFlow
+            id={id}
+            nodes={initNodes}
+            nodeTypes={nodeTypes}
+            zoomOnDoubleClick={false}
+            zoomOnPinch={false}
+            zoomOnScroll={false}
+            nodesDraggable={false}
+            panOnDrag={false}
+            fitView
+            preventScrolling={true}
+            proOptions={{ hideAttribution: true }}
+          >
+            <Background bgColor="#191919" gap={40} />
+          </ReactFlow>
+        </div>
+      </ReactFlowProvider>
+    );
+  }
+);

@@ -18,12 +18,12 @@ export default function PinDesk() {
   return (
     <div className="h-screen relative">
       <div
-        className="relative"
+        className="relative w-screen"
         style={{
           top: getMiniAppTopInset(),
         }}
       >
-        <GridFlow />
+        <GridFlow key={"preview-10"} />
       </div>
 
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
@@ -39,13 +39,13 @@ export default function PinDesk() {
           action={() => setNodesDraggable(!nodesDraggable)}
           active={nodesDraggable}
         >
-          <GrabIcon className="w-6 h-6" />
           <div>Move</div>
+          <GrabIcon className="w-6 h-6" />
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem>
-          <PlusIcon className="w-6 h-6" />
           <div>Add</div>
+          <PlusIcon className="w-6 h-6" />
         </MiniAppTopMenuItem>
       </MiniAppTopMenu>
     </div>

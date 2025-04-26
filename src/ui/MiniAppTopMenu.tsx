@@ -24,13 +24,13 @@ export default function MiniAppTopMenu(props: {
             style={{
               top: getMiniAppTopInset() + 10,
               boxShadow:
-                "rgba(0, 0, 0, 0.3) 0px 2px 4px 0px, rgba(0, 0, 0, 0.3) 0px 2px 16px 0px",
+                "rgba(0, 0, 0, 0.2) 0px 2px 4px 0px, rgba(0, 0, 0, 0.3) 0px 2px 16px 0px",
             }}
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-20 left-1/2 -translate-x-1/2 bg-secondary rounded-xl border-[1px] border-secondary overflow-hidden"
+            className="absolute z-20 left-1/2 -translate-x-1/2 bg-[#232323]  backdrop-blur-xl rounded-xl overflow-hidden"
           >
             {props.children}
           </motion.div>
@@ -49,7 +49,7 @@ export const MiniAppTopMenuItem = (props: {
   return (
     <Tappable
       onTap={props.action}
-      className={`px-4 py-2 flex items-center text-[15px] font-medium gap-3 ${props.active ? "text-black bg-white" : ""}`}
+      className={`px-4 py-2 w-full flex items-center justify-between text-[15px] font-light gap-3 ${props.active ? "text-black bg-white" : ""}`}
     >
       {props.children}
     </Tappable>
@@ -57,5 +57,5 @@ export const MiniAppTopMenuItem = (props: {
 };
 
 export const MiniAppTopMenuDivider = () => (
-  <div className="bg-white/5 h-[1px] w-full" />
+  <div className="bg-[#363636] h-[1px] w-full" />
 );
