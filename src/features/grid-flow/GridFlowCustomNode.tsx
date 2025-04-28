@@ -1,4 +1,5 @@
 import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
+import { truncateWord } from "@/helpers/truncateWord";
 
 export default function CustomNode({
   data,
@@ -19,8 +20,11 @@ export default function CustomNode({
           background: "radial-gradient(circle, black 0%, transparent 70%)",
         }}
       ></div>
-      <div className="absolute -top-full -left-full translate-2 -rotate-10 pointer-events-none">
-        <Circle text={data.name.toUpperCase()} percentage={1} />
+      <div className="absolute -top-full -left-full translate-2 -rotate-80 pointer-events-none">
+        <Circle
+          text={truncateWord(data.name.toUpperCase(), 20)}
+          percentage={1}
+        />
       </div>
     </div>
   );
@@ -56,7 +60,7 @@ const Circle = ({ percentage, text }: { percentage: number; text: string }) => {
       </g>
       <text
         fontSize="8px"
-        fill={"#fff"}
+        fill={"rgba(255,255,255,0.8)"}
         fontWeight={800}
         dy="2"
         dx={4}
