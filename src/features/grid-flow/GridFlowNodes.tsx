@@ -12,6 +12,7 @@ export const initNodes = [
     position: { x: 20, y: 50 },
     data: {
       username: "shestaya_liniya",
+      name: "Andrei",
     },
   },
   {
@@ -20,6 +21,7 @@ export const initNodes = [
     position: { x: 20, y: 200 },
     data: {
       username: "skywl_k",
+      name: "Andrei",
     },
   },
   {
@@ -28,6 +30,16 @@ export const initNodes = [
     position: { x: 200, y: 200 },
     data: {
       username: "kopolinaa",
+      name: "Polina design",
+    },
+  },
+  {
+    id: "4",
+    type: "custom",
+    position: { x: 250, y: 250 },
+    data: {
+      username: "devs_cis",
+      name: "Telegram Developers Community (CIS)",
     },
   },
 ];
