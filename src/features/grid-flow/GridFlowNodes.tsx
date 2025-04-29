@@ -26,6 +26,15 @@ export const initNodes = [
       name: "Andrei",
     },
   },
+  {
+    id: "3",
+    type: "custom",
+    position: { x: 200, y: 200 },
+    data: {
+      username: "kopolinaa",
+      name: "polina design",
+    },
+  },
 
   {
     id: "4",
