@@ -7,7 +7,7 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import { initNodes, nodeTypes } from "./GridFlowNodes";
+import { initNodes, GridFlowNodeTypes } from "./GridFlowNodes";
 import { memo, useCallback, useEffect, useRef } from "react";
 import DraggableAvatars from "./DraggableAvatars";
 import { useDragStore } from "@/lib/store/dragStore";
@@ -175,7 +175,7 @@ function GridFlow() {
         <ReactFlow
           id="fullscreen"
           nodes={nodes}
-          nodeTypes={nodeTypes}
+          nodeTypes={GridFlowNodeTypes}
           onNodesChange={onNodesChange}
           className={`flow-wrapper ${showShadows.current && "shadow-visible"} ${enableAnimation.current && "transitions-enabled"}`}
           translateExtent={[

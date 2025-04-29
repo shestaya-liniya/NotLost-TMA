@@ -14,7 +14,10 @@ import VerticalScrollableList from "@/ui/VerticalScrollableList";
 import Tappable from "@/ui/Tappable";
 import { useModalStore } from "@/lib/store/modalStore";
 import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
-import { initNodes, nodeTypes } from "@/features/grid-flow/GridFlowNodes";
+import {
+  initNodes,
+  GridFlowNodeTypes,
+} from "@/features/grid-flow/GridFlowNodes";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
@@ -150,7 +153,7 @@ const PreviewGridFlow = memo(
           <ReactFlow
             id={id}
             nodes={initNodes}
-            nodeTypes={nodeTypes}
+            nodeTypes={GridFlowNodeTypes}
             zoomOnDoubleClick={false}
             zoomOnPinch={false}
             zoomOnScroll={false}

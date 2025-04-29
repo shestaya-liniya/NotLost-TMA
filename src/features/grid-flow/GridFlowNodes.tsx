@@ -1,7 +1,7 @@
 import CustomNode, { NodeShadow } from "./GridFlowCustomNode";
 import GridFlowFolderNode from "./GridFlowFolderNode";
 
-export const nodeTypes = {
+export const GridFlowNodeTypes = {
   custom: CustomNode,
   folder: GridFlowFolderNode,
   shadow: NodeShadow,

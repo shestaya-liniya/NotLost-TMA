@@ -5,7 +5,7 @@ import { memo, useRef } from "react";
 function Draggable(props: {
   children: React.ReactNode;
   draggableItem: DraggableItem | null;
-  onDrag?: () => void;
+  onDrag?: (e: React.TouchEvent) => void;
   onDrop?: () => void;
 }) {
   const { setDraggableItem } = useDragStore();
@@ -34,7 +34,7 @@ function Draggable(props: {
       const dx = touch.clientX - startPos.x;
       const dy = touch.clientY - startPos.y;
 
-      props.onDrag?.();
+      props.onDrag?.(e);
 
       ref.current!.style.transform = `translate(${dx}px, ${dy}px)`;
     };

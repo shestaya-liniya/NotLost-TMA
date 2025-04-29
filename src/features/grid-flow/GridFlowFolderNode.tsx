@@ -6,7 +6,7 @@ export default function GridFlowFolderNode() {
     <div className="w-38 h-18 bg-primary rounded-xl flex flex-col items-center relative overflow-hidden border-[1px] border-secondary">
       <div className="text-xs font-medium mt-2  w-full absolute top-0 left-0 pb-1.5 px-4 text-white flex items-center gap-1">
         <FolderIcon className="w-4 h-4 text-secondary" />
-        <div className="tracking-widest text-[10px] text-[#d4d4d4]">Folder</div>
+        <div className="tracking-[1px] text-[10px] text-[#d4d4d4]">Folder</div>
       </div>
       <div className="flex relative left-2 mt-8">
         <img

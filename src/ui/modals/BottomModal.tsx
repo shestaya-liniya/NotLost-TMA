@@ -72,7 +72,7 @@ const BottomModal = (props: ModalProps) => {
         transform:
           lp.tgWebAppPlatform === "ios" ? `translateY(-${translateY}px)` : "",
       }}
-      onClick={props.onClose}
+      onPointerDown={props.onClose}
     >
       <div
         id={props.id}
@@ -84,17 +84,17 @@ const BottomModal = (props: ModalProps) => {
           }`,
           props.className
         )}
-        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
       >
         <div className="text-2xl font-semibold text-center mb-4">
           {props.title}
         </div>
         {props.children}
         <div
-          className="absolute top-2 right-2 text-xl font-semibold text-link rounded-full bg-link/20 p-2"
-          onClick={() => props.onClose()}
+          className="absolute top-2 right-2 text-xl font-semibold rounded-full bg-secondary/50 p-2"
+          onPointerDown={() => props.onClose()}
         >
-          <RemoveIcon className="w-4 h-4" />
+          <RemoveIcon className="w-4 h-4 text-white/80" />
         </div>
       </div>
     </div>
