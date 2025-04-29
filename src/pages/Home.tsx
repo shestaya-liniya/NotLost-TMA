@@ -18,7 +18,7 @@ import { initNodes, nodeTypes } from "@/features/grid-flow/GridFlowNodes";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
-  const { setPinDeskOpen } = useModalStore();
+  const { setWorkspaceOpen: setPinDeskOpen } = useModalStore();
   return (
     <div className="h-screen relative">
       <MiniAppTopButton onClick={() => setShowMenu(true)}>

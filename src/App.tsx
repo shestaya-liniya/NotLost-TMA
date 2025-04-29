@@ -14,7 +14,7 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
-import PinDesk from "./features/grid-flow/PinDesk";
+import Workspace from "./features/grid-flow/Workspace";
 import Home from "./pages/Home";
 
 export default function App() {
@@ -87,8 +87,8 @@ const ModalsAndSlidingPages = () => {
     setSettingsModalOpen,
     graphModalOpen,
     setGraphModalOpen,
-    pinDeskOpen,
-    setPinDeskOpen,
+    workspaceOpen: pinDeskOpen,
+    setWorkspaceOpen: setPinDeskOpen,
   } = useModalStore();
   return (
     <div>
@@ -101,7 +101,7 @@ const ModalsAndSlidingPages = () => {
           setPinDeskOpen(false);
         }}
       >
-        <PinDesk />
+        <Workspace />
       </SlidingPage>
 
       <SlidingPage

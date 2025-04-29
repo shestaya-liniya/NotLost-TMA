@@ -8,12 +8,12 @@ import MiniAppTopMenu, {
   MiniAppTopMenuItem,
   MiniAppTopMenuDivider,
 } from "@/ui/MiniAppTopMenu";
-import { usePinDeskStore } from "./PinDeskStore";
+import { useWorkspaceStore } from "./WorkspaceStore";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 
 export default function PinDesk() {
   const [showMenu, setShowMenu] = useState(false);
-  const { nodesDraggable, setNodesDraggable } = usePinDeskStore();
+  const { nodesDraggable, setNodesDraggable } = useWorkspaceStore();
 
   return (
     <div className="h-screen relative">

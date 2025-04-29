@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface PinDeskState {
+interface WorkspaceState {
   nodesDraggable: boolean;
   setNodesDraggable: (newState: boolean) => void;
 }
 
-export const usePinDeskStore = create<PinDeskState>((set) => ({
+export const useWorkspaceStore = create<WorkspaceState>((set) => ({
   nodesDraggable: false,
   setNodesDraggable: (newState) =>
     set(() => ({
