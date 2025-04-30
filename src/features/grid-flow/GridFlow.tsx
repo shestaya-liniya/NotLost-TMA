@@ -1,34 +1,24 @@
 import {
   ReactFlow,
   Background,
-  useNodesState,
   useReactFlow,
   OnNodesChange,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import { GridFlowNodeTypes } from "./GridFlowNodes";
-import { memo, useCallback, useEffect, useRef } from "react";
-import DraggableAvatars from "./DraggableAvatars";
-import { useDragStore } from "@/lib/store/dragStore";
+import { GridFlowNodeTypes } from "./nodes/GridFlowNodes";
+import { memo, useCallback, useRef } from "react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useWorkspaceStore } from "./WorkspaceStore";
-
-const NODE_SIZE = 40;
-
-export const useGridFlowNodesState = (initNodes?: FlowNode[]) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initNodes || []);
-
-  return { nodes, setNodes, onNodesChange };
-};
+import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
 
 function GridFlow(props: {
-  nodes: FlowNode[];
-  setNodes: React.Dispatch<React.SetStateAction<FlowNode[]>>;
-  onNodesChange: OnNodesChange<FlowNode>;
+  nodes: GridFlowNode[];
+  setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
+  onNodesChange: OnNodesChange<GridFlowNode>;
 }) {
   const { nodes, setNodes, onNodesChange } = props;
-  const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
+  const { getIntersectingNodes } = useReactFlow();
   const { nodesDraggable } = useWorkspaceStore();
   const reactFlowWrapper = useRef(null);
 
@@ -37,38 +27,44 @@ function GridFlow(props: {
 
   const prevPosition = useRef<{ x: number; y: number }>();
 
-  const onNodeDragStart = useCallback((_: React.MouseEvent, node: FlowNode) => {
-    prevPosition.current = node.position;
+  const onNodeDragStart = useCallback(
+    (_: React.MouseEvent, node: GridFlowNode) => {
+      prevPosition.current = node.position;
 
-    const newNode = {
-      id: "shadow",
-      type: "shadow",
-      position: prevPosition.current,
-    };
+      const newNode = {
+        id: "shadow",
+        type: "shadow",
+        position: prevPosition.current,
+      };
 
-    setNodes((nds) => nds.concat(newNode as FlowNode));
-  }, []);
+      setNodes((nds) => nds.concat(newNode as GridFlowNode));
+    },
+    []
+  );
 
-  const onNodeDrag = useCallback((_event: React.MouseEvent, node: FlowNode) => {
-    const intersections = getIntersectingNodes(node).map((n) => n.id);
-    const firstIntersection = intersections[0];
+  const onNodeDrag = useCallback(
+    (_event: React.MouseEvent, node: GridFlowNode) => {
+      const intersections = getIntersectingNodes(node).map((n) => n.id);
+      const firstIntersection = intersections[0];
 
-    setNodes((ns) =>
-      ns.map((n) => ({
-        ...n,
-        className: n.id === firstIntersection ? "highlight" : "",
-      }))
-    );
+      setNodes((ns) =>
+        ns.map((n) => ({
+          ...n,
+          className: n.id === firstIntersection ? "highlight" : "",
+        }))
+      );
 
-    if (intersections.filter((id) => id !== "shadow").length > 0) {
-      showShadows.current = true;
-    } else {
-      showShadows.current = false;
-    }
-  }, []);
+      if (intersections.filter((id) => id !== "shadow").length > 0) {
+        showShadows.current = true;
+      } else {
+        showShadows.current = false;
+      }
+    },
+    []
+  );
 
   const onNodeDragStop = useCallback(
-    (_event: React.MouseEvent, node: FlowNode) => {
+    (_event: React.MouseEvent, node: GridFlowNode) => {
       enableAnimation.current = true;
       setTimeout(() => {
         enableAnimation.current = false;
@@ -76,6 +72,7 @@ function GridFlow(props: {
       showShadows.current = false;
 
       fixNodePosition(node, setNodes);
+
       const intersections = getIntersectingNodes(node).filter(
         (n) => n.id !== "shadow"
       );
@@ -120,54 +117,6 @@ function GridFlow(props: {
     []
   );
 
-  const nodesRef = useRef<FlowNode[]>([]);
-  useEffect(() => {
-    nodesRef.current = nodes;
-  }, [nodes]);
-
-  useEffect(() => {
-    const handleOnTouchMove = (e: TouchEvent) => {
-      // drag new item
-      const draggableItem = useDragStore.getState().draggableItem;
-      if (!draggableItem || !nodesRef.current) return;
-
-      const touch = e.touches[0];
-      const position = screenToFlowPosition({
-        x: touch.clientX - NODE_SIZE,
-        y: touch.clientY - NODE_SIZE,
-      });
-
-      const existingNode = nodes.find((n) => n.id === draggableItem.id);
-
-      if (!existingNode) {
-        const newNode = {
-          id: draggableItem.id,
-          type: draggableItem.type,
-          position,
-        };
-
-        setNodes((nds) => nds.concat(newNode as FlowNode));
-      } else {
-        const intersections = getIntersectingNodes(existingNode).map(
-          (n) => n.id
-        );
-
-        setNodes((ns) =>
-          ns.map((n) => ({
-            ...n,
-            className: intersections.includes(n.id) ? "highlight" : "",
-          }))
-        );
-      }
-    };
-
-    window.addEventListener("touchmove", handleOnTouchMove);
-
-    return () => {
-      window.removeEventListener("touchmove", handleOnTouchMove);
-    };
-  }, []);
-
   return (
     <div className="relative transition-all duration-300 ease-in-out h-screen">
       <div
@@ -206,11 +155,8 @@ function GridFlow(props: {
           onNodeDragStart={onNodeDragStart}
           onNodeDragStop={onNodeDragStop}
         >
-          <Background bgColor="#191919" gap={40} />
+          <Background bgColor="#191919" gap={GRID_CELL_SIZE} />
         </ReactFlow>
-        <div className="absolute bottom-0 left-0">
-          <DraggableAvatars />
-        </div>
       </div>
     </div>
   );
@@ -219,12 +165,12 @@ function GridFlow(props: {
 export default memo(GridFlow);
 
 const getExtent = (val: number): number => {
-  return Math.floor(val / 40) * 40;
+  return Math.floor(val / GRID_CELL_SIZE) * GRID_CELL_SIZE;
 };
 
 const fixNodePosition = (
-  node: FlowNode,
-  setNodes: (updater: (prev: FlowNode[]) => FlowNode[]) => void,
+  node: GridFlowNode,
+  setNodes: (updater: (prev: GridFlowNode[]) => GridFlowNode[]) => void,
   position?: { x: number; y: number }
 ) => {
   const rawPos = position ? position : { ...node.position };
@@ -244,16 +190,3 @@ const fixNodePosition = (
     );
   }
 };
-
-interface FlowNode {
-  id: string;
-  type: string;
-  data: {
-    username: string;
-    name: string;
-  };
-  position: {
-    x: number;
-    y: number;
-  };
-}

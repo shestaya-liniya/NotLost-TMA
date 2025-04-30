@@ -1,6 +1,6 @@
 import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
 
-export default function CustomNode({
+export default function GridFlowChatNode({
   data,
 }: {
   data: { username: string; name: string };
@@ -22,7 +22,7 @@ export default function CustomNode({
       {/* <div className="absolute -top-full -left-full translate-2 -rotate-90 pointer-events-none">
         <Circle text={truncateWord(data.name, 20)} percentage={1} />
       </div> */}
-      <div className="text-xs tracking-[0.5px] absolute -bottom-[10px] left-1/2 -translate-x-1/2 text-nowrap">
+      <div className="text-xs tracking-[0.5px] absolute -bottom-[10px] left-1/2 -translate-x-1/2 text-nowrap font-medium text-[#D6CFCB]">
         {data.name.length > 12 ? (
           <div className="relative">
             {truncateWord(data.name, 12)}

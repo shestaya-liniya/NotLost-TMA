@@ -1,17 +1,20 @@
-import CustomNode, { NodeShadow } from "./GridFlowCustomNode";
+import { GridFlowNode } from "../GridFlowInterface";
+import GridFlowChatNode, { NodeShadow } from "./GridFlowChatNode";
 import GridFlowFolderNode from "./GridFlowFolderNode";
 
+export type GridFlowNodeType = "chat" | "folder" | "shadow";
+
 export const GridFlowNodeTypes = {
-  custom: CustomNode,
+  chat: GridFlowChatNode,
   folder: GridFlowFolderNode,
   shadow: NodeShadow,
 };
 
-export const initNodes = [
+export const initNodes: GridFlowNode[] = [
   {
     id: "1",
-    type: "custom",
-    position: { x: 20, y: 50 },
+    type: "chat",
+    position: { x: 20, y: 20 },
     data: {
       username: "shestaya_liniya",
       name: "Andrei",
@@ -19,8 +22,8 @@ export const initNodes = [
   },
   {
     id: "2",
-    type: "custom",
-    position: { x: 20, y: 200 },
+    type: "chat",
+    position: { x: 100, y: 20 },
     data: {
       username: "skywl_k",
       name: "Andrei",
@@ -28,8 +31,8 @@ export const initNodes = [
   },
   {
     id: "3",
-    type: "custom",
-    position: { x: 200, y: 200 },
+    type: "chat",
+    position: { x: 180, y: 20 },
     data: {
       username: "kopolinaa",
       name: "polina design",
@@ -38,8 +41,8 @@ export const initNodes = [
 
   {
     id: "4",
-    type: "custom",
-    position: { x: 250, y: 250 },
+    type: "chat",
+    position: { x: 260, y: 20 },
     data: {
       username: "devs_cis",
       name: "Telegram Developers Community (CIS)",

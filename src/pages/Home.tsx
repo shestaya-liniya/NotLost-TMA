@@ -17,7 +17,7 @@ import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
 import {
   initNodes,
   GridFlowNodeTypes,
-} from "@/features/grid-flow/GridFlowNodes";
+} from "@/features/grid-flow/nodes/GridFlowNodes";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
