@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import GridFlow from "./GridFlow";
 import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
@@ -13,8 +13,12 @@ import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import BottomModal from "@/ui/modals/BottomModal";
 import DuckIcon from "@/assets/icons/duck-rubber.svg?react";
 import Draggable from "@/ui/Draggable";
+import { ReactFlowProvider, useNodesState } from "@xyflow/react";
+import { initNodes } from "./GridFlowNodes";
 
-export default function PinDesk() {
+function Workspace() {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
+
   const [showMenu, setShowMenu] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const { nodesDraggable, setNodesDraggable } = useWorkspaceStore();
@@ -28,7 +32,12 @@ export default function PinDesk() {
           top: getMiniAppTopInset(),
         }}
       >
-        <GridFlow key={"preview-10"} />
+        <GridFlow
+          key={"fullscreen"}
+          nodes={nodes}
+          setNodes={setNodes}
+          onNodesChange={onNodesChange}
+        />
       </div>
 
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
@@ -113,3 +122,10 @@ export default function PinDesk() {
     </div>
   );
 }
+
+// eslint-disable-next-line react/display-name
+export default memo(() => (
+  <ReactFlowProvider>
+    <Workspace />
+  </ReactFlowProvider>
+));

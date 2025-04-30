@@ -3,11 +3,11 @@ import {
   Background,
   useNodesState,
   useReactFlow,
-  ReactFlowProvider,
+  OnNodesChange,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import { initNodes, GridFlowNodeTypes } from "./GridFlowNodes";
+import { GridFlowNodeTypes } from "./GridFlowNodes";
 import { memo, useCallback, useEffect, useRef } from "react";
 import DraggableAvatars from "./DraggableAvatars";
 import { useDragStore } from "@/lib/store/dragStore";
@@ -22,8 +22,12 @@ export const useGridFlowNodesState = (initNodes?: FlowNode[]) => {
   return { nodes, setNodes, onNodesChange };
 };
 
-function GridFlow() {
-  const { nodes, setNodes, onNodesChange } = useGridFlowNodesState(initNodes);
+function GridFlow(props: {
+  nodes: FlowNode[];
+  setNodes: React.Dispatch<React.SetStateAction<FlowNode[]>>;
+  onNodesChange: OnNodesChange<FlowNode>;
+}) {
+  const { nodes, setNodes, onNodesChange } = props;
   const { getIntersectingNodes, screenToFlowPosition } = useReactFlow();
   const { nodesDraggable } = useWorkspaceStore();
   const reactFlowWrapper = useRef(null);
@@ -212,12 +216,7 @@ function GridFlow() {
   );
 }
 
-// eslint-disable-next-line react/display-name
-export default memo(() => (
-  <ReactFlowProvider>
-    <GridFlow />
-  </ReactFlowProvider>
-));
+export default memo(GridFlow);
 
 const getExtent = (val: number): number => {
   return Math.floor(val / 40) * 40;
@@ -251,6 +250,7 @@ interface FlowNode {
   type: string;
   data: {
     username: string;
+    name: string;
   };
   position: {
     x: number;
