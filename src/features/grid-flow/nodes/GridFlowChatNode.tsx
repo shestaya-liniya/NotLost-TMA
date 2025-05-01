@@ -1,12 +1,37 @@
 import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
+import CrossIcon from "@/assets/icons/remove.svg?react";
+import Tappable from "@/ui/Tappable";
+import { useReactFlow } from "@xyflow/react";
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export default function GridFlowChatNode({
+  id,
   data,
 }: {
-  data: { username: string; name: string };
+  id: string;
+  data: { username: string; name: string; deleteMode: boolean };
 }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const reactFlow = useReactFlow();
+
+  const onDelete = () => {
+    setIsDeleting(true);
+    setTimeout(() => {
+      const nodes = reactFlow.getNodes();
+      const filteredNodes = nodes.filter((n) => n.id !== id);
+      reactFlow.setNodes(filteredNodes);
+    }, 300);
+  };
+
   return (
-    <div className="relative custom-node scale-80">
+    <div
+      className={twMerge(
+        `relative custom-node scale-80`,
+        isDeleting &&
+          "transition-all ease duration-300 scale-20 animate-fadeOutHidden"
+      )}
+    >
       <img
         src={getTelegramAvatarLink(data.username)}
         className="h-18 w-18 rounded-full relative -top-2"
@@ -32,6 +57,14 @@ export default function GridFlowChatNode({
           data.name
         )}
       </div>
+      {data.deleteMode && (
+        <Tappable
+          onTap={onDelete}
+          className="absolute -top-2 -right-1 bg-secondary p-1 rounded-full"
+        >
+          <CrossIcon className="h-4 w-4" />
+        </Tappable>
+      )}
     </div>
   );
 }

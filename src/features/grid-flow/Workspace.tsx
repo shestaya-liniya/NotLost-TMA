@@ -1,7 +1,9 @@
-import { memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import GridFlow from "./GridFlow";
 import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
+import PinIcon from "@/assets/icons/pin.svg?react";
+
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
 import MiniAppTopMenu, {
@@ -18,14 +20,75 @@ import Tappable from "@/ui/Tappable";
 import { findFreeSpace } from "./GridFlowUtils";
 import { GridFlowNode } from "./GridFlowInterface";
 import { v4 } from "uuid";
+import { AnimatePresence, motion } from "framer-motion";
 
 function Workspace() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
 
   const [showMenu, setShowMenu] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const { nodesDraggable, setNodesDraggable } = useWorkspaceStore();
+  const {
+    nodesDraggable,
+    setNodesDraggable,
+    deleteModeEnabled,
+    setDeleteModeEnabled,
+  } = useWorkspaceStore();
+  const topButtonActive = nodesDraggable || deleteModeEnabled;
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setNodes((ns) =>
+      ns.map((n) => {
+        return {
+          ...n,
+          data: {
+            ...n.data,
+            deleteMode: deleteModeEnabled,
+          },
+        };
+      })
+    );
+  }, [deleteModeEnabled]);
+
+  const TopButtonStatus = () => {
+    return (
+      <AnimatePresence>
+        {nodesDraggable && (
+          <motion.div>
+            <div className="flex items-center gap-1">
+              <div>Done</div>
+              <GrabIcon className="w-6 h-6" />
+            </div>
+          </motion.div>
+        )}
+        {deleteModeEnabled && (
+          <motion.div>
+            <div className="flex items-center gap-1">
+              <div>Done</div>
+              <div className="relative">
+                <PinIcon className="w-4 h-4 ml-2 relative right-1" />
+                <div className="absolute -top-[7px] left-[9px] -rotate-60 text-lg font-light">
+                  /
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+        {!topButtonActive && (
+          <motion.div>
+            <div className="flex items-center gap-2">
+              Workspace
+              <SettingsIcon
+                className={`h-4 w-4 text-white transition-transform duration-300 ${
+                  showMenu ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  };
 
   return (
     <div className="h-screen relative">
@@ -43,21 +106,46 @@ function Workspace() {
         />
       </div>
 
-      <MiniAppTopButton onClick={() => setShowMenu(true)}>
-        Workspace
-        <SettingsIcon
-          className={`h-4 w-4 text-white transition-transform duration-300 ${
-            showMenu ? "rotate-180" : "rotate-0"
-          }`}
-        />
+      <MiniAppTopButton
+        active={topButtonActive}
+        onClick={() => {
+          if (nodesDraggable) {
+            setNodesDraggable(false);
+          } else if (deleteModeEnabled) {
+            setDeleteModeEnabled(false);
+          } else {
+            setShowMenu(true);
+          }
+        }}
+      >
+        <TopButtonStatus />
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem
-          action={() => setNodesDraggable(!nodesDraggable)}
+          action={() => {
+            setNodesDraggable(!nodesDraggable);
+            setShowMenu(false);
+          }}
           active={nodesDraggable}
         >
           <div>Move</div>
           <GrabIcon className="w-6 h-6" />
+        </MiniAppTopMenuItem>
+        <MiniAppTopMenuDivider />
+        <MiniAppTopMenuItem
+          action={() => {
+            setDeleteModeEnabled(!deleteModeEnabled);
+            setShowMenu(false);
+          }}
+          active={deleteModeEnabled}
+        >
+          <div>Unpin</div>
+          <div className="relative">
+            <PinIcon className="w-4 h-4 ml-2 relative right-1" />
+            <div className="absolute -top-[7px] left-[9px] -rotate-60 text-lg font-light">
+              /
+            </div>
+          </div>
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem
@@ -83,12 +171,12 @@ function Workspace() {
           <div className="relative">
             <Tappable
               onTap={() => {
-                const freeSpace = findFreeSpace(nodes, 2, 4);
+                const freeSpace = findFreeSpace(nodes, 2, 2);
                 if (freeSpace) {
                   const newNodeId = v4();
                   const newNode: GridFlowNode = {
                     id: newNodeId,
-                    type: "folder",
+                    type: "chat",
                     data: {
                       username: "shestaya_liniya",
                       name: "Andrei",
