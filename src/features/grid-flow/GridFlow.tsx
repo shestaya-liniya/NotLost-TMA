@@ -56,10 +56,15 @@ function GridFlow(props: {
       const firstIntersection = intersections[0];
 
       setNodes((ns) =>
-        ns.map((n) => ({
-          ...n,
-          className: n.id === firstIntersection ? "highlight" : "",
-        }))
+        ns.map((n) => {
+          if (n.id === firstIntersection) {
+            return n.className === "highlight"
+              ? n
+              : { ...n, className: "highlight" };
+          }
+
+          return n.className === "" ? n : { ...n, className: "" };
+        })
       );
 
       if (intersections.filter((id) => id !== "shadow").length > 0) {

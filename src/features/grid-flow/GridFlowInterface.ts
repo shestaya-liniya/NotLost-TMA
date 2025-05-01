@@ -18,4 +18,5 @@ export interface GridFlowNode {
     x: number;
     y: number;
   };
+  className?: string;
 }

@@ -85,16 +85,29 @@ function Workspace() {
               onTap={() => {
                 const freeSpace = findFreeSpace(nodes, 2, 4);
                 if (freeSpace) {
+                  const newNodeId = v4();
                   const newNode: GridFlowNode = {
-                    id: v4(),
+                    id: newNodeId,
                     type: "folder",
                     data: {
                       username: "shestaya_liniya",
                       name: "Andrei",
                     },
                     position: freeSpace,
+                    className: "animate-fadeIn",
                   };
                   setNodes((nds) => nds.concat(newNode as GridFlowNode));
+
+                  setTimeout(() => {
+                    setNodes((ns) =>
+                      ns.map((n) => {
+                        if (n.id === newNodeId) {
+                          return { ...n, className: "" };
+                        }
+                        return n;
+                      })
+                    );
+                  }, 300);
                 }
               }}
               className="w-38 h-18 bg-primary rounded-xl flex flex-col items-center relative overflow-hidden border-[1px] border-secondary"
