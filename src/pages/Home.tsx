@@ -10,7 +10,6 @@ import CrownIcon from "@/assets/icons/crown.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
-import HorizontalScrollableList from "@/ui/VerticalScrollableList";
 import Tappable from "@/ui/Tappable";
 import { useModalStore } from "@/lib/store/modalStore";
 import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
@@ -18,6 +17,7 @@ import {
   initNodes,
   GridFlowNodeTypes,
 } from "@/features/grid-flow/nodes/GridFlowNodes";
+import HorizontalScrollableList from "@/ui/HorizontalScrollableList";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
