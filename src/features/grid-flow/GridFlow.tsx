@@ -11,6 +11,7 @@ import { memo, useCallback, useRef } from "react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useWorkspaceStore } from "./WorkspaceStore";
 import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
+import { fixNodePosition, getExtent } from "./GridFlowUtils";
 
 function GridFlow(props: {
   nodes: GridFlowNode[];
@@ -163,30 +164,3 @@ function GridFlow(props: {
 }
 
 export default memo(GridFlow);
-
-const getExtent = (val: number): number => {
-  return Math.floor(val / GRID_CELL_SIZE) * GRID_CELL_SIZE;
-};
-
-const fixNodePosition = (
-  node: GridFlowNode,
-  setNodes: (updater: (prev: GridFlowNode[]) => GridFlowNode[]) => void,
-  position?: { x: number; y: number }
-) => {
-  const rawPos = position ? position : { ...node.position };
-
-  const snappedPos = {
-    x: Math.round(rawPos.x / 20) * 20,
-    y: Math.round(rawPos.y / 20) * 20,
-  };
-
-  // avoid zero positioning
-  if (snappedPos.x === 0) snappedPos.x = 20;
-  if (snappedPos.y === 0) snappedPos.y = 20;
-
-  if (snappedPos.x !== node.position.x || snappedPos.y !== node.position.y) {
-    setNodes((prev) =>
-      prev.map((n) => (n.id === node.id ? { ...n, position: snappedPos } : n))
-    );
-  }
-};

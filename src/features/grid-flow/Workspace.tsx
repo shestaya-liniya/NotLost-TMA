@@ -14,6 +14,10 @@ import BottomModal from "@/ui/modals/BottomModal";
 import DuckIcon from "@/assets/icons/duck-rubber.svg?react";
 import { ReactFlowProvider, useNodesState } from "@xyflow/react";
 import { initNodes } from "./nodes/GridFlowNodes";
+import Tappable from "@/ui/Tappable";
+import { findFreeSpace } from "./GridFlowUtils";
+import { GridFlowNode } from "./GridFlowInterface";
+import { v4 } from "uuid";
 
 function Workspace() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
@@ -77,7 +81,24 @@ function Workspace() {
         <div ref={modalRef}>
           <div className="text-xs text-hint font-medium pl-2 pb-2">Blocks</div>
           <div className="relative">
-            <div className="w-38 h-18 bg-primary rounded-xl flex flex-col items-center relative overflow-hidden border-[1px] border-secondary">
+            <Tappable
+              onTap={() => {
+                const freeSpace = findFreeSpace(nodes, 2, 4);
+                if (freeSpace) {
+                  const newNode: GridFlowNode = {
+                    id: v4(),
+                    type: "folder",
+                    data: {
+                      username: "shestaya_liniya",
+                      name: "Andrei",
+                    },
+                    position: freeSpace,
+                  };
+                  setNodes((nds) => nds.concat(newNode as GridFlowNode));
+                }
+              }}
+              className="w-38 h-18 bg-primary rounded-xl flex flex-col items-center relative overflow-hidden border-[1px] border-secondary"
+            >
               <div className="text-xs font-medium mt-2 w-full absolute top-0 left-0 pb-1.5 px-4 text-white flex items-center gap-1">
                 <div className="tracking-widest text-[10px] text-[#d4d4d4]">
                   Folder
@@ -94,7 +115,7 @@ function Workspace() {
                   <DuckIcon className="h-7 w-7 text-primary absolute left-1/2 top-1/2 -translate-1/2" />
                 </div>
               </div>
-            </div>
+            </Tappable>
           </div>
         </div>
       </BottomModal>
