@@ -77,7 +77,7 @@ const BottomModal = (props: ModalProps) => {
       <div
         id={props.id}
         className={twMerge(
-          `bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
+          `bg-primary/80 backdrop-blur-xs pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
             props.isOpen
               ? "animate-slideUp  "
               : "translate-y-full animate-slideDown"
