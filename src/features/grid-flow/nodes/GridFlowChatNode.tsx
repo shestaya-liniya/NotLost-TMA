@@ -4,6 +4,7 @@ import Tappable from "@/ui/Tappable";
 import { useReactFlow } from "@xyflow/react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { truncateWord } from "@/helpers/truncateWord";
 
 export default function GridFlowChatNode({
   id,
@@ -115,8 +116,4 @@ const Circle = ({ percentage, text }: { percentage: number; text: string }) => {
 
 export function NodeShadow() {
   return <div className="h-18 w-18 rounded-full"></div>;
-}
-
-function truncateWord(word: string, maxLength: number): string {
-  return word.length > maxLength ? word.slice(0, maxLength) : word;
 }

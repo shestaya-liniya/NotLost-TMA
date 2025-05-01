@@ -20,8 +20,14 @@ import { findFreeSpace } from "./GridFlowUtils";
 import { GridFlowNode } from "./GridFlowInterface";
 import { v4 } from "uuid";
 import WorkspaceTopButton from "./WorkspaceTopButton";
+import { useAppStore } from "@/lib/store/store";
+import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
+import { truncateWord } from "@/helpers/truncateWord";
+import VerticalScrollableList from "@/ui/VerticalScrollableList";
 
 function Workspace() {
+  const { telegramDialogs } = useAppStore();
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
 
   const [showMenu, setShowMenu] = useState(false);
@@ -123,19 +129,19 @@ function Workspace() {
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         title="New"
-        className="pb-8"
+        className=""
       >
         <div ref={modalRef}>
           <div className="text-xs text-hint font-medium pl-2 pb-2">Blocks</div>
           <div className="relative">
             <Tappable
               onTap={() => {
-                const freeSpace = findFreeSpace(nodes, 2, 2);
+                const freeSpace = findFreeSpace(nodes, 2, 4);
                 if (freeSpace) {
                   const newNodeId = v4();
                   const newNode: GridFlowNode = {
                     id: newNodeId,
-                    type: "chat",
+                    type: "folder",
                     data: {
                       username: "shestaya_liniya",
                       name: "Andrei",
@@ -176,6 +182,78 @@ function Workspace() {
                 </div>
               </div>
             </Tappable>
+            <div className="text-xs text-hint font-medium pl-2 pb-2 mt-2">
+              Chats
+            </div>
+            <VerticalScrollableList className="gap-8 max-h-56">
+              {telegramDialogs.map((dialog) => {
+                const existOnWorkspace = nodes.find(
+                  (n) => n.data.username === dialog.username
+                );
+                return (
+                  <Tappable
+                    className="flex flex-col items-center max-w-12 relative"
+                    key={v4()}
+                    onClick={() => {
+                      if (existOnWorkspace) {
+                        const filteredNodes = nodes.filter(
+                          (n) => n.data.username !== dialog.username
+                        );
+                        setNodes(filteredNodes);
+                        return;
+                      }
+                      const freeSpace = findFreeSpace(nodes, 2, 2);
+                      if (freeSpace) {
+                        const newNodeId = v4();
+                        const newNode: GridFlowNode = {
+                          id: newNodeId,
+                          type: "chat",
+                          data: {
+                            username: dialog.username,
+                            name: dialog.label,
+                          },
+                          position: freeSpace,
+                          className: "animate-fadeIn",
+                        };
+                        setNodes((nds) => nds.concat(newNode as GridFlowNode));
+
+                        setTimeout(() => {
+                          setNodes((ns) =>
+                            ns.map((n) => {
+                              if (n.id === newNodeId) {
+                                return { ...n, className: "" };
+                              }
+                              return n;
+                            })
+                          );
+                        }, 300);
+                      }
+                    }}
+                  >
+                    <img
+                      src={getTelegramAvatarLink(dialog.username)}
+                      className="h-12 min-w-12 rounded-full"
+                      alt=""
+                    />
+                    <div className="text-xs text-nowrap text-hint">
+                      {dialog.label.length > 10 ? (
+                        <div className="relative">
+                          {truncateWord(dialog.label, 10)}
+                          <div className="bg-gradient-to-r from-transparent to-primary h-full w-8 absolute right-0 top-0"></div>
+                        </div>
+                      ) : (
+                        dialog.label
+                      )}
+                    </div>
+                    {existOnWorkspace && (
+                      <div className="absolute -top-1 -right-1 p-1 h-5 w-5 rounded-full bg-secondary grid place-content-center">
+                        <PinIcon className="h-3 w-3" />
+                      </div>
+                    )}
+                  </Tappable>
+                );
+              })}
+            </VerticalScrollableList>
           </div>
         </div>
       </BottomModal>

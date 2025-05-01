@@ -10,7 +10,7 @@ import CrownIcon from "@/assets/icons/crown.svg?react";
 import GraphIcon from "@/assets/icons/graph-icon.svg?react";
 import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
-import VerticalScrollableList from "@/ui/VerticalScrollableList";
+import HorizontalScrollableList from "@/ui/VerticalScrollableList";
 import Tappable from "@/ui/Tappable";
 import { useModalStore } from "@/lib/store/modalStore";
 import { Background, ReactFlow, ReactFlowProvider } from "@xyflow/react";
@@ -60,7 +60,7 @@ export default function Home() {
             <div className="text-xs">All workspaces</div>
             <ChevronRightIcon className="h-2 w-2 mt-0.5" />
           </Tappable>
-          <VerticalScrollableList className="-ml-4 -mr-4 px-4 pt-3">
+          <HorizontalScrollableList className="-ml-4 -mr-4 px-4 pt-3">
             <li>
               <Tappable
                 onClick={() => setPinDeskOpen(true)}
@@ -125,7 +125,7 @@ export default function Home() {
                 </div>
               </Tappable>
             </li>
-          </VerticalScrollableList>
+          </HorizontalScrollableList>
         </div>
         <div>
           <div className="text-[#D4D4D4] font-medium flex gap-1 items-center ml-2 mt-4">

@@ -1,15 +1,15 @@
 import {
-  useScroll,
-  motion,
   MotionValue,
   useMotionValue,
   useMotionValueEvent,
   animate,
+  motion,
+  useScroll,
 } from "framer-motion";
-import { ReactNode, useRef, useState, useLayoutEffect } from "react";
+import { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-export default function VerticalScrollableList({
+export default function HorizontalScrollableList({
   children,
   className,
 }: {
@@ -17,15 +17,15 @@ export default function VerticalScrollableList({
   className?: string;
 }) {
   const ref = useRef<HTMLUListElement>(null);
-  const { scrollYProgress } = useScroll({ container: ref });
-  const maskImage = useScrollOverflowMask(scrollYProgress);
+  const { scrollXProgress } = useScroll({ container: ref });
+  const maskImage = useScrollOverflowMask(scrollXProgress);
 
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const check = () => setIsOverflowing(el.scrollHeight > el.clientHeight);
+    const check = () => setIsOverflowing(el.scrollWidth > el.clientWidth);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -40,7 +40,7 @@ export default function VerticalScrollableList({
         transition: "mask-image 0.15s ease, -webkit-mask-image 0.15s ease",
       }}
       className={twMerge(
-        "flex flex-wrap gap-2 justify-center overflow-y-auto scrollbar-hide overscroll-contain",
+        "flex gap-2 overflow-x-auto scrollbar-hide overscroll-contain",
         className
       )}
     >
@@ -55,29 +55,29 @@ const leftInset = `20%`;
 const rightInset = `80%`;
 const transparent = `#0000`;
 const opaque = `#000`;
-function useScrollOverflowMask(scrollYProgress: MotionValue<number>) {
+function useScrollOverflowMask(scrollXProgress: MotionValue<number>) {
   const maskImage = useMotionValue(
-    `linear-gradient(180deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
+    `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
   );
 
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
+  useMotionValueEvent(scrollXProgress, "change", (value) => {
     if (value === 0) {
       animate(
         maskImage,
-        `linear-gradient(180deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
+        `linear-gradient(90deg, ${opaque}, ${opaque} ${left}, ${opaque} ${rightInset}, ${transparent})`
       );
     } else if (value === 1) {
       animate(
         maskImage,
-        `linear-gradient(180deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${right}, ${opaque})`
+        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${right}, ${opaque})`
       );
     } else if (
-      scrollYProgress.getPrevious() === 0 ||
-      scrollYProgress.getPrevious() === 1
+      scrollXProgress.getPrevious() === 0 ||
+      scrollXProgress.getPrevious() === 1
     ) {
       animate(
         maskImage,
-        `linear-gradient(180deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${rightInset}, ${transparent})`
+        `linear-gradient(90deg, ${transparent}, ${opaque} ${leftInset}, ${opaque} ${rightInset}, ${transparent})`
       );
     }
   });

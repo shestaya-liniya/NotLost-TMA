@@ -67,7 +67,11 @@ function Tappable(props: {
       }} */
       onClick={() => {
         if (!props.onLongPress && props.onClick) {
+          setActive(true);
           props.onClick();
+          setTimeout(() => {
+            setActive(false);
+          }, 100);
         }
       }}
     >
