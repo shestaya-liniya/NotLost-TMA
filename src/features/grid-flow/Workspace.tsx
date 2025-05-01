@@ -4,7 +4,6 @@ import GrabIcon from "@/assets/icons/cursor-grab.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import PinIcon from "@/assets/icons/pin.svg?react";
 
-import SettingsIcon from "@/assets/icons/settings-outline.svg?react";
 import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
 import MiniAppTopMenu, {
   MiniAppTopMenuItem,
@@ -20,7 +19,7 @@ import Tappable from "@/ui/Tappable";
 import { findFreeSpace } from "./GridFlowUtils";
 import { GridFlowNode } from "./GridFlowInterface";
 import { v4 } from "uuid";
-import { AnimatePresence, motion } from "framer-motion";
+import WorkspaceTopButton from "./WorkspaceTopButton";
 
 function Workspace() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
@@ -50,46 +49,6 @@ function Workspace() {
     );
   }, [deleteModeEnabled]);
 
-  const TopButtonStatus = () => {
-    return (
-      <AnimatePresence>
-        {nodesDraggable && (
-          <motion.div>
-            <div className="flex items-center gap-1">
-              <div>Done</div>
-              <GrabIcon className="w-6 h-6" />
-            </div>
-          </motion.div>
-        )}
-        {deleteModeEnabled && (
-          <motion.div>
-            <div className="flex items-center gap-1">
-              <div>Done</div>
-              <div className="relative">
-                <PinIcon className="w-4 h-4 ml-2 relative right-1" />
-                <div className="absolute -top-[7px] left-[9px] -rotate-60 text-lg font-light">
-                  /
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-        {!topButtonActive && (
-          <motion.div>
-            <div className="flex items-center gap-2">
-              Workspace
-              <SettingsIcon
-                className={`h-4 w-4 text-white transition-transform duration-300 ${
-                  showMenu ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  };
-
   return (
     <div className="h-screen relative">
       <div
@@ -118,7 +77,7 @@ function Workspace() {
           }
         }}
       >
-        <TopButtonStatus />
+        <WorkspaceTopButton menuShown={showMenu} />
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem
