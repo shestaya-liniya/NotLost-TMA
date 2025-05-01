@@ -22,6 +22,7 @@ import HorizontalScrollableList from "@/ui/HorizontalScrollableList";
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
   const { setWorkspaceOpen: setPinDeskOpen } = useModalStore();
+  const { setSettingsModalOpen } = useModalStore();
   return (
     <div className="h-screen relative">
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
@@ -41,7 +42,12 @@ export default function Home() {
           <GraphIcon className="h-4 w-4 scale-130" />
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
-        <MiniAppTopMenuItem>
+        <MiniAppTopMenuItem
+          action={() => {
+            setShowMenu(false);
+            setSettingsModalOpen(true);
+          }}
+        >
           <div>Settings</div>
           <SettingsIcon className="h-4 w-4" />
         </MiniAppTopMenuItem>
