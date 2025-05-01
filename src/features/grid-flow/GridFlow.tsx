@@ -3,11 +3,13 @@ import {
   Background,
   useReactFlow,
   OnNodesChange,
+  Edge,
+  ReactFlowInstance,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 import { GridFlowNodeTypes } from "./nodes/GridFlowNodes";
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useWorkspaceStore } from "./WorkspaceStore";
 import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
@@ -21,7 +23,12 @@ function GridFlow(props: {
   const { nodes, setNodes, onNodesChange } = props;
   const { getIntersectingNodes } = useReactFlow();
   const { nodesDraggable } = useWorkspaceStore();
+
   const reactFlowWrapper = useRef(null);
+  const [flowIntance, setFlowInstance] = useState<ReactFlowInstance<
+    GridFlowNode,
+    Edge
+  > | null>(null);
 
   const enableAnimation = useRef(false);
   const showShadows = useRef(false);
@@ -118,6 +125,34 @@ function GridFlow(props: {
     []
   );
 
+  useEffect(() => {
+    onSave();
+  }, [nodes]);
+
+  useEffect(() => {
+    onRestore();
+  }, []);
+
+  const onSave = useCallback(() => {
+    if (flowIntance) {
+      const flow = flowIntance.toObject();
+      localStorage.setItem("flow-nodes", JSON.stringify(flow));
+    }
+  }, [flowIntance]);
+
+  const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      const flowNodes = localStorage.getItem("flow-nodes");
+
+      if (flowNodes) {
+        const flow = JSON.parse(flowNodes);
+        setNodes(flow.nodes || []);
+      }
+    };
+
+    restoreFlow();
+  }, []);
+
   return (
     <div className="relative transition-all duration-300 ease-in-out h-screen">
       <div
@@ -128,6 +163,7 @@ function GridFlow(props: {
       >
         <ReactFlow
           id="fullscreen"
+          onInit={setFlowInstance}
           nodes={nodes}
           nodeTypes={GridFlowNodeTypes}
           onNodesChange={onNodesChange}
