@@ -8,22 +8,24 @@ import { GridFlowNode } from "../GridFlowInterface";
 import { gridFlowDeleteNode } from "../GridFlowUtils";
 import { useAppStore } from "@/lib/store/store";
 
-export default function GridFlowChatNode(node: GridFlowNode) {
+export default function GridFlowChatNode(props: {
+  id: string;
+  data: GridFlowNode["data"];
+}) {
+  const { id: nodeId, data } = props;
   const { telegramDialogs } = useAppStore();
-  const isDeleting = node.data.status === "deleting";
+  const isDeleting = data.status === "deleting";
   const reactFlow = useReactFlow();
 
   const onDelete = () => {
     gridFlowDeleteNode(
-      node,
+      nodeId,
       reactFlow.setNodes as React.Dispatch<React.SetStateAction<GridFlowNode[]>>
     );
   };
 
   const getUnreadCount = () => {
-    const dialog = telegramDialogs.find(
-      (d) => d.username === node.data.username
-    );
+    const dialog = telegramDialogs.find((d) => d.username === data.username);
     if (dialog && dialog.unreadCount > 0) {
       return dialog.unreadCount;
     } else {
@@ -40,7 +42,7 @@ export default function GridFlowChatNode(node: GridFlowNode) {
       )}
     >
       <img
-        src={getTelegramAvatarLink(node.data.username)}
+        src={getTelegramAvatarLink(data.username)}
         className="h-18 w-18 rounded-full relative -top-2"
         alt=""
       />
@@ -55,16 +57,16 @@ export default function GridFlowChatNode(node: GridFlowNode) {
         <Circle text={truncateWord(data.name, 20)} percentage={1} />
       </div> */}
       <div className="text-xs tracking-[0.5px] absolute -bottom-[10px] left-1/2 -translate-x-1/2 text-nowrap font-medium text-[#D6CFCB]">
-        {node.data.name.length > 12 ? (
+        {data.name.length > 12 ? (
           <div className="relative">
-            {truncateWord(node.data.name, 12)}
+            {truncateWord(data.name, 12)}
             <div className="bg-gradient-to-r from-transparent to-primary h-full w-8 absolute right-0 top-0"></div>
           </div>
         ) : (
-          node.data.name
+          data.name
         )}
       </div>
-      {node.data.deleteMode && (
+      {data.deleteMode && (
         <Tappable
           onTap={onDelete}
           className="absolute -top-2 -right-1 bg-secondary p-1 rounded-full"
@@ -72,7 +74,7 @@ export default function GridFlowChatNode(node: GridFlowNode) {
           <CrossIcon className="h-4 w-4" />
         </Tappable>
       )}
-      {getUnreadCount() && !node.data.deleteMode && (
+      {getUnreadCount() && !data.deleteMode && (
         <div className="absolute -top-2 right-0 min-w-6 text-xs bg-black p-1 rounded-full font-semibold grid place-content-center">
           {getUnreadCount()}
         </div>

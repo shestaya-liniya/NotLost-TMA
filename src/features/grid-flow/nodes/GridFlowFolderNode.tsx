@@ -2,26 +2,23 @@ import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
 import FolderIcon from "@/assets/icons/folder.svg?react";
 import CrossIcon from "@/assets/icons/remove.svg?react";
 import { useReactFlow } from "@xyflow/react";
-import { useState } from "react";
 import Tappable from "@/ui/Tappable";
+import { GridFlowNode } from "../GridFlowInterface";
+import { gridFlowDeleteNode } from "../GridFlowUtils";
 
-export default function GridFlowFolderNode({
-  id,
-  data,
-}: {
+export default function GridFlowFolderNode(props: {
   id: string;
-  data: { username: string; name: string; deleteMode: boolean };
+  data: GridFlowNode["data"];
 }) {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { id: nodeId, data } = props;
   const reactFlow = useReactFlow();
 
+  const isDeleting = data.status === "deleting";
   const onDelete = () => {
-    setIsDeleting(true);
-    setTimeout(() => {
-      const nodes = reactFlow.getNodes();
-      const filteredNodes = nodes.filter((n) => n.id !== id);
-      reactFlow.setNodes(filteredNodes);
-    }, 300);
+    gridFlowDeleteNode(
+      nodeId,
+      reactFlow.setNodes as React.Dispatch<React.SetStateAction<GridFlowNode[]>>
+    );
   };
   return (
     <div

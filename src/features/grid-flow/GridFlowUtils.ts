@@ -172,12 +172,12 @@ export const gridFlowAddNode = (
 };
 
 export const gridFlowDeleteNode = (
-  node: GridFlowNode,
+  nodeId: string,
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>
 ) => {
   setNodes((ns) =>
     ns.map((n) =>
-      n.id === node.id
+      n.id === nodeId
         ? {
             ...n,
             data: {
@@ -190,6 +190,6 @@ export const gridFlowDeleteNode = (
   );
 
   setTimeout(() => {
-    setNodes((ns) => ns.filter((n) => n.id !== node.id));
+    setNodes((ns) => ns.filter((n) => n.id !== nodeId));
   }, 300);
 };

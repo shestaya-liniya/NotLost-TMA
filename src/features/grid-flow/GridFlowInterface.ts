@@ -1,4 +1,4 @@
-import { GridFlowNodeType } from "./nodes/GridFlowNodes";
+import { Node } from "@xyflow/react";
 
 export const GRID_CELL_SIZE = 40;
 export const GRID_PADDING = 20;
@@ -7,18 +7,11 @@ export const GRID_PADDING = 20;
  * Folder: 2x1 cells
  */
 
-export interface GridFlowNode {
-  id: string;
-  type: GridFlowNodeType;
+export interface GridFlowNode extends Node {
   data: {
     username: string;
     name: string;
     deleteMode?: boolean;
     status?: "adding" | "deleting" | null;
   };
-  position: {
-    x: number;
-    y: number;
-  };
-  className?: string;
 }

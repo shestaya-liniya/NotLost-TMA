@@ -36,7 +36,7 @@ function Chats(props: {
   };
 
   const unpinFromWorkspace = (node: GridFlowNode) => {
-    gridFlowDeleteNode(node, setNodes);
+    gridFlowDeleteNode(node.id, setNodes);
   };
 
   const nodeMap = useMemo(() => {
