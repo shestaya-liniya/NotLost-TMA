@@ -16,6 +16,7 @@ import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
 import { fixNodePosition, getExtent } from "./GridFlowUtils";
 
 function GridFlow(props: {
+  id: string;
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
   onNodesChange: OnNodesChange<GridFlowNode>;
@@ -167,7 +168,7 @@ function GridFlow(props: {
         }}
       >
         <ReactFlow
-          id="fullscreen"
+          id={props.id}
           onInit={setFlowInstance}
           nodes={nodes}
           nodeTypes={GridFlowNodeTypes}

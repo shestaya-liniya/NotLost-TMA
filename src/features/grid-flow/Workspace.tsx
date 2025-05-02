@@ -5,16 +5,13 @@ import PlusIcon from "@/assets/icons/plus.svg?react";
 import PinIcon from "@/assets/icons/pin.svg?react";
 
 import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
-import MiniAppTopMenu, {
-  MiniAppTopMenuItem,
-  MiniAppTopMenuDivider,
-} from "@/ui/MiniAppTopMenu";
+import MiniAppTopMenu, { MiniAppTopMenuItem } from "@/ui/MiniAppTopMenu";
 import { useWorkspaceStore } from "./WorkspaceStore";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { ReactFlowProvider, useNodesState } from "@xyflow/react";
 import { initNodes } from "./nodes/GridFlowNodes";
 import WorkspaceTopButton from "./WorkspaceTopButton";
-import WorkspaceAddModal from "./WorkspaceAddModal";
+import WorkspaceAddModal from "./add-modal/WorkspaceAddModal";
 
 function Workspace() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
@@ -52,7 +49,7 @@ function Workspace() {
         }}
       >
         <GridFlow
-          key={"fullscreen"}
+          id={"fullscreen"}
           nodes={nodes}
           setNodes={setNodes}
           onNodesChange={onNodesChange}
@@ -84,7 +81,6 @@ function Workspace() {
           <div>Move</div>
           <GrabIcon className="w-6 h-6" />
         </MiniAppTopMenuItem>
-        <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem
           action={() => {
             setDeleteModeEnabled(!deleteModeEnabled);
@@ -100,7 +96,6 @@ function Workspace() {
             </div>
           </div>
         </MiniAppTopMenuItem>
-        <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem
           action={() => {
             setShowAddModal(true);
