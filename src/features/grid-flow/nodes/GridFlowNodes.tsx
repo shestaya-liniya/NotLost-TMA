@@ -55,6 +55,7 @@ export const initNodes: GridFlowNode[] = [
     data: {
       username: "devs_cis",
       name: "Telegram Developers Community (CIS)",
+      status: "adding",
     },
   },
   {
@@ -73,6 +74,7 @@ export const initNodes: GridFlowNode[] = [
     data: {
       username: "devs_cis",
       name: "Telegram Developers Community (CIS)",
+      status: "adding",
     },
   },
 ];

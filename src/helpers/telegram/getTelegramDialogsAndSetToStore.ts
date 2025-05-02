@@ -14,6 +14,7 @@ export const getTelegramDialogsAndSetToStore = async () => {
           label: d.entity.firstName || "X",
           username: d.entity.username || "X",
           id: d.entity.id,
+          unreadCount: d.unreadCount,
         };
         tempDialogs.push(userInfo);
       } else if (d.entity?.className === "Channel") {
@@ -22,6 +23,7 @@ export const getTelegramDialogsAndSetToStore = async () => {
           label: d.entity.title || "X",
           username: d.entity.username || "X",
           id: d.entity.id,
+          unreadCount: d.unreadCount,
         };
         tempDialogs.push(userInfo);
       }

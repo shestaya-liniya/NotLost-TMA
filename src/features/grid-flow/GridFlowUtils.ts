@@ -4,6 +4,7 @@ import {
   GRID_PADDING,
   GridFlowNode,
 } from "./GridFlowInterface";
+import { v4 } from "uuid";
 
 export const getExtent = (val: number): number => {
   return Math.floor(val / GRID_CELL_SIZE) * GRID_CELL_SIZE;
@@ -130,4 +131,65 @@ export const findFreeSpace = (
   }
 
   return null; // No free space found
+};
+
+export const gridFlowAddNode = (
+  nodeData: {
+    type: GridFlowNode["type"];
+    data: GridFlowNode["data"];
+  },
+  nodes: GridFlowNode[],
+  setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>
+) => {
+  const dim =
+    nodeData.type === "chat"
+      ? { height: 2, width: 2 }
+      : { height: 2, width: 4 };
+
+  const freeSpace = findFreeSpace(nodes, dim.height, dim.width);
+  if (freeSpace) {
+    const newNodeId = v4();
+    const newNode: GridFlowNode = {
+      id: newNodeId,
+      type: nodeData.type,
+      data: nodeData.data,
+      position: freeSpace,
+      className: "animate-fadeIn",
+    };
+    setNodes((nds) => nds.concat(newNode as GridFlowNode));
+
+    setTimeout(() => {
+      setNodes((ns) =>
+        ns.map((n) => {
+          if (n.id === newNodeId) {
+            return { ...n, className: "" };
+          }
+          return n;
+        })
+      );
+    }, 300);
+  }
+};
+
+export const gridFlowDeleteNode = (
+  node: GridFlowNode,
+  setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>
+) => {
+  setNodes((ns) =>
+    ns.map((n) =>
+      n.id === node.id
+        ? {
+            ...n,
+            data: {
+              ...n.data,
+              status: "deleting",
+            },
+          }
+        : n
+    )
+  );
+
+  setTimeout(() => {
+    setNodes((ns) => ns.filter((n) => n.id !== node.id));
+  }, 300);
 };

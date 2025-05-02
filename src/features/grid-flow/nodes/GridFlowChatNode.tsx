@@ -2,27 +2,33 @@ import getTelegramAvatarLink from "@/helpers/telegram/getTelegramAvatarLink";
 import CrossIcon from "@/assets/icons/remove.svg?react";
 import Tappable from "@/ui/Tappable";
 import { useReactFlow } from "@xyflow/react";
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { truncateWord } from "@/helpers/truncateWord";
+import { GridFlowNode } from "../GridFlowInterface";
+import { gridFlowDeleteNode } from "../GridFlowUtils";
+import { useAppStore } from "@/lib/store/store";
 
-export default function GridFlowChatNode({
-  id,
-  data,
-}: {
-  id: string;
-  data: { username: string; name: string; deleteMode: boolean };
-}) {
-  const [isDeleting, setIsDeleting] = useState(false);
+export default function GridFlowChatNode(node: GridFlowNode) {
+  const { telegramDialogs } = useAppStore();
+  const isDeleting = node.data.status === "deleting";
   const reactFlow = useReactFlow();
 
   const onDelete = () => {
-    setIsDeleting(true);
-    setTimeout(() => {
-      const nodes = reactFlow.getNodes();
-      const filteredNodes = nodes.filter((n) => n.id !== id);
-      reactFlow.setNodes(filteredNodes);
-    }, 300);
+    gridFlowDeleteNode(
+      node,
+      reactFlow.setNodes as React.Dispatch<React.SetStateAction<GridFlowNode[]>>
+    );
+  };
+
+  const getUnreadCount = () => {
+    const dialog = telegramDialogs.find(
+      (d) => d.username === node.data.username
+    );
+    if (dialog && dialog.unreadCount > 0) {
+      return dialog.unreadCount;
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -34,7 +40,7 @@ export default function GridFlowChatNode({
       )}
     >
       <img
-        src={getTelegramAvatarLink(data.username)}
+        src={getTelegramAvatarLink(node.data.username)}
         className="h-18 w-18 rounded-full relative -top-2"
         alt=""
       />
@@ -49,22 +55,27 @@ export default function GridFlowChatNode({
         <Circle text={truncateWord(data.name, 20)} percentage={1} />
       </div> */}
       <div className="text-xs tracking-[0.5px] absolute -bottom-[10px] left-1/2 -translate-x-1/2 text-nowrap font-medium text-[#D6CFCB]">
-        {data.name.length > 12 ? (
+        {node.data.name.length > 12 ? (
           <div className="relative">
-            {truncateWord(data.name, 12)}
+            {truncateWord(node.data.name, 12)}
             <div className="bg-gradient-to-r from-transparent to-primary h-full w-8 absolute right-0 top-0"></div>
           </div>
         ) : (
-          data.name
+          node.data.name
         )}
       </div>
-      {data.deleteMode && (
+      {node.data.deleteMode && (
         <Tappable
           onTap={onDelete}
           className="absolute -top-2 -right-1 bg-secondary p-1 rounded-full"
         >
           <CrossIcon className="h-4 w-4" />
         </Tappable>
+      )}
+      {getUnreadCount() && !node.data.deleteMode && (
+        <div className="absolute -top-2 right-0 min-w-6 text-xs bg-black p-1 rounded-full font-semibold grid place-content-center">
+          {getUnreadCount()}
+        </div>
       )}
     </div>
   );

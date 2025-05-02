@@ -11,9 +11,10 @@ export interface GridFlowNode {
   id: string;
   type: GridFlowNodeType;
   data: {
-    deleteMode?: boolean;
     username: string;
     name: string;
+    deleteMode?: boolean;
+    status?: "adding" | "deleting" | null;
   };
   position: {
     x: number;

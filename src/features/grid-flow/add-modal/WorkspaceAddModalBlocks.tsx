@@ -1,8 +1,7 @@
 import Tappable from "@/ui/Tappable";
 import { memo } from "react";
-import { v4 } from "uuid";
 import { GridFlowNode } from "../GridFlowInterface";
-import { findFreeSpace } from "../GridFlowUtils";
+import { gridFlowAddNode } from "../GridFlowUtils";
 import DuckIcon from "@/assets/icons/duck-rubber.svg?react";
 
 function WorkspaceAddModalBlocks(props: {
@@ -15,32 +14,17 @@ function WorkspaceAddModalBlocks(props: {
     <div className="min-h-72">
       <Tappable
         onTap={() => {
-          const freeSpace = findFreeSpace(nodes, 2, 4);
-          if (freeSpace) {
-            const newNodeId = v4();
-            const newNode: GridFlowNode = {
-              id: newNodeId,
+          gridFlowAddNode(
+            {
               type: "folder",
               data: {
-                username: "shestaya_liniya",
-                name: "Andrei",
+                username: "x",
+                name: "x",
               },
-              position: freeSpace,
-              className: "animate-fadeIn",
-            };
-            setNodes((nds) => nds.concat(newNode as GridFlowNode));
-
-            setTimeout(() => {
-              setNodes((ns) =>
-                ns.map((n) => {
-                  if (n.id === newNodeId) {
-                    return { ...n, className: "" };
-                  }
-                  return n;
-                })
-              );
-            }, 300);
-          }
+            },
+            nodes,
+            setNodes
+          );
         }}
         className="w-38 h-18 bg-primary rounded-xl flex flex-col items-center relative overflow-hidden border-[1px] border-secondary"
       >
