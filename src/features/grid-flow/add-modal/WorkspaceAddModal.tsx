@@ -16,8 +16,6 @@ function WorkspaceAddModal(props: {
 
   const [tab, setTab] = useState<"chats" | "blocks">("chats");
 
-  if (!props.showModal) return;
-
   return (
     <BottomModal
       id="workspace-add-modal"

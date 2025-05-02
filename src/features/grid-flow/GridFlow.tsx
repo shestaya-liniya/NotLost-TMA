@@ -44,6 +44,10 @@ function GridFlow(props: {
         id: "shadow",
         type: "shadow",
         position: prevPosition.current,
+        data: {
+          username: "x",
+          name: "x",
+        },
       };
 
       setNodes((nds) => nds.concat(newNode as GridFlowNode));
