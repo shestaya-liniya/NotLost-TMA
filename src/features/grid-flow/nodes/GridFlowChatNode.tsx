@@ -7,6 +7,8 @@ import { truncateWord } from "@/helpers/truncateWord";
 import { GridFlowNode } from "../GridFlowInterface";
 import { gridFlowDeleteNode } from "../GridFlowUtils";
 import { useAppStore } from "@/lib/store/store";
+import { useWorkspaceStore } from "../WorkspaceStore";
+import { openTelegramLink } from "@telegram-apps/sdk-react";
 
 export default function GridFlowChatNode(props: {
   id: string;
@@ -14,6 +16,7 @@ export default function GridFlowChatNode(props: {
 }) {
   const { id: nodeId, data } = props;
   const { telegramDialogs } = useAppStore();
+  const { nodesDraggable } = useWorkspaceStore();
   const isDeleting = data.status === "deleting";
   const reactFlow = useReactFlow();
 
@@ -34,12 +37,20 @@ export default function GridFlowChatNode(props: {
   };
 
   return (
-    <div
+    <Tappable
       className={twMerge(
         `relative custom-node scale-80`,
         isDeleting &&
           "transition-all ease duration-300 scale-20 animate-fadeOutHidden"
       )}
+      ripple={false}
+      onTap={() => {
+        if (!data.deleteMode && !nodesDraggable) {
+          if (openTelegramLink.isAvailable()) {
+            openTelegramLink("https://t.me/" + data.username);
+          }
+        }
+      }}
     >
       <img
         src={getTelegramAvatarLink(data.username)}
@@ -79,7 +90,7 @@ export default function GridFlowChatNode(props: {
           {getUnreadCount()}
         </div>
       )}
-    </div>
+    </Tappable>
   );
 }
 /*

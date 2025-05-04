@@ -249,7 +249,7 @@ input:focus {
 }
 
 .swiper-pagination-bullet-active {
-  background: var(--color-accent) !important;
+  background: #fff !important;
 }
 
 .swiper,

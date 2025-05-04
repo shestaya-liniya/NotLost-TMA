@@ -17,11 +17,16 @@ import { fixNodePosition, getExtent } from "./GridFlowUtils";
 
 function GridFlow(props: {
   id: string;
+  height?: number;
+  width?: number;
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
   onNodesChange: OnNodesChange<GridFlowNode>;
 }) {
   const { nodes, setNodes, onNodesChange } = props;
+  const GRID_HEIGHT = props.height ?? window.innerHeight - getMiniAppTopInset();
+  const GRID_WIDTH = props.width ?? window.innerWidth;
+
   const { getIntersectingNodes } = useReactFlow();
   const { nodesDraggable } = useWorkspaceStore();
 
@@ -164,11 +169,11 @@ function GridFlow(props: {
   }, []);
 
   return (
-    <div className="relative transition-all duration-300 ease-in-out h-screen">
+    <div className="relative transition-all duration-300 ease-in-out">
       <div
         ref={reactFlowWrapper}
         style={{
-          height: window.innerHeight - getMiniAppTopInset(),
+          height: GRID_HEIGHT,
         }}
       >
         <ReactFlow
@@ -180,17 +185,11 @@ function GridFlow(props: {
           className={`flow-wrapper ${showShadows.current && "shadow-visible"} ${enableAnimation.current && "transitions-enabled"}`}
           translateExtent={[
             [0, 0],
-            [
-              getExtent(window.innerWidth),
-              getExtent(window.innerHeight - getMiniAppTopInset()),
-            ],
+            [getExtent(GRID_WIDTH), getExtent(GRID_HEIGHT)],
           ]}
           nodeExtent={[
             [0, 0],
-            [
-              getExtent(window.innerWidth) - 28,
-              getExtent(window.innerHeight - getMiniAppTopInset()) - 28,
-            ],
+            [getExtent(GRID_WIDTH) - 28, getExtent(GRID_HEIGHT) - 28],
           ]}
           zoomOnDoubleClick={false}
           zoomOnPinch={false}

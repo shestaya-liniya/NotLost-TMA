@@ -7,7 +7,10 @@ function Tappable(props: {
   onClick?: () => void;
   onLongPress?: () => void;
   style?: object;
+  ripple?: boolean;
 }) {
+  const ripple = props.ripple ?? true;
+
   const timerRef = useRef<number | null>(null);
   const isLongPress = useRef(false);
   const [active, setActive] = useState(false);
@@ -33,6 +36,13 @@ function Tappable(props: {
     }
   }; */
 
+  const animateRipple = () => {
+    setActive(true);
+    setTimeout(() => {
+      setActive(false);
+    }, 100);
+  };
+
   return (
     <div
       style={props.style}
@@ -41,11 +51,10 @@ function Tappable(props: {
         if (props.onLongPress) {
           startPress();
         } else if (props.onTap) {
-          setActive(true);
           props.onTap();
-          setTimeout(() => {
-            setActive(false);
-          }, 100);
+          if (ripple) {
+            animateRipple();
+          }
         }
       }}
       /* onPointerUp={() => {
@@ -67,11 +76,10 @@ function Tappable(props: {
       }} */
       onClick={() => {
         if (!props.onLongPress && props.onClick) {
-          setActive(true);
           props.onClick();
-          setTimeout(() => {
-            setActive(false);
-          }, 100);
+          if (ripple) {
+            animateRipple();
+          }
         }
       }}
     >
