@@ -18,11 +18,16 @@ import {
   GridFlowNodeTypes,
 } from "@/features/grid-flow/nodes/GridFlowNodes";
 import HorizontalScrollableList from "@/ui/HorizontalScrollableList";
+import { useJazzProfileContext } from "@/lib/jazz/jazzProvider";
 
 export default function Home() {
   const [showMenu, setShowMenu] = useState(false);
   const { setWorkspaceOpen: setPinDeskOpen } = useModalStore();
   const { setSettingsModalOpen } = useModalStore();
+  const { jazzProfile } = useJazzProfileContext();
+
+  console.log("W", jazzProfile.workspaces);
+
   return (
     <div className="h-screen relative">
       <MiniAppTopButton onClick={() => setShowMenu(true)}>
