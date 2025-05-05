@@ -1,26 +1,31 @@
 import BottomModal from "@/ui/modals/BottomModal";
 import Tappable from "@/ui/Tappable";
-import { GridFlowNode } from "../GridFlowInterface";
 import { memo, useState } from "react";
-import WorkspaceAddModalChats from "./WorkspaceAddModalChats";
-import WorkspaceAddModalBlocks from "./WorkspaceAddModalBlocks";
 import { AnimatePresence, motion } from "framer-motion";
+import { GridFlowNode } from "../../../../features/grid-flow/GridFlowInterface";
+import WorkspacePinModalBlocks from "./WorkspacePinModalBlocks";
+import WorkspacePinModalChats from "./WorkspacePinModalChats";
+import {
+  useWorkspaceModalsActions,
+  useWorkspaceModalsStore,
+} from "../../.store/WorkspaceModals.store";
 
-function WorkspaceAddModal(props: {
-  showModal: boolean;
-  setShowModal: (val: boolean) => void;
+function WorkspacePinModal(props: {
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
 }) {
   const { nodes, setNodes } = props;
+
+  const { setShowPinModal } = useWorkspaceModalsActions();
+  const showPinModal = useWorkspaceModalsStore((s) => s.showPinModal);
 
   const [tab, setTab] = useState<"chats" | "blocks">("chats");
 
   return (
     <BottomModal
       id="workspace-add-modal"
-      isOpen={props.showModal}
-      onClose={() => props.setShowModal(false)}
+      isOpen={showPinModal}
+      onClose={() => setShowPinModal(false)}
       title="New"
     >
       <div>
@@ -48,7 +53,7 @@ function WorkspaceAddModal(props: {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <WorkspaceAddModalChats nodes={nodes} setNodes={setNodes} />
+              <WorkspacePinModalChats nodes={nodes} setNodes={setNodes} />
             </motion.div>
           )}
 
@@ -60,7 +65,7 @@ function WorkspaceAddModal(props: {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <WorkspaceAddModalBlocks nodes={nodes} setNodes={setNodes} />
+              <WorkspacePinModalBlocks nodes={nodes} setNodes={setNodes} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -69,4 +74,4 @@ function WorkspaceAddModal(props: {
   );
 }
 
-export default memo(WorkspaceAddModal);
+export default memo(WorkspacePinModal);

@@ -1,10 +1,10 @@
 import Tappable from "@/ui/Tappable";
 import { memo } from "react";
-import { GridFlowNode } from "../GridFlowInterface";
-import { gridFlowAddNode } from "../GridFlowUtils";
 import DuckIcon from "@/assets/icons/duck-rubber.svg?react";
+import { GridFlowNode } from "@/features/grid-flow/GridFlowInterface";
+import { gridFlowAddNode } from "@/features/grid-flow/GridFlowUtils";
 
-function WorkspaceAddModalBlocks(props: {
+function WorkspacePinModalBlocks(props: {
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
 }) {
@@ -19,7 +19,7 @@ function WorkspaceAddModalBlocks(props: {
               type: "folder",
               data: {
                 username: "x",
-                name: "x",
+                label: "x",
               },
             },
             nodes,
@@ -49,4 +49,4 @@ function WorkspaceAddModalBlocks(props: {
   );
 }
 
-export default memo(WorkspaceAddModalBlocks);
+export default memo(WorkspacePinModalBlocks);

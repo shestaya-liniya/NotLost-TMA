@@ -6,11 +6,14 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import { GridFlowNodeTypes } from "./nodes/GridFlowNodes";
 import { memo, useCallback, useRef } from "react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
-import { useWorkspaceStore } from "./WorkspaceStore";
-import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
+import { useWorkspaceStore } from "../../screens/workspace/.store/Workspace.store";
+import {
+  GRID_CELL_SIZE,
+  GridFlowNode,
+  GridFlowNodeTypes,
+} from "./GridFlowInterface";
 import { fixNodePosition, getExtent } from "./GridFlowUtils";
 
 function GridFlow(props: {
@@ -27,7 +30,7 @@ function GridFlow(props: {
   const GRID_WIDTH = props.width ?? window.innerWidth;
 
   const { getIntersectingNodes } = useReactFlow();
-  const { nodesDraggable } = useWorkspaceStore();
+  const { moveModeEnabled: nodesDraggable } = useWorkspaceStore();
 
   const reactFlowWrapper = useRef(null);
   /*   const [flowIntance, setFlowInstance] = useState<ReactFlowInstance<

@@ -14,8 +14,8 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
-import Workspace from "./features/grid-flow/Workspace";
-import Home from "./pages/Home";
+import Workspace from "./screens/workspace/Workspace";
+import Home from "./screens/home/Home";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();

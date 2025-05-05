@@ -5,21 +5,27 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { useAppStore } from "@/lib/store/store";
 import Tappable from "@/ui/Tappable";
 import VerticalScrollableList from "@/ui/VerticalScrollableList";
-import { GridFlowNode } from "../GridFlowInterface";
-import { gridFlowAddNode, gridFlowDeleteNode } from "../GridFlowUtils";
 import { memo, useMemo } from "react";
 import PinIcon from "@/assets/icons/pin.svg?react";
 import { AnimatePresence, motion } from "framer-motion";
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
+import { GridFlowNode } from "@/features/grid-flow/GridFlowInterface";
+import {
+  gridFlowAddNode,
+  gridFlowDeleteNode,
+} from "@/features/grid-flow/GridFlowUtils";
 
-function Chats(props: {
+function WorkspacePinModalChats(props: {
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
 }) {
   const { nodes, setNodes } = props;
   const { jazzProfile } = useJazzProfileContext();
-  const { telegramDialogs } = useAppStore();
-  const { setTelegramSignInModalOpen } = useModalStore();
+
+  const telegramDialogs = useAppStore((s) => s.telegramDialogs);
+  const setTelegramSignInModalOpen = useModalStore(
+    (s) => s.setTelegramSignInModalOpen
+  );
 
   const pinToWorkspace = (telegramChat: TelegramDialogInfo) => {
     gridFlowAddNode(
@@ -133,4 +139,4 @@ const ChatBubble = (props: {
   );
 };
 
-export default memo(Chats);
+export default memo(WorkspacePinModalChats);

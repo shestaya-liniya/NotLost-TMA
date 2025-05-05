@@ -4,21 +4,23 @@ import Tappable from "@/ui/Tappable";
 import { useReactFlow } from "@xyflow/react";
 import { twMerge } from "tailwind-merge";
 import { truncateWord } from "@/helpers/truncateWord";
-import { GridFlowNode } from "../GridFlowInterface";
-import { gridFlowDeleteNode } from "../GridFlowUtils";
+import { GridFlowNode } from "../../../features/grid-flow/GridFlowInterface";
+import { gridFlowDeleteNode } from "../../../features/grid-flow/GridFlowUtils";
 import { useAppStore } from "@/lib/store/store";
-import { useWorkspaceStore } from "../WorkspaceStore";
+import { useWorkspaceStore } from "../.store/Workspace.store";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
 
-export default function GridFlowChatNode(props: {
+export default function WorkspaceChatBlock(props: {
   id: string;
   data: GridFlowNode["data"];
 }) {
   const { id: nodeId, data } = props;
-  const { telegramDialogs } = useAppStore();
-  const { nodesDraggable } = useWorkspaceStore();
-  const isDeleting = data.status === "deleting";
   const reactFlow = useReactFlow();
+
+  const telegramDialogs = useAppStore((s) => s.telegramDialogs);
+  const moveModeEnabled = useWorkspaceStore((s) => s.moveModeEnabled);
+
+  const isDeleting = data.status === "deleting";
 
   const onDelete = () => {
     gridFlowDeleteNode(
@@ -45,7 +47,7 @@ export default function GridFlowChatNode(props: {
       )}
       ripple={false}
       onTap={() => {
-        if (!data.deleteMode && !nodesDraggable) {
+        if (!data.deleteMode && !moveModeEnabled) {
           if (openTelegramLink.isAvailable()) {
             openTelegramLink("https://t.me/" + data.username);
           }

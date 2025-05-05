@@ -3,21 +3,24 @@ import FolderIcon from "@/assets/icons/folder.svg?react";
 import CrossIcon from "@/assets/icons/remove.svg?react";
 import { ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import Tappable from "@/ui/Tappable";
-import { GridFlowNode } from "../GridFlowInterface";
-import { gridFlowDeleteNode } from "../GridFlowUtils";
 import { memo, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { initNodes, GridFlowNodeTypes } from "./GridFlowNodes";
 import { SwiperSlider } from "@/ui/dialog/DialogsSlider";
 import { SwiperSlide } from "swiper/react";
+import {
+  GridFlowNode,
+  GridFlowNodeTypes,
+} from "@/features/grid-flow/GridFlowInterface";
+import { gridFlowDeleteNode } from "@/features/grid-flow/GridFlowUtils";
 
-export default function GridFlowFolderNode(props: {
+export default function WorkspaceFolderBlock(props: {
   id: string;
   data: GridFlowNode["data"];
 }) {
   const { id: nodeId, data } = props;
   const reactFlow = useReactFlow();
+  const [open, setOpen] = useState(false);
 
   const isDeleting = data.status === "deleting";
   const onDelete = () => {
@@ -26,8 +29,6 @@ export default function GridFlowFolderNode(props: {
       reactFlow.setNodes as React.Dispatch<React.SetStateAction<GridFlowNode[]>>
     );
   };
-
-  const [open, setOpen] = useState(false);
 
   if (open) {
     return createPortal(
@@ -123,7 +124,7 @@ const PreviewGridFlow = memo(
         <div style={{ width: "260px", height: "260px" }} className={className}>
           <ReactFlow
             id={id}
-            nodes={initNodes}
+            nodes={[]}
             nodeTypes={GridFlowNodeTypes}
             zoomOnDoubleClick={false}
             zoomOnPinch={false}

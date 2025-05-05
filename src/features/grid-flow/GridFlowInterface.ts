@@ -1,3 +1,7 @@
+import WorkspaceChatBlock, {
+  NodeShadow,
+} from "@/screens/workspace/blocks/WorkspaceChatBlock";
+import WorkspaceFolderBlock from "@/screens/workspace/blocks/WorkspaceFolderBlock";
 import { Node } from "@xyflow/react";
 
 export const GRID_CELL_SIZE = 40;
@@ -15,3 +19,11 @@ export interface GridFlowNode extends Node {
     status?: "adding" | "deleting" | null;
   };
 }
+
+export type GridFlowNodeType = "chat" | "folder" | "shadow";
+
+export const GridFlowNodeTypes = {
+  chat: WorkspaceChatBlock,
+  folder: WorkspaceFolderBlock,
+  shadow: NodeShadow,
+};
