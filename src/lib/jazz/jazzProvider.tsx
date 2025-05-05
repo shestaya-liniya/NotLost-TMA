@@ -4,6 +4,7 @@ import { useJazzProfile } from "./hooks/useJazzProfile";
 import { JazzProvider, usePassphraseAuth } from "jazz-react";
 import { cloudStorage } from "@telegram-apps/sdk-react";
 import { wordlist } from "./wordlist";
+import { JazzInspector } from "jazz-inspector";
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   return (
@@ -85,6 +86,7 @@ export function JazzProfileProvider({ children }: { children: ReactNode }) {
 
   return (
     <JazzProfileContext.Provider value={{ jazzProfile }}>
+      <JazzInspector />
       {jazzProfile ? children : null}
     </JazzProfileContext.Provider>
   );

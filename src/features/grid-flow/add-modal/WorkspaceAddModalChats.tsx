@@ -27,7 +27,7 @@ function Chats(props: {
         type: "chat",
         data: {
           username: telegramChat.username,
-          name: telegramChat.label,
+          label: telegramChat.label,
         },
       },
       nodes,

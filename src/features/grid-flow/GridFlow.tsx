@@ -3,13 +3,11 @@ import {
   Background,
   useReactFlow,
   OnNodesChange,
-  Edge,
-  ReactFlowInstance,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
 import { GridFlowNodeTypes } from "./nodes/GridFlowNodes";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useRef } from "react";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { useWorkspaceStore } from "./WorkspaceStore";
 import { GRID_CELL_SIZE, GridFlowNode } from "./GridFlowInterface";
@@ -23,6 +21,7 @@ function GridFlow(props: {
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
   onNodesChange: OnNodesChange<GridFlowNode>;
 }) {
+  /*   const { activeWorkspace } = useWorkspaceStore(); */
   const { nodes, setNodes, onNodesChange } = props;
   const GRID_HEIGHT = props.height ?? window.innerHeight - getMiniAppTopInset();
   const GRID_WIDTH = props.width ?? window.innerWidth;
@@ -31,10 +30,10 @@ function GridFlow(props: {
   const { nodesDraggable } = useWorkspaceStore();
 
   const reactFlowWrapper = useRef(null);
-  const [flowIntance, setFlowInstance] = useState<ReactFlowInstance<
+  /*   const [flowIntance, setFlowInstance] = useState<ReactFlowInstance<
     GridFlowNode,
     Edge
-  > | null>(null);
+  > | null>(null); */
 
   const enableAnimation = useRef(false);
   const showShadows = useRef(false);
@@ -51,7 +50,7 @@ function GridFlow(props: {
         position: prevPosition.current,
         data: {
           username: "x",
-          name: "x",
+          label: "x",
         },
       };
 
@@ -140,15 +139,27 @@ function GridFlow(props: {
     []
   );
 
-  useEffect(() => {
-    onSave();
-  }, [nodes]);
+  /*   useEffect(() => {
+    if (activeWorkspace?.chats)
+      activeWorkspace.chats = JazzListOfWorkspaceChats.create(
+        nodes.map((n) => {
+          return JazzWorkspaceChat.create({
+            type: "chat",
+            data: {
+              label: n.data.label,
+              username: n.data.username,
+            },
+            position: n.position,
+          });
+        })
+      );
+  }, [nodes]); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     onRestore();
-  }, []);
+  }, []); */
 
-  const onSave = useCallback(() => {
+  /*   const onSave = useCallback(() => {
     if (flowIntance) {
       const flow = flowIntance.toObject();
       localStorage.setItem("flow-nodes", JSON.stringify(flow));
@@ -166,7 +177,7 @@ function GridFlow(props: {
     };
 
     restoreFlow();
-  }, []);
+  }, []); */
 
   return (
     <div className="relative transition-all duration-300 ease-in-out">
@@ -178,7 +189,7 @@ function GridFlow(props: {
       >
         <ReactFlow
           id={props.id}
-          onInit={setFlowInstance}
+          /* onInit={setFlowInstance} */
           nodes={nodes}
           nodeTypes={GridFlowNodeTypes}
           onNodesChange={onNodesChange}

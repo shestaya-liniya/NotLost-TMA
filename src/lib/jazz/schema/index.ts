@@ -41,15 +41,9 @@ export class JazzWorkspaceFolder extends CoMap {
 }
 
 export class JazzWorkspaceChat extends CoMap {
-  type = "chat";
-  data = {
-    label: co.string,
-    username: co.string,
-  };
-  position = {
-    x: co.number,
-    y: co.number,
-  };
+  type = co.literal("chat");
+  data = co.json<{ label: string; username: string }>();
+  position = co.json<{ x: number; y: number }>();
 }
 
 export class JazzListOfWorkspaceChats extends CoList.Of(

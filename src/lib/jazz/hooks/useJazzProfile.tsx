@@ -10,8 +10,8 @@ export const useJazzProfile = () => {
   const { me } = useAccount({
     resolve: {
       root: {
-        folders: {
-          $each: { dialogs: { $each: true }, nestedFolders: { $each: true } },
+        workspaces: {
+          $each: { chats: { $each: true }, folders: { $each: true } },
         },
       },
     },

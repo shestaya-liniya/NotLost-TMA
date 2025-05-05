@@ -10,7 +10,7 @@ export const GRID_PADDING = 20;
 export interface GridFlowNode extends Node {
   data: {
     username: string;
-    name: string;
+    label: string;
     deleteMode?: boolean;
     status?: "adding" | "deleting" | null;
   };

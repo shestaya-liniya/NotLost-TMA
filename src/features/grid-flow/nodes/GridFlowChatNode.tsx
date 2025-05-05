@@ -68,13 +68,13 @@ export default function GridFlowChatNode(props: {
         <Circle text={truncateWord(data.name, 20)} percentage={1} />
       </div> */}
       <div className="text-xs tracking-[0.5px] absolute -bottom-[10px] left-1/2 -translate-x-1/2 text-nowrap font-medium text-[#D6CFCB]">
-        {data.name.length > 12 ? (
+        {data.label.length > 12 ? (
           <div className="relative">
-            {truncateWord(data.name, 12)}
+            {truncateWord(data.label, 12)}
             <div className="bg-gradient-to-r from-transparent to-primary h-full w-8 absolute right-0 top-0"></div>
           </div>
         ) : (
-          data.name
+          data.label
         )}
       </div>
       {data.deleteMode && (

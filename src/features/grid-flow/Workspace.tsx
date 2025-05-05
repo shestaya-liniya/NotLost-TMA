@@ -9,12 +9,16 @@ import MiniAppTopMenu, { MiniAppTopMenuItem } from "@/ui/MiniAppTopMenu";
 import { useWorkspaceStore } from "./WorkspaceStore";
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
 import { ReactFlowProvider, useNodesState } from "@xyflow/react";
-import { initNodes } from "./nodes/GridFlowNodes";
 import WorkspaceTopButton from "./WorkspaceTopButton";
 import WorkspaceAddModal from "./add-modal/WorkspaceAddModal";
+import { jazzChatsToGridNodes } from "@/lib/jazz/actions/jazzWorkspace";
 
 function Workspace() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
+  const { activeWorkspace } = useWorkspaceStore();
+  const initNodes = activeWorkspace?.chats?.filter((c) => c !== null) ?? [];
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    jazzChatsToGridNodes(initNodes)
+  );
 
   const [showMenu, setShowMenu] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
