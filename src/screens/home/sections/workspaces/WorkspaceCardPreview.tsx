@@ -28,7 +28,7 @@ export const PreviewGridFlow = memo(
             zoomOnScroll={false}
             nodesDraggable={false}
             panOnDrag={false}
-            fitView
+            fitView={false}
             preventScrolling={true}
             proOptions={{ hideAttribution: true }}
           >

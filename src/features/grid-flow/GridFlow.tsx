@@ -23,8 +23,9 @@ function GridFlow(props: {
   nodes: GridFlowNode[];
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
   onNodesChange: OnNodesChange<GridFlowNode>;
+  onNodeDragStop: (ns: GridFlowNode[]) => void;
 }) {
-  /*   const { activeWorkspace } = useWorkspaceStore(); */
+
   const { nodes, setNodes, onNodesChange } = props;
   const GRID_HEIGHT = props.height ?? window.innerHeight - getMiniAppTopInset();
   const GRID_WIDTH = props.width ?? window.innerWidth;
@@ -33,10 +34,6 @@ function GridFlow(props: {
   const { moveModeEnabled: nodesDraggable } = useWorkspaceStore();
 
   const reactFlowWrapper = useRef(null);
-  /*   const [flowIntance, setFlowInstance] = useState<ReactFlowInstance<
-    GridFlowNode,
-    Edge
-  > | null>(null); */
 
   const enableAnimation = useRef(false);
   const showShadows = useRef(false);
@@ -138,49 +135,16 @@ function GridFlow(props: {
             className: "",
           }))
       );
+
+      // shit code, but allow to get latest nodes state, refacto later
+      // must be a solution due to lack of update logic after node position change
+      setNodes((ns) => {
+        props.onNodeDragStop(ns);
+        return ns;
+      });
     },
     []
   );
-
-  /*   useEffect(() => {
-    if (activeWorkspace?.chats)
-      activeWorkspace.chats = JazzListOfWorkspaceChats.create(
-        nodes.map((n) => {
-          return JazzWorkspaceChat.create({
-            type: "chat",
-            data: {
-              label: n.data.label,
-              username: n.data.username,
-            },
-            position: n.position,
-          });
-        })
-      );
-  }, [nodes]); */
-
-  /*   useEffect(() => {
-    onRestore();
-  }, []); */
-
-  /*   const onSave = useCallback(() => {
-    if (flowIntance) {
-      const flow = flowIntance.toObject();
-      localStorage.setItem("flow-nodes", JSON.stringify(flow));
-    }
-  }, [flowIntance]);
-
-  const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      const flowNodes = localStorage.getItem("flow-nodes");
-
-      if (flowNodes) {
-        const flow = JSON.parse(flowNodes);
-        setNodes(flow.nodes || []);
-      }
-    };
-
-    restoreFlow();
-  }, []); */
 
   return (
     <div className="relative transition-all duration-300 ease-in-out">
