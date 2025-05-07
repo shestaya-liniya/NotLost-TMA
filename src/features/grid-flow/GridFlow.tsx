@@ -171,6 +171,8 @@ function GridFlow(props: {
           zoomOnDoubleClick={false}
           zoomOnPinch={false}
           zoomOnScroll={false}
+          onScroll={(e) => console.log("scroll")}
+          onPaneScroll={(e) => console.log("scroll")}
           colorMode="dark"
           proOptions={{ hideAttribution: true }}
           nodesDraggable={nodesDraggable}

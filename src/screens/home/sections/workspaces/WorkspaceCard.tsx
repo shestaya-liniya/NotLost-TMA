@@ -20,7 +20,11 @@ function WorkspaceCard(props: { workspace: JazzWorkspace }) {
       className="w-40 h-30 rounded-2xl relative overflow-hidden border-[1px] border-secondary"
     >
       <div className="absolute -top-10 -left-30 w-100 h-30 scale-30 pointer-events-none">
-        <PreviewGridFlow id="preview" nodes={nodes} />
+        <PreviewGridFlow
+          id="preview"
+          nodes={nodes}
+          className="pointer-events-none"
+        />
       </div>
 
       <div className="absolute bottom-0 w-full h-10 bg-secondary flex items-center pl-2">

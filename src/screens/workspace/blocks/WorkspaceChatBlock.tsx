@@ -46,7 +46,7 @@ export default function WorkspaceChatBlock(props: {
           "transition-all ease duration-300 scale-20 animate-fadeOutHidden"
       )}
       ripple={false}
-      onTap={() => {
+      onClick={() => {
         if (!data.deleteMode && !moveModeEnabled) {
           if (openTelegramLink.isAvailable()) {
             openTelegramLink("https://t.me/" + data.username);

@@ -15,7 +15,6 @@ function WorkspacePinModal(props: {
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
 }) {
   const { nodes, setNodes } = props;
-
   const { setShowPinModal } = useWorkspaceModalsActions();
   const showPinModal = useWorkspaceModalsStore((s) => s.showPinModal);
 

@@ -43,7 +43,7 @@ function Workspace() {
     if (activeWorkspace?.chats) {
       activeWorkspace.chats = JazzListOfWorkspaceChats.create(
         nodes
-          .filter((n) => n.type !== "shadow")
+          .filter((n) => n.type === "chat")
           .map((n) =>
             JazzWorkspaceChat.create({
               type: "chat",
@@ -52,7 +52,19 @@ function Workspace() {
             })
           )
       );
+      /* activeWorkspace.folders = JazzListOfWorkspaceChats.create(
+        nodes
+          .filter((n) => n.type === "folder")
+          .map((n) =>
+            JazzWorkspaceChat.create({
+              type: n.type,
+              data: n.data,
+              position: n.position,
+            })
+          )
+      ); */
     }
+    /*     if (activeWorkspace?.folders) */
   };
 
   return (
