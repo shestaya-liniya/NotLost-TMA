@@ -1,6 +1,5 @@
 import { backButton } from "@telegram-apps/sdk-react";
 import { useEffect } from "react";
-import TelegramWallpaper from "./TelegramWallpaper";
 import { useModalStore } from "@/lib/store/modalStore";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -61,7 +60,6 @@ export default function SlidingPage({
                 Back
               </div>
             )}
-            <TelegramWallpaper />
             {children}
           </motion.div>
         </div>
