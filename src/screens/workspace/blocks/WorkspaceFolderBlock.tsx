@@ -40,30 +40,35 @@ export default function WorkspaceFolderBlock(props: {
   };
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       <OpenedFolder
+        id={nodeId}
         isFolderOpen={isFolderOpen}
         closeFolder={() => setIsFolderOpen(false)}
       />
       <motion.div
+        key={nodeId + "-folder"}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
         <div
-          onClick={() => setIsFolderOpen(true)}
+          onClick={() => {
+            if (!data.deleteMode) {
+              setIsFolderOpen(true);
+            }
+          }}
           className={`${isDeleting && "transition-all ease duration-300 scale-20 animate-fadeOutHidden"}`}
         >
           <div className="w-38 h-18 bg-secondary rounded-xl flex flex-col items-center relative border-[1px] border-secondary">
-            <div className="flex w-full p-1 gap-2 items-center">
-              <div className="p-1 bg-primary rounded-sm">
+            <div className="flex w-full p-1 gap-1 items-center">
+              <div className="p-1">
                 <FolderIcon className="min-w-4 h-4 text-[#d4d4d4]" />
               </div>
               <div className="tracking-[0.5px] text-[10px] text-white w-full">
-                Folder
+                {data.title}
               </div>
-              <div className="text-[10px] text-hint pr-1">9</div>
             </div>
 
             <div className="flex relative self-start pl-2 gap-1">
@@ -108,6 +113,7 @@ export default function WorkspaceFolderBlock(props: {
 }
 
 const OpenedFolder = (props: {
+  id: string;
   isFolderOpen: boolean;
   closeFolder: () => void;
 }) => {
@@ -128,9 +134,10 @@ const OpenedFolder = (props: {
   };
 
   return createPortal(
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {props.isFolderOpen && (
         <motion.div
+          key={props.id + "-folder-open"}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}

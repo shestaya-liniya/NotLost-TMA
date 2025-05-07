@@ -9,7 +9,10 @@ function WorkspacePinModalBlocks(props: {
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>;
 }) {
   const { nodes, setNodes } = props;
-
+  const folders = nodes.filter(
+    (n) =>
+      n.type === "folder" && n.data.title && n.data.title.includes("Folder")
+  );
   return (
     <div className="min-h-72">
       <Tappable
@@ -18,8 +21,9 @@ function WorkspacePinModalBlocks(props: {
             {
               type: "folder",
               data: {
-                title: "Folder",
-                chats: [],
+                title: folders?.length
+                  ? `Folder (${(folders?.length ?? 0) + 1})`
+                  : "Folder",
               },
             },
             nodes,

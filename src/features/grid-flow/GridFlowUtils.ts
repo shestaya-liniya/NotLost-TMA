@@ -130,7 +130,7 @@ export const findFreeSpace = (
     }
   }
 
-  return null; // No free space found
+  return null; // no free space found
 };
 
 export const gridFlowAddNode = (
@@ -149,7 +149,7 @@ export const gridFlowAddNode = (
   const freeSpace = findFreeSpace(nodes, dim.height, dim.width);
   if (freeSpace) {
     const newNodeId = v4();
-    const newNode: GridFlowNode = {
+    const newNode = {
       id: newNodeId,
       type: nodeData.type,
       data: nodeData.data,
@@ -176,20 +176,38 @@ export const gridFlowDeleteNode = (
   setNodes: React.Dispatch<React.SetStateAction<GridFlowNode[]>>
 ) => {
   setNodes((ns) =>
-    ns.map((n) =>
-      n.id === nodeId
-        ? {
-            ...n,
-            data: {
-              ...n.data,
-              status: "deleting",
-            },
-          }
-        : n
-    )
+    ns.map((n) => {
+      if (n.id !== nodeId) return n;
+      if (n.type === "chat") {
+        return {
+          ...n,
+          data: {
+            ...n.data,
+            status: "deleting",
+          },
+        };
+      }
+
+      if (n.type === "folder") {
+        return {
+          ...n,
+          data: {
+            ...n.data,
+            status: "deleting",
+          },
+        };
+      }
+
+      return n;
+    })
   );
 
   setTimeout(() => {
-    setNodes((ns) => ns.filter((n) => n.id !== nodeId));
+    setNodes((ns) => {
+      const filtered = ns.filter((n) => n.id !== nodeId);
+      console.log("FILTERED", filtered);
+
+      return filtered;
+    });
   }, 300);
 };

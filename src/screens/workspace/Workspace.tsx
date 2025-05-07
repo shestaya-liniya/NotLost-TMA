@@ -13,8 +13,6 @@ import {
   JazzListOfWorkspaceFolders,
   JazzWorkspaceChat,
   JazzWorkspaceFolder,
-  JazzWorkspaceFolderChat,
-  JazzWorkspaceFolderData,
 } from "@/lib/jazz/schema";
 import { jazzNodesToGridNodes } from "@/lib/jazz/actions/jazzWorkspace";
 
@@ -58,6 +56,9 @@ function Workspace() {
       if (activeWorkspace?.chats) {
         saveNodesState(nodes);
       }
+      if (activeWorkspace?.folders) {
+        saveNodesState(nodes);
+      }
     }
   };
 
@@ -75,24 +76,21 @@ function Workspace() {
           )
       );
     }
+
     if (activeWorkspace?.folders) {
       activeWorkspace.folders = JazzListOfWorkspaceFolders.create(
         nodes
           .filter((n) => n.type === "folder")
           .map((n) => {
+            const existantFolder = activeWorkspace.folders?.find(
+              (f) => f?.data.title === n.data.title
+            );
             return JazzWorkspaceFolder.create({
               type: "folder",
-              data: JazzWorkspaceFolderData.create({
-                title: n.data.title,
-                chats: JazzListOfWorkspaceFolderChats.create(
-                  n.data.chats.map((c) =>
-                    JazzWorkspaceFolderChat.create({
-                      label: c.label,
-                      username: c.username,
-                    })
-                  )
-                ),
-              }),
+              data: n.data,
+              chats:
+                existantFolder?.chats ||
+                JazzListOfWorkspaceFolderChats.create([]),
               position: n.position,
             });
           })

@@ -44,13 +44,16 @@ export const jazzAddChatToWorkspace = (
 export const jazzNodesToGridNodes = (
   jazzNodes: (JazzWorkspaceChat | JazzWorkspaceFolder | null)[]
 ): GridFlowNode[] => {
-  //@ts-ignore
-  return jazzNodes
+  const nodes = jazzNodes
     .filter((n) => n != null)
-    .map((n) => ({
-      id: n.id,
-      type: n.type,
-      data: n.data,
-      position: n.position,
-    }));
+    .map((n) => {
+      return {
+        id: n.id,
+        type: n.type,
+        data: n.data,
+        position: n.position,
+      };
+    });
+  //@ts-ignore
+  return nodes;
 };

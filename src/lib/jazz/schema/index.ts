@@ -30,13 +30,9 @@ export class JazzListOfFolders extends CoList.Of(co.ref(JazzFolder)) {}
 
 export class JazzWorkspaceFolder extends CoMap {
   type = co.literal("folder");
-  data = co.ref(JazzWorkspaceFolderData);
-  position = co.json<{ x: number; y: number }>();
-}
-
-export class JazzWorkspaceFolderData extends CoMap {
-  title = co.string;
+  data = co.json<{ title: string }>();
   chats = co.ref(JazzListOfWorkspaceFolderChats);
+  position = co.json<{ x: number; y: number }>();
 }
 
 export class JazzWorkspaceFolderChat extends CoMap {

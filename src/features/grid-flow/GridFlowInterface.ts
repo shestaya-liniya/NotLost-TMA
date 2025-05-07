@@ -20,7 +20,6 @@ export type GridFlowChatNodeData = {
 
 export type GridFlowFolderNodeData = {
   title: string;
-  chats: { username: string; label: string }[];
   deleteMode?: boolean;
   status?: "adding" | "deleting" | null;
 };

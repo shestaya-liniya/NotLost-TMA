@@ -3,8 +3,12 @@ import { telegramActionGetDialogs } from "@/lib/telegram/api/telegramActions";
 import { TelegramDialogInfo } from "@/lib/telegram/api/telegramApiClient";
 
 export const getTelegramDialogsAndSetToStore = async () => {
-  const { setTelegramDialogs } = useAppStore.getState();
+  const telegramDialogs = useAppStore.getState().telegramDialogs;
+  const setTelegramDialogs = useAppStore.getState().setTelegramDialogs;
+
   const tempDialogs: TelegramDialogInfo[] = [];
+
+  if (telegramDialogs.length > 0) return;
 
   await telegramActionGetDialogs().then((dialogs) => {
     dialogs.forEach((d) => {
