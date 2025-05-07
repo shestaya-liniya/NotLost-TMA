@@ -29,15 +29,19 @@ export class JazzListOfDialogs extends CoList.Of(co.ref(JazzDialog)) {}
 export class JazzListOfFolders extends CoList.Of(co.ref(JazzFolder)) {}
 
 export class JazzWorkspaceFolder extends CoMap {
-  type = "folder";
-  data = {
-    title: co.string,
-    chats: co.ref(JazzListOfWorkspaceChats),
-  };
-  position = {
-    x: co.number,
-    y: co.number,
-  };
+  type = co.literal("folder");
+  data = co.ref(JazzWorkspaceFolderData);
+  position = co.json<{ x: number; y: number }>();
+}
+
+export class JazzWorkspaceFolderData extends CoMap {
+  title = co.string;
+  chats = co.ref(JazzListOfWorkspaceFolderChats);
+}
+
+export class JazzWorkspaceFolderChat extends CoMap {
+  username = co.string;
+  label = co.string;
 }
 
 export class JazzWorkspaceChat extends CoMap {
@@ -51,6 +55,9 @@ export class JazzListOfWorkspaceChats extends CoList.Of(
 ) {}
 export class JazzListOfWorkspaceFolders extends CoList.Of(
   co.ref(JazzWorkspaceFolder)
+) {}
+export class JazzListOfWorkspaceFolderChats extends CoList.Of(
+  co.ref(JazzWorkspaceFolderChat)
 ) {}
 
 export class JazzWorkspace extends CoMap {

@@ -18,8 +18,8 @@ function WorkspacePinModalBlocks(props: {
             {
               type: "folder",
               data: {
-                username: "x",
-                label: "x",
+                title: "Folder",
+                chats: [],
               },
             },
             nodes,

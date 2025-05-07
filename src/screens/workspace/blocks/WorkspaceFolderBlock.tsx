@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import { SwiperSlider } from "@/ui/dialog/DialogsSlider";
 import { SwiperSlide } from "swiper/react";
 import {
+  GridFlowFolderNodeData,
   GridFlowNode,
   GridFlowNodeTypes,
 } from "@/features/grid-flow/GridFlowInterface";
@@ -24,7 +25,7 @@ import TelegramAvatar from "@/ui/TelegramAvatar";
 
 export default function WorkspaceFolderBlock(props: {
   id: string;
-  data: GridFlowNode["data"];
+  data: GridFlowFolderNodeData;
 }) {
   const { id: nodeId, data } = props;
   const reactFlow = useReactFlow();

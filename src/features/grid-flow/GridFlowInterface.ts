@@ -11,16 +11,27 @@ export const GRID_PADDING = 20;
  * Folder: 2x1 cells
  */
 
-export interface GridFlowNode extends Node {
-  data: {
-    username: string;
-    label: string;
-    deleteMode?: boolean;
-    status?: "adding" | "deleting" | null;
-  };
-}
+export type GridFlowChatNodeData = {
+  username: string;
+  label: string;
+  deleteMode?: boolean;
+  status?: "adding" | "deleting" | null;
+};
+
+export type GridFlowFolderNodeData = {
+  title: string;
+  chats: { username: string; label: string }[];
+  deleteMode?: boolean;
+  status?: "adding" | "deleting" | null;
+};
 
 export type GridFlowNodeType = "chat" | "folder" | "shadow";
+
+type ChatNode = Node<GridFlowChatNodeData> & { type: "chat" };
+type FolderNode = Node<GridFlowFolderNodeData> & { type: "folder" };
+type ShadowNode = Node & { type: "shadow" };
+
+export type GridFlowNode = ChatNode | FolderNode | ShadowNode;
 
 export const GridFlowNodeTypes = {
   chat: WorkspaceChatBlock,

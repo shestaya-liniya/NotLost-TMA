@@ -25,7 +25,6 @@ function GridFlow(props: {
   onNodesChange: OnNodesChange<GridFlowNode>;
   onNodeDragStop: (ns: GridFlowNode[]) => void;
 }) {
-
   const { nodes, setNodes, onNodesChange } = props;
   const GRID_HEIGHT = props.height ?? window.innerHeight - getMiniAppTopInset();
   const GRID_WIDTH = props.width ?? window.innerWidth;
@@ -48,10 +47,6 @@ function GridFlow(props: {
         id: "shadow",
         type: "shadow",
         position: prevPosition.current,
-        data: {
-          username: "x",
-          label: "x",
-        },
       };
 
       setNodes((nds) => nds.concat(newNode as GridFlowNode));
@@ -172,8 +167,6 @@ function GridFlow(props: {
           zoomOnDoubleClick={false}
           zoomOnPinch={false}
           zoomOnScroll={false}
-          onScroll={(e) => console.log("scroll")}
-          onPaneScroll={(e) => console.log("scroll")}
           colorMode="dark"
           proOptions={{ hideAttribution: true }}
           nodesDraggable={nodesDraggable}

@@ -4,7 +4,10 @@ import Tappable from "@/ui/Tappable";
 import { useReactFlow } from "@xyflow/react";
 import { twMerge } from "tailwind-merge";
 import { truncateWord } from "@/helpers/truncateWord";
-import { GridFlowNode } from "../../../features/grid-flow/GridFlowInterface";
+import {
+  GridFlowChatNodeData,
+  GridFlowNode,
+} from "../../../features/grid-flow/GridFlowInterface";
 import { gridFlowDeleteNode } from "../../../features/grid-flow/GridFlowUtils";
 import { useAppStore } from "@/lib/store/store";
 import { useWorkspaceStore } from "../.store/Workspace.store";
@@ -12,7 +15,7 @@ import { openTelegramLink } from "@telegram-apps/sdk-react";
 
 export default function WorkspaceChatBlock(props: {
   id: string;
-  data: GridFlowNode["data"];
+  data: GridFlowChatNodeData;
 }) {
   const { id: nodeId, data } = props;
   const reactFlow = useReactFlow();

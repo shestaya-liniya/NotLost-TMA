@@ -1,15 +1,18 @@
-import { jazzChatsToGridNodes } from "@/lib/jazz/actions/jazzWorkspace";
 import { JazzWorkspace } from "@/lib/jazz/schema";
 import { useModalStore } from "@/lib/store/modalStore";
 import Tappable from "@/ui/Tappable";
 import { memo } from "react";
 import { PreviewGridFlow } from "./WorkspaceCardPreview";
 import { useWorkspaceActions } from "@/screens/workspace/.store/Workspace.store";
+import { jazzNodesToGridNodes } from "@/lib/jazz/actions/jazzWorkspace";
 
 function WorkspaceCard(props: { workspace: JazzWorkspace }) {
   const { setWorkspaceOpen } = useModalStore();
   const { setActiveWorkspace } = useWorkspaceActions();
-  const nodes = jazzChatsToGridNodes(props.workspace.chats || []);
+  const nodes = jazzNodesToGridNodes([
+    ...(props.workspace.chats || []),
+    ...(props.workspace.folders || []),
+  ]);
 
   return (
     <Tappable

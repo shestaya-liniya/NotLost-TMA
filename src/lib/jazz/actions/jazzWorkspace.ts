@@ -4,6 +4,7 @@ import {
   JazzListOfWorkspaceFolders,
   JazzWorkspace,
   JazzWorkspaceChat,
+  JazzWorkspaceFolder,
   RootUserProfile,
 } from "../schema";
 
@@ -40,11 +41,12 @@ export const jazzAddChatToWorkspace = (
   );
 };
 
-export const jazzChatsToGridNodes = (
-  jazzChats: (JazzWorkspaceChat | null)[]
+export const jazzNodesToGridNodes = (
+  jazzNodes: (JazzWorkspaceChat | JazzWorkspaceFolder | null)[]
 ): GridFlowNode[] => {
-  return jazzChats
-    .filter((n): n is JazzWorkspaceChat => n != null)
+  //@ts-ignore
+  return jazzNodes
+    .filter((n) => n != null)
     .map((n) => ({
       id: n.id,
       type: n.type,

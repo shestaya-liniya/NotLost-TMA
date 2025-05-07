@@ -47,9 +47,11 @@ function WorkspacePinModalChats(props: {
 
   const nodeMap = useMemo(() => {
     const map = new Map<string, GridFlowNode>();
-    nodes.forEach((n) => {
-      if (n.data.username) map.set(n.data.username, n);
-    });
+    nodes
+      .filter((n) => n.type === "chat")
+      .forEach((n) => {
+        if (n.data.username) map.set(n.data.username, n);
+      });
     return map;
   }, [nodes]);
 
