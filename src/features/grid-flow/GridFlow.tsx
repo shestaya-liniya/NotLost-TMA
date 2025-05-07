@@ -25,6 +25,7 @@ function GridFlow(props: {
   onNodesChange: OnNodesChange<GridFlowNode>;
   onNodeDragStop: (ns: GridFlowNode[]) => void;
 }) {
+
   const { nodes, setNodes, onNodesChange } = props;
   const GRID_HEIGHT = props.height ?? window.innerHeight - getMiniAppTopInset();
   const GRID_WIDTH = props.width ?? window.innerWidth;
@@ -162,11 +163,11 @@ function GridFlow(props: {
           className={`flow-wrapper ${showShadows.current && "shadow-visible"} ${enableAnimation.current && "transitions-enabled"}`}
           translateExtent={[
             [0, 0],
-            [getExtent(GRID_WIDTH), 3000],
+            [getExtent(GRID_WIDTH), getExtent(GRID_HEIGHT)],
           ]}
           nodeExtent={[
             [0, 0],
-            [getExtent(GRID_WIDTH) - 28, 3000],
+            [getExtent(GRID_WIDTH) - 28, getExtent(GRID_HEIGHT) - 28],
           ]}
           zoomOnDoubleClick={false}
           zoomOnPinch={false}
