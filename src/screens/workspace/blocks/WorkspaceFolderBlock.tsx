@@ -17,7 +17,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import MoreIcon from "@/assets/icons/more.svg?react";
 import TooltipModal, { TooltipItem } from "@/ui/modals/TooltipModal";
 import PencilIcon from "@/assets/icons/pencil-icon.svg?react";
-import MoveIcon from "@/assets/icons/cursor-grab.svg?react";
 import PlusIcon from "@/assets/icons/plus.svg?react";
 import { truncateWord } from "@/helpers/truncateWord";
 import TelegramAvatar from "@/ui/TelegramAvatar";
@@ -28,8 +27,12 @@ import {
 } from "../.store/Workspace.store";
 import { chunkArray } from "@/helpers/chunkArray";
 import { v4 } from "uuid";
-import { JazzWorkspaceFolderChat } from "@/lib/jazz/schema";
+import {
+  JazzListOfWorkspaceFolderChats,
+  JazzWorkspaceFolderChat,
+} from "@/lib/jazz/schema";
 import { openTelegramLink } from "@telegram-apps/sdk-react";
+import FolderAccordionTitle from "@/features/folders/FolderAccordionTitle";
 
 export default function WorkspaceFolderBlock(props: {
   id: string;
@@ -134,6 +137,7 @@ const OpenedFolder = (props: {
   chats: JazzWorkspaceFolderChat[];
 }) => {
   const openedFolder = useWorkspaceStore((s) => s.openedFolder);
+  const { setOpenedFolder } = useWorkspaceActions();
 
   const { setShowFolderPinModal } = useWorkspaceModalsActions();
   const [showTooltip, setShowTooltip] = useState(false);
@@ -151,6 +155,20 @@ const OpenedFolder = (props: {
     });
     setShowTooltip(true);
   };
+
+  const [deleteMode, setDeleteMode] = useState(false);
+
+  const removeFromFolder = (username: string) => {
+    if (openedFolder && openedFolder.chats) {
+      const filteredChats = openedFolder?.chats?.filter(
+        (c) => c?.username !== username
+      );
+      openedFolder.chats = JazzListOfWorkspaceFolderChats.create(filteredChats);
+      setOpenedFolder(openedFolder);
+    }
+  };
+
+  const [titleEditable, setTitleEditable] = useState(false);
 
   return createPortal(
     <AnimatePresence>
@@ -170,7 +188,31 @@ const OpenedFolder = (props: {
           >
             <div className="mb-2 relative flex justify-center ">
               <span className="tracking-[0.5px] text-lg text-center relative">
-                {openedFolder?.data.title}
+                <div onPointerDown={() => setTitleEditable(true)}>
+                  <FolderAccordionTitle
+                    value={openedFolder?.data.title || ""}
+                    onBlur={(val) => {
+                      if (openedFolder) {
+                        openedFolder.data.title = val;
+                      }
+                      setTitleEditable(false);
+                    }}
+                    isFocused={titleEditable}
+                  />
+                </div>
+
+                {/* <div
+                  contentEditable={deleteMode}
+                  className="outline-none"
+                  onChange={(e) => {
+                    if (!openedFolder) return;
+                    const text = (e.target as HTMLDivElement).innerText;
+                    openedFolder.data.title = text;
+                  }}
+                >
+                  {openedFolder?.data.title}
+                </div> */}
+
                 <div className="absolute -bottom-1.5 -left-8 -translate-y-1/2">
                   <FolderIcon className="h-5 w-5" />
                 </div>
@@ -202,7 +244,7 @@ const OpenedFolder = (props: {
                         {chatsGroup.map((c) => (
                           <div
                             key={c.id}
-                            className="flex flex-col items-center"
+                            className="flex flex-col items-center relative"
                             onClick={() => {
                               if (openTelegramLink.isAvailable()) {
                                 openTelegramLink("https://t.me/" + c.username);
@@ -223,6 +265,16 @@ const OpenedFolder = (props: {
                                 c.label
                               )}
                             </div>
+                            {deleteMode && (
+                              <Tappable
+                                onTap={() => {
+                                  removeFromFolder(c.username);
+                                }}
+                                className="absolute right-0 bg-secondary p-1 rounded-full scale-80"
+                              >
+                                <CrossIcon className="h-4 w-4" />
+                              </Tappable>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -243,13 +295,9 @@ const OpenedFolder = (props: {
               <TooltipItem
                 title={<div>Edit</div>}
                 Icon={<PencilIcon className="h-4 w-4" />}
-                action={() => {}}
-                closeTooltip={() => setShowTooltip(false)}
-              ></TooltipItem>
-              <TooltipItem
-                title={<div>Move</div>}
-                Icon={<MoveIcon className="h-5 w-5" />}
-                action={() => {}}
+                action={() => {
+                  setDeleteMode(!deleteMode);
+                }}
                 closeTooltip={() => setShowTooltip(false)}
               ></TooltipItem>
               <TooltipItem

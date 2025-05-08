@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function FolderAccordionTitle(props: {
   onBlur: (val: string) => void;
@@ -21,19 +21,25 @@ export default function FolderAccordionTitle(props: {
       }
     }
   }, [props.isFocused]);
-
+  const [input, setInput] = useState(props.value);
   return (
-    <span
-      ref={ref}
-      className="font-semibold outline-none"
-      contentEditable={props.isFocused}
-      onBlur={() => {
-        if (props.isFocused) {
-          props.onBlur(ref.current?.innerText || "");
-        }
-      }}
-    >
-      {props.value}
-    </span>
+    <div>
+      <span
+        ref={ref}
+        className="font-semibold outline-none"
+        contentEditable={props.isFocused}
+        onInput={(e) => setInput(e.currentTarget.innerText)}
+        onBlur={() => {
+          if (props.isFocused) {
+            props.onBlur(ref.current?.innerText || "");
+          }
+        }}
+      >
+        {props.value}
+      </span>
+      {input.length === 0 && (
+        <span className="text-hint relative top-0.5">Title...</span>
+      )}
+    </div>
   );
 }
