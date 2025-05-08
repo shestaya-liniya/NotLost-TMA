@@ -183,11 +183,11 @@ const OpenedFolder = (props: {
           onClick={props.closeFolder}
         >
           <div
-            className="absolute top-1/2 left-1/2 -translate-1/2 pb-2 backdrop-blur-md rounded-3xl overflow-hidden"
+            className="absolute top-1/2 left-1/2 -translate-1/2 pb-2 rounded-3xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-2 relative flex justify-center ">
-              <span className="tracking-[0.5px] text-lg text-center relative">
+              <span className="tracking-[0.5px] text-lg text-center relative border-[1px] border-white rounded-2xl px-2">
                 <div onPointerDown={() => setTitleEditable(true)}>
                   <FolderAccordionTitle
                     value={openedFolder?.data.title || ""}
@@ -228,6 +228,23 @@ const OpenedFolder = (props: {
               </div>
             </div>
             <div className="w-[280px] h-[280px] bg-secondary/80 rounded-3xl">
+              {openedFolder &&
+                openedFolder.chats &&
+                openedFolder?.chats?.length === 0 && (
+                  <div className="h-full w-full grid place-content-center ">
+                    <div
+                      className="flex flex-col items-center"
+                      onClick={() => {
+                        setShowFolderPinModal(true);
+                      }}
+                    >
+                      {/* <div className="bg-[#d4d4d4] rounded-full p-1">
+                        <PlusIcon className="h-6 w-6 text-black" />
+                      </div> */}
+                      <div className="text-hint">+ Add first chat</div>
+                    </div>
+                  </div>
+                )}
               {openedFolder && openedFolder.chats && (
                 <SwiperSlider
                   key={openedFolder.chats

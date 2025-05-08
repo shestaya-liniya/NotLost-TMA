@@ -14,6 +14,8 @@ import {
   gridFlowAddNode,
   gridFlowDeleteNode,
 } from "@/features/grid-flow/GridFlowUtils";
+import TelegramIcon from "@/assets/icons/telegram.svg?react";
+import { useWorkspaceModalsActions } from "../../.store/WorkspaceModals.store";
 
 function WorkspacePinModalChats(props: {
   nodes: GridFlowNode[];
@@ -26,6 +28,7 @@ function WorkspacePinModalChats(props: {
   const setTelegramSignInModalOpen = useModalStore(
     (s) => s.setTelegramSignInModalOpen
   );
+  const { setShowPinModal } = useWorkspaceModalsActions();
 
   const pinToWorkspace = (telegramChat: TelegramDialogInfo) => {
     gridFlowAddNode(
@@ -77,12 +80,20 @@ function WorkspacePinModalChats(props: {
           })}
         </VerticalScrollableList>
       ) : (
-        <Tappable
-          onTap={() => setTelegramSignInModalOpen(true)}
-          className="px-2 rounded-full py-1 bg-secondary"
-        >
-          Go to sync
-        </Tappable>
+        <div className="flex flex-col items-center pb-8">
+          <Tappable
+            onClick={() => {
+              setTelegramSignInModalOpen(true);
+              setShowPinModal(false);
+            }}
+            className="bg-secondary ml-auto mr-auto rounded-full px-4 py-2 "
+          >
+            <div className="flex gap-2 animate-spin">
+              <TelegramIcon className="w-6 h-6" />
+              <div className="font-semibold ">Sync my chats</div>
+            </div>
+          </Tappable>
+        </div>
       )}
     </div>
   );

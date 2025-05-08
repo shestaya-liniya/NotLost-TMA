@@ -14,20 +14,20 @@ export default function SettingsSectionTgSync() {
   return (
     <SettingsOneLineSection>
       <div className="flex gap-4 flex-1">
-        <TelegramIcon className="w-6 h-6 text-link" />
+        <TelegramIcon className="w-6 h-6" />
         Telegram Sync
       </div>
       <div>
         {signedIn ? (
           <Tappable
-            className="bg-link/10 rounded-xl px-4 py-1 text-link"
+            className="bg-primary rounded-xl px-4 py-1"
             onClick={handleLogout}
           >
             Log out
           </Tappable>
         ) : (
           <Tappable
-            className="bg-link/10 rounded-xl px-4 py-1 text-link"
+            className="bg-primary rounded-xl px-4 py-1"
             onClick={() => {
               setSettingsModalOpen(false);
               setTimeout(() => {

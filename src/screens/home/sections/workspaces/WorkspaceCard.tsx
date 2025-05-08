@@ -93,7 +93,7 @@ function WorkspaceCard(props: { workspace: JazzWorkspace }) {
         className="mt-2"
       >
         <TooltipItem
-          title={<div className="text-xs font-medium">Edit</div>}
+          title={<div className="text-sm font-medium">Edit</div>}
           Icon={<PencilIcon className="h-4 w-4" />}
           action={() => {
             setTitleEditable(true);
@@ -101,7 +101,7 @@ function WorkspaceCard(props: { workspace: JazzWorkspace }) {
           closeTooltip={() => setShowTooltip(false)}
         ></TooltipItem>
         <TooltipItem
-          title={<div className="text-xs font-medium text-red-400">Remove</div>}
+          title={<div className="text-sm font-medium text-red-400">Remove</div>}
           Icon={<RemoveIcon className="h-3 w-3 text-red-400" />}
           action={() => removeWorkspace()}
           closeTooltip={() => setShowTooltip(false)}
