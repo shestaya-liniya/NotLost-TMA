@@ -1,6 +1,7 @@
 import Tappable from "@/ui/Tappable";
 import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { twMerge } from "tailwind-merge";
 
 export default function TooltipModal(props: {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ export default function TooltipModal(props: {
   handleClose: () => void;
   position: { x: number; y: number } | null;
   side?: "left" | "right";
+  className?: string
 }) {
   if (!props.position) return;
 
@@ -17,7 +19,8 @@ export default function TooltipModal(props: {
         <div>
           <div
             className="absolute top-0 left-0 w-screen h-screen"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               props.handleClose();
             }}
           ></div>
@@ -26,7 +29,7 @@ export default function TooltipModal(props: {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
-            className={`absolute z-20 ${props.side === "left" && "-translate-x-full"} rounded-xl overflow-hidden bg-secondary/50 backdrop-blur-sm`}
+            className={twMerge(`absolute z-20 ${props.side === "left" && "-translate-x-full"} rounded-xl overflow-hidden bg-secondary/50 backdrop-blur-sm`, props.className)}
             onClick={(event) => {
               event.stopPropagation();
             }}
