@@ -26,13 +26,17 @@ export default function Home() {
       </MiniAppTopButton>
       <MiniAppTopMenu show={showMenu} setShow={setShowMenu}>
         <MiniAppTopMenuItem>
-          <div>Premium</div>
-          <CrownIcon className="h-4 w-4" />
+          <div className="flex gap-2 text-hint items-center">
+            <div>Premium</div>
+            <CrownIcon className="h-4 w-4" />
+          </div>
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem>
-          <div>Graph</div>
-          <GraphIcon className="h-4 w-4 scale-130" />
+          <div className="flex gap-2 text-hint items-center justify-between w-full">
+            <div>Graph</div>
+            <GraphIcon className="h-4 w-4 scale-130" />
+          </div>
         </MiniAppTopMenuItem>
         <MiniAppTopMenuDivider />
         <MiniAppTopMenuItem
