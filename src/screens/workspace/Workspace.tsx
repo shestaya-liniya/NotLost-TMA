@@ -15,6 +15,7 @@ import {
   JazzWorkspaceFolder,
 } from "@/lib/jazz/schema";
 import { jazzNodesToGridNodes } from "@/lib/jazz/actions/jazzWorkspace";
+import WorkspaceFolderPinModal from "./modals/pin/folder/WorkspaceFolderPinModal";
 
 function Workspace() {
   const { activeWorkspace, unpinModeEnabled } = useWorkspaceStore();
@@ -116,6 +117,7 @@ function Workspace() {
         />
       </div>
       <WorkspacePinModal nodes={nodes} setNodes={setNodes} />
+      <WorkspaceFolderPinModal />
     </div>
   );
 }

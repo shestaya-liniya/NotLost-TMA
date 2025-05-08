@@ -11,7 +11,12 @@ export const useJazzProfile = () => {
     resolve: {
       root: {
         workspaces: {
-          $each: { chats: { $each: true }, folders: { $each: true } },
+          $each: {
+            chats: { $each: true },
+            folders: {
+              $each: { chats: { $each: true } },
+            },
+          },
         },
       },
     },

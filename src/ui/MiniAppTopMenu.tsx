@@ -48,7 +48,7 @@ export const MiniAppTopMenuItem = (props: {
 }) => {
   return (
     <Tappable
-      onTap={props.action}
+      onClick={props.action}
       className={`px-4 py-2 w-full flex items-center justify-between text-[15px] gap-3 ${props.active ? "text-black bg-white" : ""}`}
     >
       {props.children}
