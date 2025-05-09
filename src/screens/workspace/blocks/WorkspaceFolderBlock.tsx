@@ -138,6 +138,7 @@ const OpenedFolder = (props: {
 }) => {
   const openedFolder = useWorkspaceStore((s) => s.openedFolder);
   const { setOpenedFolder } = useWorkspaceActions();
+  const activeWorkspace = useWorkspaceStore((s) => s.activeWorkspace);
 
   const { setShowFolderPinModal } = useWorkspaceModalsActions();
   const [showTooltip, setShowTooltip] = useState(false);
@@ -193,7 +194,22 @@ const OpenedFolder = (props: {
                     value={openedFolder?.data.title || ""}
                     onBlur={(val) => {
                       if (openedFolder) {
-                        openedFolder.data.title = val;
+                        if (val.length > 0) {
+                          openedFolder.data.title = val;
+                        } else {
+                          const folders = activeWorkspace?.folders
+                            ?.filter((f) => f !== null)
+                            .filter(
+                              (n) =>
+                                n.type === "folder" &&
+                                n.data.title &&
+                                n.data.title.includes("Folder")
+                            );
+                          const title = folders?.length
+                            ? `Folder (${(folders?.length ?? 0) + 1})`
+                            : "Folder";
+                          openedFolder.data.title = title;
+                        }
                       }
                       setTitleEditable(false);
                     }}
