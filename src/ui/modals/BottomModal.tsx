@@ -72,12 +72,16 @@ const BottomModal = (props: ModalProps) => {
         transform:
           lp.tgWebAppPlatform === "ios" ? `translateY(-${translateY}px)` : "",
       }}
-      onClick={props.onClose}
+      onClick={(e) => {
+        e.stopPropagation();
+
+        props.onClose();
+      }}
     >
       <div
         id={props.id}
         className={twMerge(
-          `bg-primary pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
+          `bg-primary/80 backdrop-blur-xs pointer-events-auto pt-6 pl-6 pr-6 pb-2 rounded-t-2xl shadow-lg transition-all ease-in-out absolute bottom-0 w-full duration-300 ${
             props.isOpen
               ? "animate-slideUp  "
               : "translate-y-full animate-slideDown"
@@ -91,10 +95,10 @@ const BottomModal = (props: ModalProps) => {
         </div>
         {props.children}
         <div
-          className="absolute top-2 right-2 text-xl font-semibold text-link rounded-full bg-link/20 p-2"
+          className="absolute top-2 right-2 text-xl font-semibold rounded-full bg-secondary/50 p-2"
           onClick={() => props.onClose()}
         >
-          <RemoveIcon className="w-4 h-4" />
+          <RemoveIcon className="w-4 h-4 text-white/80" />
         </div>
       </div>
     </div>

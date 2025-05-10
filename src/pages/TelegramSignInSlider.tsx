@@ -66,8 +66,8 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
                       key={d.name + "-mock-dialog"}
                       className={`flex flex-col items-center justify-center gap-1 rounded-xl p-2 relative`}
                     >
-                      <div className="h-12 w-12 rounded-full bg-primary relative">
-                        <DuckIcon className="h-7 w-7 text-secondary absolute left-1/2 top-1/2 -translate-1/2" />
+                      <div className="h-12 w-12 rounded-full bg-secondary relative">
+                        <DuckIcon className="h-7 w-7 text-primary absolute left-1/2 top-1/2 -translate-1/2" />
                         <AnimatePresence>
                           {isSelected && (
                             <motion.div
@@ -84,7 +84,7 @@ export default function TelegramSignInSlider(props: { goToSync: () => void }) {
                       </div>
 
                       <span
-                        className={`px-2 py-[0.5px] text-xs font-normal  text-link  rounded-xl whitespace-nowrap `}
+                        className={`px-2 py-[0.5px] text-xs font-normal rounded-xl whitespace-nowrap `}
                       >
                         {d.name}
                       </span>

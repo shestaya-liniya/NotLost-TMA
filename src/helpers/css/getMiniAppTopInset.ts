@@ -5,7 +5,7 @@ export const getMiniAppTopInset = () => {
   const lp = retrieveLaunchParams();
 
   if (["macos", "tdesktop"].includes(lp.tgWebAppPlatform)) {
-    return 20;
+    return 72;
   } else {
     const safeTop =
       Number(

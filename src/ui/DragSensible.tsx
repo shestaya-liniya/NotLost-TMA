@@ -1,4 +1,4 @@
-import { useDragStore } from "@/lib/store/dragStore";
+/* import { useDragStore } from "@/lib/store/dragStore";
 import { memo, useEffect, useRef, useState } from "react";
 
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener
@@ -78,3 +78,4 @@ function DragSensible({
 }
 
 export default memo(DragSensible);
+ */

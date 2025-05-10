@@ -281,6 +281,7 @@ export interface TelegramDialogInfo {
   id: bigInt.BigInteger;
   label: string;
   username: string;
+  unreadCount: number;
 }
 
 export default TelegramApiClient;

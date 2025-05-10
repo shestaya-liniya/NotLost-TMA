@@ -4,10 +4,11 @@ import { memo, useRef } from "react";
 // Dump implementation, every element will create a new listener, need to find a way to share a single listener
 function Draggable(props: {
   children: React.ReactNode;
-  draggableItemType: "folder" | "contact" | null;
   draggableItem: DraggableItem | null;
+  onDrag?: (e: React.TouchEvent) => void;
+  onDrop?: () => void;
 }) {
-  const { setDragState } = useDragStore();
+  const { setDraggableItem } = useDragStore();
 
   const ref = useRef<HTMLDivElement | null>(null);
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -17,10 +18,7 @@ function Draggable(props: {
       return;
     }
 
-    setDragState({
-      draggableItemType: props.draggableItemType,
-      draggableItem: props.draggableItem,
-    });
+    setDraggableItem(props.draggableItem);
 
     const startPos = {
       x: touch.clientX,
@@ -28,20 +26,25 @@ function Draggable(props: {
     };
 
     const handleTouchMove = (e: React.TouchEvent) => {
-      ref.current!.style.transition = "";
+      if (!ref.current) return;
+
+      ref.current.style.transition = "";
 
       touch = e.touches[0];
       const dx = touch.clientX - startPos.x;
       const dy = touch.clientY - startPos.y;
 
+      props.onDrag?.(e);
+
       ref.current!.style.transform = `translate(${dx}px, ${dy}px)`;
     };
 
     const handleTouchEnd = () => {
-      setDragState({
-        draggableItemType: null,
-      });
+      if (!ref.current) return;
 
+      props.onDrop?.();
+
+      setDraggableItem(null);
       ref.current!.style.transition = `transform 0.3s ease`;
       ref.current!.style.transform = `translate(0px, 0px)`;
 

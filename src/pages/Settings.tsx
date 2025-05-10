@@ -1,21 +1,19 @@
 import { getMiniAppTopInset } from "@/helpers/css/getMiniAppTopInset";
-import SettingsSectionColorScheme from "@/features/settings/SettingsSectionColorScheme";
 import SettingsSectionSupport from "@/features/settings/SettingsSectionSupport";
 import SettingsSectionTgSync from "@/features/settings/SettingsSectionTgSync";
+import { MiniAppTopButton } from "@/ui/MiniAppTopButton";
 
 export default function Settings() {
   return (
-    <div>
-      <div
-        style={{ paddingTop: getMiniAppTopInset() }}
-        className="px-4 py-2 bg-secondary border-b-2 border-primary/30 w-full"
-      >
-        <div className="relative flex items-center justify-center h-[48px]">
-          <div className="text-link font-semibold">Settings</div>
-        </div>
-      </div>
+    <div
+      style={{
+        marginTop: getMiniAppTopInset(),
+      }}
+    >
+      <MiniAppTopButton onClick={() => {}}>
+        <div className="flex items-center gap-2">Settings</div>
+      </MiniAppTopButton>
       <div className="flex flex-col items-center justify-center w-full px-4">
-        <SettingsSectionColorScheme />
         <SettingsSectionTgSync />
         <SettingsSectionSupport />
       </div>

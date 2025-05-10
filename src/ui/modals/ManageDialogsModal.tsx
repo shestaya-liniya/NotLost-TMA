@@ -14,7 +14,7 @@ export default function ManageDialogsModal() {
     >
       <div className="flex items-center text-link justify-center mb-6">
         <div className="absolute bg-secondary px-2 py-1 rounded-2xl -z-10 h-10 w-[180px] bg-opacity-30" />
-        <Draggable draggableItemType="folder" draggableItem={null}>
+        <Draggable draggableItem={null}>
           <div className="flex items-center bg-link/20 px-2 py-1 rounded-xl gap-2 font-medium touch-none no-select">
             <div className="h-6 w-6">
               <FolderIcon />
