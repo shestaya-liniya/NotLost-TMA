@@ -188,8 +188,19 @@ const OpenedFolder = (props: {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-2 relative flex justify-center ">
-              <span className="tracking-[0.5px] text-lg text-center relative border-[1px] border-white rounded-2xl px-2">
-                <div onPointerDown={() => setTitleEditable(true)}>
+              <span
+                style={{
+                  border: deleteMode ? "1px solid white" : "",
+                }}
+                className="tracking-[0.5px] text-lg text-center relative rounded-2xl px-2"
+              >
+                <div
+                  onPointerDown={() => {
+                    if (deleteMode) {
+                      setTitleEditable(true);
+                    }
+                  }}
+                >
                   <FolderAccordionTitle
                     value={openedFolder?.data.title || ""}
                     onBlur={(val) => {
