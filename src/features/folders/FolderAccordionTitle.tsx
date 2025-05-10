@@ -22,16 +22,27 @@ export default function FolderAccordionTitle(props: {
     }
   }, [props.isFocused]);
   const [input, setInput] = useState(props.value);
+
+  function sanitize(text: string): string {
+    return text.replace(/\u200B/g, "").trim();
+  }
+
   return (
     <div>
       <span
         ref={ref}
         className="font-semibold outline-none"
         contentEditable={props.isFocused}
-        onInput={(e) => setInput(e.currentTarget.innerText)}
+        onInput={(e) => {
+          const raw = e.currentTarget.innerText;
+          const clean = sanitize(raw);
+          setInput(clean);
+        }}
         onBlur={() => {
           if (props.isFocused) {
-            props.onBlur(ref.current?.innerText || "");
+            const raw = ref.current?.innerText || "";
+            const clean = sanitize(raw);
+            props.onBlur(clean);
           }
         }}
       >

@@ -76,6 +76,6 @@ export async function init(debug: boolean): Promise<void> {
     appName: import.meta.env.VITE_TELEGRAM_ANALYTICS_APP_NAME,
   });
   // Add Eruda if needed.
-  /* debug &&
-    import("eruda").then((lib) => lib.default.init()).catch(console.error); */
+
+  //import("eruda").then((lib) => lib.default.init()).catch(console.error);
 }
