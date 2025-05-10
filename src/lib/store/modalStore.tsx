@@ -30,6 +30,9 @@ interface ModalState {
 
   graphModalOpen: boolean;
   setGraphModalOpen: (newState: boolean) => void;
+
+  workspaceOpen: boolean;
+  setWorkspaceOpen: (newState: boolean) => void;
 }
 
 export const useModalStore = create<ModalState>((set) => ({
@@ -89,5 +92,11 @@ export const useModalStore = create<ModalState>((set) => ({
   setGraphModalOpen: (newState) =>
     set(() => ({
       graphModalOpen: newState,
+    })),
+
+  workspaceOpen: false,
+  setWorkspaceOpen: (newState) =>
+    set(() => ({
+      workspaceOpen: newState,
     })),
 }));

@@ -13,7 +13,6 @@ import utyaSuccess from "@/assets/lottie/utya-success.json";
 import countryCodes from "@/assets/country-codes.json";
 import ChevronRight from "@/assets/icons/chevron-right.svg?react";
 import Tappable from "@/ui/Tappable";
-import Pencil from "@/assets/icons/pencil-icon.svg?react";
 import { AlertModal } from "@/ui/modals/Modal";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -106,7 +105,7 @@ function TelegramSignIn(props: { phoneNumber: string }) {
           <div className="space-y-4">
             <div className="relative">
               <select
-                className="w-full bg-primary rounded-xl p-2 pr-4 appearance-none"
+                className="w-full bg-secondary rounded-xl p-2 pr-4 appearance-none"
                 onChange={(event) => setPhoneNumber("+" + event.target.value)}
               >
                 {countryCodes.map((item) => (
@@ -121,7 +120,7 @@ function TelegramSignIn(props: { phoneNumber: string }) {
               placeholder="Phone number"
               value={phoneNumber}
               onChange={(val) => setPhoneNumber(val as string)}
-              className="bg-primary p-2 pl-4 rounded-xl outline-none"
+              className="bg-secondary p-2 pl-4 rounded-xl outline-none"
             />
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold"
@@ -142,24 +141,19 @@ function TelegramSignIn(props: { phoneNumber: string }) {
 
         {step === "code" && (
           <div className="flex flex-col items-center">
-            {!isTelegramEnv && (
-              <div className="flex text-xl items-center gap-2 text-hint pb-2">
-                <PhoneInput
-                  placeholder="Phone number"
-                  value={phoneNumber}
-                  onChange={(val) => setPhoneNumber(val as string)}
-                  readOnly
-                />
-                <Pencil
-                  className="h-5 w-5 text-link"
-                  onClick={() => setStep("phone")}
-                />
-              </div>
-            )}
+            <div className="flex text-xl items-center gap-2 text-hint pb-2">
+              <PhoneInput
+                placeholder="Phone number"
+                value={phoneNumber}
+                onChange={(val) => setPhoneNumber(val as string)}
+                readOnly
+              />
+            </div>
             <Input
               label="12345"
               value={phoneCode}
               onInput={(value) => setPhoneCode(value)}
+              className="bg-secondary"
             />
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold mt-4"
@@ -177,6 +171,7 @@ function TelegramSignIn(props: { phoneNumber: string }) {
               value={password}
               onInput={(value) => setPassword(value)}
               type="password"
+              className="bg-secondary"
             />
             <Tappable
               className="bg-button text-center py-2 text-white rounded-xl w-full font-semibold mt-4"

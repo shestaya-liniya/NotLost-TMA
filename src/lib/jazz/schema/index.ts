@@ -28,6 +28,42 @@ export class JazzDialog extends CoMap {
 export class JazzListOfDialogs extends CoList.Of(co.ref(JazzDialog)) {}
 export class JazzListOfFolders extends CoList.Of(co.ref(JazzFolder)) {}
 
+export class JazzWorkspaceFolder extends CoMap {
+  type = co.literal("folder");
+  data = co.json<{ title: string }>();
+  chats = co.ref(JazzListOfWorkspaceFolderChats);
+  position = co.json<{ x: number; y: number }>();
+}
+
+export class JazzWorkspaceFolderChat extends CoMap {
+  username = co.string;
+  label = co.string;
+}
+
+export class JazzWorkspaceChat extends CoMap {
+  type = co.literal("chat");
+  data = co.json<{ label: string; username: string }>();
+  position = co.json<{ x: number; y: number }>();
+}
+
+export class JazzListOfWorkspaceChats extends CoList.Of(
+  co.ref(JazzWorkspaceChat)
+) {}
+export class JazzListOfWorkspaceFolders extends CoList.Of(
+  co.ref(JazzWorkspaceFolder)
+) {}
+export class JazzListOfWorkspaceFolderChats extends CoList.Of(
+  co.ref(JazzWorkspaceFolderChat)
+) {}
+
+export class JazzWorkspace extends CoMap {
+  title = co.string;
+  chats = co.ref(JazzListOfWorkspaceChats);
+  folders = co.ref(JazzListOfWorkspaceFolders);
+}
+
+export class JazzListOfWorkspaces extends CoList.Of(co.ref(JazzWorkspace)) {}
+
 // account root is an app-specific per-user private `CoMap`
 // where you can store top-level objects for that user
 export class RootUserProfile extends Profile {
@@ -42,6 +78,7 @@ export class RootUserProfile extends Profile {
   wallpaperEnabled = co.boolean;
 
   folders = co.ref(JazzListOfFolders);
+  workspaces = co.ref(JazzListOfWorkspaces);
 }
 
 export class JazzAccount extends Account {
@@ -76,6 +113,7 @@ export class JazzAccount extends Account {
   async migrate() {
     if (this.root === undefined) {
       const folders = JazzListOfFolders.create([]);
+      const workspaces = JazzListOfWorkspaces.create([]);
 
       this.root = RootUserProfile.create({
         telegramId: 0,
@@ -83,13 +121,21 @@ export class JazzAccount extends Account {
         firstName: "",
         lastName: "",
         telegramSync: false,
-        colorScheme: "",
+        colorScheme: "dark",
         wallpaperEnabled: true,
-        folders,
         name: "",
+        folders,
+        workspaces,
       });
-    } else if (this.root && this.root.wallpaperEnabled === undefined) {
-      this.root.wallpaperEnabled = true;
+    }
+
+    const { root } = await this.ensureLoaded({
+      //@ts-ignore
+      resolve: { root: true },
+    });
+
+    if (root && root.workspaces === undefined) {
+      root.workspaces = JazzListOfWorkspaces.create([]);
     }
 
     /*     const profile = await RootUserProfile.load(

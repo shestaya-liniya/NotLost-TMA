@@ -19,7 +19,7 @@ import { AliveScope } from "react-activation";
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 try {
-  init(retrieveLaunchParams().startParam === "debug" || import.meta.env.DEV);
+  init(retrieveLaunchParams().startParam === "debug");
   //import("eruda").then((lib) => lib.default.init()).catch(console.error);
 
   root.render(

@@ -1,18 +1,23 @@
-import { memo, useRef } from "react";
+import { memo, useRef, useState } from "react";
 
 function Tappable(props: {
   children: React.ReactNode;
   className?: string;
+  onTap?: () => void;
   onClick?: () => void;
   onLongPress?: () => void;
   style?: object;
+  ripple?: boolean;
 }) {
+  const ripple = props.ripple ?? true;
+
   const timerRef = useRef<number | null>(null);
   const isLongPress = useRef(false);
+  const [active, setActive] = useState(false);
 
   const startPress = () => {
     isLongPress.current = false;
-    activeRef.current = true;
+    setActive(true);
 
     timerRef.current = window.setTimeout(() => {
       isLongPress.current = true;
@@ -20,7 +25,7 @@ function Tappable(props: {
     }, 200);
   };
 
-  const endPress = () => {
+  /* const endPress = () => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -29,39 +34,52 @@ function Tappable(props: {
         props.onClick?.();
       }
     }
-  };
+  }; */
 
-  const activeRef = useRef(false);
+  const animateRipple = () => {
+    setActive(true);
+    setTimeout(() => {
+      setActive(false);
+    }, 100);
+  };
 
   return (
     <div
       style={props.style}
-      className={`transition duration-150 active:opacity-85 active:scale-98 ${props.className}`}
+      className={`transition duration-150 ${active && "scale-98 opacity-85"}  ${props.className}`}
       onPointerDown={() => {
         if (props.onLongPress) {
           startPress();
+        } else if (props.onTap) {
+          props.onTap();
+          if (ripple) {
+            animateRipple();
+          }
         }
       }}
-      onPointerUp={() => {
+      /* onPointerUp={() => {
         endPress();
-      }}
-      onPointerLeave={() => {
-        activeRef.current = false;
+      }} */
+      /* onPointerLeave={() => {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
           timerRef.current = null;
         }
       }}
       onTouchMove={() => {
-        activeRef.current = false;
+        setActive(false);
+
         if (timerRef.current) {
           clearTimeout(timerRef.current);
           timerRef.current = null;
         }
-      }}
+      }} */
       onClick={() => {
-        if (!props.onLongPress) {
-          props.onClick?.();
+        if (!props.onLongPress && props.onClick) {
+          props.onClick();
+          if (ripple) {
+            animateRipple();
+          }
         }
       }}
     >

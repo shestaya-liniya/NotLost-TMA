@@ -1,25 +1,19 @@
 import { create } from "zustand";
 
 export interface DraggableItem {
-  name: string;
-  username: string | null;
+  id: string;
+  type: "custom" | "folder" | null;
 }
 
 interface DragState {
-  draggableItemType: "folder" | "contact" | null;
-  draggableItem: null | DraggableItem;
-  setDragState: (newState: {
-    draggableItemType: "folder" | "contact" | null;
-    draggableItem?: DraggableItem | null;
-  }) => void;
+  draggableItem: DraggableItem | null;
+  setDraggableItem: (newState: DraggableItem | null) => void;
 }
 
 export const useDragStore = create<DragState>((set) => ({
-  draggableItemType: null,
   draggableItem: null,
-  setDragState: (newState) =>
+  setDraggableItem: (newState) =>
     set(() => ({
-      draggableItemType: newState.draggableItemType,
-      draggableItem: newState.draggableItem,
+      draggableItem: newState,
     })),
 }));

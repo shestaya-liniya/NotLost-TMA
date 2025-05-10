@@ -4,7 +4,7 @@ import { useAppStore } from "@/lib/store/store";
 import AddDialogModal from "@/ui/modals/AddDialogModal";
 import EditTagsModal from "@/ui/modals/EditTagsModal";
 import { useEffect } from "react";
-import TabViewContainer from "./TabBar";
+//import TabViewContainer from "./TabBar";
 import Graph from "@/features/graph/GraphWrapper";
 import DialogInfo from "@/pages/DialogInfo";
 import Settings from "@/pages/Settings";
@@ -14,6 +14,8 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { createPortal } from "react-dom";
 import { retrieveLaunchParams } from "@telegram-apps/sdk-react";
 import { getTelegramDialogsAndSetToStore } from "./helpers/telegram/getTelegramDialogsAndSetToStore";
+import Workspace from "./screens/workspace/Workspace";
+import Home from "./screens/home/Home";
 
 export default function App() {
   const { jazzProfile } = useJazzProfileContext();
@@ -36,10 +38,7 @@ export default function App() {
       jazzProfile.colorScheme = "blue";
       document.documentElement.setAttribute("data-theme", "blue");
     } else {
-      document.documentElement.setAttribute(
-        "data-theme",
-        jazzProfile.colorScheme
-      );
+      document.documentElement.setAttribute("data-theme", "dark");
     }
   }, [jazzProfile]);
 
@@ -71,7 +70,7 @@ export default function App() {
         )}
       >
         <KeepAlive cacheKey="tab-bar"> */}
-      <TabViewContainer />
+      <Home />
       {/* </KeepAlive>
       </DelayedUnmount> */}
     </div>
@@ -88,11 +87,22 @@ const ModalsAndSlidingPages = () => {
     setSettingsModalOpen,
     graphModalOpen,
     setGraphModalOpen,
+    workspaceOpen: pinDeskOpen,
+    setWorkspaceOpen: setPinDeskOpen,
   } = useModalStore();
   return (
     <div>
       <EditTagsModal />
       <AddDialogModal />
+
+      <SlidingPage
+        open={pinDeskOpen}
+        onClose={() => {
+          setPinDeskOpen(false);
+        }}
+      >
+        <Workspace />
+      </SlidingPage>
 
       <SlidingPage
         open={dialogInfoModalOpen}
@@ -139,7 +149,7 @@ const setupTelegramTheme = (): void => {
     --tg-theme-hint-color: ${tp.hint_color};
     --tg-theme-button-color: ${tp.button_color};
     --tg-theme-text-color: ${tp.text_color};
-    ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 20px; --tg-viewport-content-safe-area-inset-top: 20px"}
+    ${["macos", "tdesktop"].includes(lp.tgWebAppPlatform) && "--tg-viewport-safe-area-inset-top: 36px; --tg-viewport-content-safe-area-inset-top: 36px"}
   }`;
   document.head.appendChild(style);
 };
