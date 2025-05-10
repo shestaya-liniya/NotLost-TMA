@@ -21,8 +21,11 @@ import { useModalStore } from "@/lib/store/modalStore";
 import { useTelegramSession } from "@/helpers/telegram/telegramSession";
 import { getTelegramDialogsAndSetToStore } from "@/helpers/telegram/getTelegramDialogsAndSetToStore";
 import TelegramSignInSlider from "./TelegramSignInSlider";
+import { requestContact } from "@telegram-apps/sdk-react";
 
-function TelegramSignIn() {
+const isTelegramEnv = import.meta.env.PROD;
+
+function TelegramSignIn(props: { phoneNumber: string }) {
   const { jazzProfile } = useJazzProfileContext();
   const { setTelegramSignInModalOpen } = useModalStore();
   const { setSession } = useTelegramSession();
@@ -31,10 +34,10 @@ function TelegramSignIn() {
     setSession(session);
   }, []);
   const [step, setStep] = useState<"phone" | "code" | "password" | "success">(
-    "phone"
+    isTelegramEnv ? "code" : "phone"
   );
 
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(props.phoneNumber || "");
   const [phoneCode, setPhoneCode] = useState("");
   const [password, setPassword] = useState("");
 
@@ -49,9 +52,15 @@ function TelegramSignIn() {
     }
   }, [step]);
 
+  useEffect(() => {
+    if (props.phoneNumber.length > 0) {
+      setPhoneNumber(props.phoneNumber);
+    }
+  }, [props.phoneNumber]);
+
   const handleSignIn = () => {
     telegramActionSignIn(
-      phoneNumber.replace("+", ""),
+      phoneNumber,
       phoneCode,
       password,
       saveTelegramSession
@@ -187,6 +196,7 @@ function TelegramSignIn() {
 
 export default function TelegramSync() {
   const [currentView, setCurrentView] = useState<"slider" | "signIn">("slider");
+  const [recievedPhoneNumber, setRecievedPhoneNumber] = useState("");
 
   const handleSliderComplete = () => setCurrentView("signIn");
 
@@ -200,7 +210,21 @@ export default function TelegramSync() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <TelegramSignInSlider goToSync={handleSliderComplete} />
+          <TelegramSignInSlider
+            goToSync={() => {
+              if (isTelegramEnv) {
+                requestContact().then((contact) => {
+                  const phoneNum = contact.contact.phone_number;
+                  setRecievedPhoneNumber(phoneNum);
+                  telegramActionSendCode(phoneNum).then(() => {
+                    handleSliderComplete();
+                  });
+                });
+              } else {
+                handleSliderComplete();
+              }
+            }}
+          />
         </motion.div>
       )}
 
@@ -212,7 +236,7 @@ export default function TelegramSync() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <TelegramSignIn />
+          <TelegramSignIn phoneNumber={recievedPhoneNumber} />
         </motion.div>
       )}
     </AnimatePresence>
