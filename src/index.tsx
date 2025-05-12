@@ -36,8 +36,11 @@ function ErrorBoundaryError({ error }: { error: unknown }) {
 }
 
 try {
-  init(retrieveLaunchParams().startParam === "debug");
-  //import("eruda").then((lib) => lib.default.init()).catch(console.error);
+  const debugEnabled = retrieveLaunchParams().tgWebAppStartParam === "debug";
+  init(debugEnabled);
+  if (debugEnabled) {
+    import("eruda").then((lib) => lib.default.init()).catch(console.error);
+  }
 
   root.render(
     <ErrorBoundary fallback={ErrorBoundaryError}>
