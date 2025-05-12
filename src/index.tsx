@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-import { StrictMode } from "react";
 import { BrowserRouter as Router } from "react-router";
 
 import "./index.css";
@@ -15,15 +14,33 @@ import App from "@/App.tsx";
 // ------
 
 import { AliveScope } from "react-activation";
+import { ErrorBoundary } from "./ErrorBoundary.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
+
+function ErrorBoundaryError({ error }: { error: unknown }) {
+  return (
+    <div>
+      <p>An unhandled error occurred:</p>
+      <blockquote>
+        <code>
+          {error instanceof Error
+            ? error.message
+            : typeof error === "string"
+              ? error
+              : JSON.stringify(error)}
+        </code>
+      </blockquote>
+    </div>
+  );
+}
 
 try {
   init(retrieveLaunchParams().startParam === "debug");
   //import("eruda").then((lib) => lib.default.init()).catch(console.error);
 
   root.render(
-    <StrictMode>
+    <ErrorBoundary fallback={ErrorBoundaryError}>
       <TelegramProvider>
         <Router>
           <JazzAndAuth>
@@ -33,7 +50,7 @@ try {
           </JazzAndAuth>
         </Router>
       </TelegramProvider>
-    </StrictMode>
+    </ErrorBoundary>
   );
 } catch (e) {
   console.log(e);
