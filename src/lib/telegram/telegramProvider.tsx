@@ -1,13 +1,7 @@
-import { PropsWithChildren, useEffect } from "react";
-
-import {
-  initData,
-  postEvent,
-  retrieveLaunchParams,
-} from "@telegram-apps/sdk-react";
+import { PropsWithChildren } from "react";
 
 function TelegramProvider({ children }: PropsWithChildren) {
-  useEffect(() => {
+  /* useEffect(() => {
     try {
       if (initData) {
         if (
@@ -15,7 +9,6 @@ function TelegramProvider({ children }: PropsWithChildren) {
             retrieveLaunchParams().tgWebAppPlatform
           )
         ) {
-          postEvent("web_app_expand");
           if (
             ["ios", "android"].includes(retrieveLaunchParams().tgWebAppPlatform)
           ) {
@@ -31,7 +24,7 @@ function TelegramProvider({ children }: PropsWithChildren) {
       console.log("ERROR TG", e);
       console.log("The app runs outside of the telegram");
     }
-  }, []);
+  }, []); */
   return <>{children}</>;
 }
 
